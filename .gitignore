@@ -1,0 +1,20 @@
+# Environment variables (contains secret API key)
+.env
+
+# Python virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# User-generated data (uploaded photos, generated readings/PDFs)
+backend/uploads/
+backend/results/
+
+# Node/React
+frontend/node_modules/
+frontend/dist/
+
+# VS Code
+.vscode/
