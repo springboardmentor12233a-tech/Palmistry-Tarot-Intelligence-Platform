@@ -30,6 +30,27 @@ function Navbar() {
         </button>
 
         <button
+          onClick={() => navigate("/upload-palm")}
+          style={buttonStyle}
+        >
+          Upload Palm
+        </button>
+
+        <button
+          onClick={() => navigate("/tarot")}
+          style={buttonStyle}
+        >
+          Tarot Reading
+        </button>
+
+        <button
+          onClick={() => navigate("/history")}
+          style={buttonStyle}
+        >
+          History
+        </button>
+
+        <button
           onClick={() => navigate("/profile")}
           style={buttonStyle}
         >
