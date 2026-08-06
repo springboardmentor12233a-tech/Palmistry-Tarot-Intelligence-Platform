@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { generateInterpretation } from "./services/api";
+import {
+  generateInterpretation,
+  generatePersonality,
+} from "./services/api";
 import "./App.css";
 
 const sampleTarotCards = [
@@ -42,8 +45,14 @@ function App() {
     life_line: "long",
   });
 
-  const [result, setResult] = useState(null);
+  const [interpretationResult, setInterpretationResult] =
+    useState(null);
+
+  const [personalityResult, setPersonalityResult] =
+    useState(null);
+
   const [errorMessage, setErrorMessage] = useState("");
+  const [warningMessage, setWarningMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (event) => {
@@ -60,7 +69,9 @@ function App() {
 
     setIsLoading(true);
     setErrorMessage("");
-    setResult(null);
+    setWarningMessage("");
+    setInterpretationResult(null);
+    setPersonalityResult(null);
 
     const interestsList = formData.interests
       .split(",")
@@ -96,50 +107,96 @@ function App() {
     console.log("REQUEST PAYLOAD:", readingData);
 
     try {
-      const response = await generateInterpretation(readingData);
-
-      console.log("FULL API RESPONSE:", response);
-      console.log("INTERPRETATION:", response?.interpretation);
-
-      if (!response) {
-        throw new Error("No response was received from the backend.");
-      }
-
       /*
-       * This supports both possible api.js return formats:
-       *
-       * 1. Complete backend response:
-       *    {
-       *      status: "success",
-       *      interpretation: {...}
-       *    }
-       *
-       * 2. Only the interpretation object:
-       *    {
-       *      overall_summary: "...",
-       *      ...
-       *    }
+       * Both API requests run at the same time.
+       * Promise.allSettled prevents one failed Gemini request
+       * from hiding the result of the other successful request.
        */
-      const interpretationData =
-        response?.interpretation || response;
+      const [interpretationResponse, personalityResponse] =
+        await Promise.allSettled([
+          generateInterpretation(readingData),
+          generatePersonality(readingData),
+        ]);
 
-      if (
-        !interpretationData ||
-        typeof interpretationData !== "object"
-      ) {
-        throw new Error(
-          response?.message ||
-            "The backend did not return a valid interpretation."
+      const failedModules = [];
+
+      if (interpretationResponse.status === "fulfilled") {
+        const response = interpretationResponse.value;
+
+        const interpretation =
+          response?.interpretation || response;
+
+        if (
+          interpretation &&
+          typeof interpretation === "object"
+        ) {
+          setInterpretationResult(interpretation);
+        } else {
+          failedModules.push(
+            "AI Interpretation returned an invalid response."
+          );
+        }
+      } else {
+        console.error(
+          "Interpretation error:",
+          interpretationResponse.reason
+        );
+
+        failedModules.push(
+          `AI Interpretation: ${
+            interpretationResponse.reason?.message ||
+            "Generation failed."
+          }`
         );
       }
 
-      setResult(interpretationData);
+      if (personalityResponse.status === "fulfilled") {
+        const response = personalityResponse.value;
+
+        const personality =
+          response?.personality || response;
+
+        if (
+          personality &&
+          typeof personality === "object"
+        ) {
+          setPersonalityResult(personality);
+        } else {
+          failedModules.push(
+            "Personality Intelligence returned an invalid response."
+          );
+        }
+      } else {
+        console.error(
+          "Personality error:",
+          personalityResponse.reason
+        );
+
+        failedModules.push(
+          `Personality Intelligence: ${
+            personalityResponse.reason?.message ||
+            "Generation failed."
+          }`
+        );
+      }
+
+      const bothFailed =
+        interpretationResponse.status === "rejected" &&
+        personalityResponse.status === "rejected";
+
+      if (bothFailed) {
+        setErrorMessage(failedModules.join(" "));
+      } else if (failedModules.length > 0) {
+        setWarningMessage(
+          `${failedModules.join(" ")} The available result is shown below.`
+        );
+      }
     } catch (error) {
-      console.error("FRONTEND ERROR:", error);
+      console.error("Frontend error:", error);
 
       setErrorMessage(
         error?.message ||
-          "Failed to generate the AI interpretation."
+          "Failed to generate the personalized reading."
       );
     } finally {
       setIsLoading(false);
@@ -156,9 +213,9 @@ function App() {
         <h1>Palmistry & Tarot Intelligence Platform</h1>
 
         <p className="hero-description">
-          Generate a personalized interpretation using palm
-          findings, tarot cards and Gemini through the FastAPI
-          backend.
+          Generate a personalized interpretation and symbolic
+          personality profile using palm findings, tarot cards
+          and Gemini through the FastAPI backend.
         </p>
       </header>
 
@@ -371,9 +428,8 @@ function App() {
             <h3>Tarot Cards</h3>
 
             <p className="section-note">
-              These sample cards will later be replaced
-              with the automatic tarot card drawing
-              engine.
+              These sample cards will later be replaced by
+              the automatic tarot card drawing engine.
             </p>
 
             <div className="tarot-grid">
@@ -396,8 +452,8 @@ function App() {
             disabled={isLoading}
           >
             {isLoading
-              ? "Generating Interpretation..."
-              : "Generate AI Interpretation"}
+              ? "Generating Personalized Reading..."
+              : "Generate Personalized Reading"}
           </button>
 
           {errorMessage && (
@@ -409,9 +465,19 @@ function App() {
               <p>{errorMessage}</p>
             </div>
           )}
+
+          {warningMessage && (
+            <div
+              className="error-message"
+              role="status"
+            >
+              <strong>Partial result</strong>
+              <p>{warningMessage}</p>
+            </div>
+          )}
         </form>
 
-        {result && (
+        {interpretationResult && (
           <section className="result-section">
             <p className="eyebrow">
               PERSONALIZED RESULT
@@ -423,7 +489,7 @@ function App() {
               <h3>Overall Summary</h3>
 
               <p>
-                {result?.overall_summary ||
+                {interpretationResult?.overall_summary ||
                   "No overall summary was returned."}
               </p>
             </article>
@@ -433,7 +499,7 @@ function App() {
                 <h3>Palm Interpretation</h3>
 
                 <p>
-                  {result?.palm_interpretation ||
+                  {interpretationResult?.palm_interpretation ||
                     "No palm interpretation was returned."}
                 </p>
               </article>
@@ -442,7 +508,7 @@ function App() {
                 <h3>Tarot Interpretation</h3>
 
                 <p>
-                  {result?.tarot_interpretation ||
+                  {interpretationResult?.tarot_interpretation ||
                     "No tarot interpretation was returned."}
                 </p>
               </article>
@@ -452,7 +518,7 @@ function App() {
               <h3>Combined Interpretation</h3>
 
               <p>
-                {result?.combined_interpretation ||
+                {interpretationResult?.combined_interpretation ||
                   "No combined interpretation was returned."}
               </p>
             </article>
@@ -463,14 +529,13 @@ function App() {
 
                 <ul>
                   {Array.isArray(
-                    result?.key_strengths
+                    interpretationResult?.key_strengths
                   ) &&
-                  result.key_strengths.length > 0 ? (
-                    result.key_strengths.map(
+                  interpretationResult.key_strengths.length >
+                    0 ? (
+                    interpretationResult.key_strengths.map(
                       (strength, index) => (
-                        <li
-                          key={`strength-${index}`}
-                        >
+                        <li key={`strength-${index}`}>
                           {strength}
                         </li>
                       )
@@ -488,14 +553,13 @@ function App() {
 
                 <ul>
                   {Array.isArray(
-                    result?.growth_areas
+                    interpretationResult?.growth_areas
                   ) &&
-                  result.growth_areas.length > 0 ? (
-                    result.growth_areas.map(
+                  interpretationResult.growth_areas.length >
+                    0 ? (
+                    interpretationResult.growth_areas.map(
                       (area, index) => (
-                        <li
-                          key={`growth-area-${index}`}
-                        >
+                        <li key={`growth-${index}`}>
                           {area}
                         </li>
                       )
@@ -513,7 +577,7 @@ function App() {
               <h3>Current Focus</h3>
 
               <p>
-                {result?.current_focus ||
+                {interpretationResult?.current_focus ||
                   "No current focus was returned."}
               </p>
             </article>
@@ -522,7 +586,7 @@ function App() {
               <h3>Key Message</h3>
 
               <p>
-                {result?.key_message ||
+                {interpretationResult?.key_message ||
                   "No key message was returned."}
               </p>
             </article>
@@ -531,14 +595,177 @@ function App() {
               <h3>Reflection Question</h3>
 
               <p>
-                {result?.reflection_question ||
+                {interpretationResult?.reflection_question ||
                   "No reflection question was returned."}
               </p>
             </article>
 
             <p className="disclaimer">
-              {result?.disclaimer ||
-                "This interpretation is provided only for entertainment and personal reflection. It is not medical, legal, financial or professional advice."}
+              {interpretationResult?.disclaimer ||
+                "This interpretation is intended for entertainment and personal reflection only."}
+            </p>
+          </section>
+        )}
+
+        {personalityResult && (
+          <section className="result-section">
+            <p className="eyebrow">
+              PERSONALITY INTELLIGENCE
+            </p>
+
+            <h2>Symbolic Personality Profile</h2>
+
+            <article className="result-card">
+              <h3>Personality Summary</h3>
+
+              <p>
+                {personalityResult?.personality_summary ||
+                  "No personality summary was returned."}
+              </p>
+            </article>
+
+            <article className="result-card">
+              <h3>Dominant Traits</h3>
+
+              <ul>
+                {Array.isArray(
+                  personalityResult?.dominant_traits
+                ) &&
+                personalityResult.dominant_traits.length >
+                  0 ? (
+                  personalityResult.dominant_traits.map(
+                    (trait, index) => (
+                      <li key={`trait-${index}`}>
+                        {trait}
+                      </li>
+                    )
+                  )
+                ) : (
+                  <li>No dominant traits were returned.</li>
+                )}
+              </ul>
+            </article>
+
+            <div className="result-grid">
+              <article className="result-card">
+                <h3>Emotional Style</h3>
+
+                <p>
+                  {personalityResult?.emotional_style ||
+                    "No emotional style was returned."}
+                </p>
+              </article>
+
+              <article className="result-card">
+                <h3>Thinking Style</h3>
+
+                <p>
+                  {personalityResult?.thinking_style ||
+                    "No thinking style was returned."}
+                </p>
+              </article>
+            </div>
+
+            <div className="result-grid">
+              <article className="result-card">
+                <h3>Decision Style</h3>
+
+                <p>
+                  {personalityResult?.decision_style ||
+                    "No decision style was returned."}
+                </p>
+              </article>
+
+              <article className="result-card">
+                <h3>Relationship Style</h3>
+
+                <p>
+                  {personalityResult?.relationship_style ||
+                    "No relationship style was returned."}
+                </p>
+              </article>
+            </div>
+
+            <div className="result-grid">
+              <article className="result-card">
+                <h3>Personality Strengths</h3>
+
+                <ul>
+                  {Array.isArray(
+                    personalityResult?.strengths
+                  ) &&
+                  personalityResult.strengths.length > 0 ? (
+                    personalityResult.strengths.map(
+                      (strength, index) => (
+                        <li
+                          key={`personality-strength-${index}`}
+                        >
+                          {strength}
+                        </li>
+                      )
+                    )
+                  ) : (
+                    <li>
+                      No personality strengths were returned.
+                    </li>
+                  )}
+                </ul>
+              </article>
+
+              <article className="result-card">
+                <h3>Development Areas</h3>
+
+                <ul>
+                  {Array.isArray(
+                    personalityResult?.development_areas
+                  ) &&
+                  personalityResult.development_areas
+                    .length > 0 ? (
+                    personalityResult.development_areas.map(
+                      (area, index) => (
+                        <li
+                          key={`development-area-${index}`}
+                        >
+                          {area}
+                        </li>
+                      )
+                    )
+                  ) : (
+                    <li>
+                      No development areas were returned.
+                    </li>
+                  )}
+                </ul>
+              </article>
+            </div>
+
+            <article className="result-card">
+              <h3>Growth Advice</h3>
+
+              <ul>
+                {Array.isArray(
+                  personalityResult?.growth_advice
+                ) &&
+                personalityResult.growth_advice.length >
+                  0 ? (
+                  personalityResult.growth_advice.map(
+                    (advice, index) => (
+                      <li key={`advice-${index}`}>
+                        {advice}
+                      </li>
+                    )
+                  )
+                ) : (
+                  <li>No growth advice was returned.</li>
+                )}
+              </ul>
+            </article>
+
+            <p className="disclaimer">
+              This personality profile uses palmistry and
+              tarot as symbolic self-reflection tools. It is
+              not a scientific personality assessment or
+              medical diagnosis.
             </p>
           </section>
         )}
