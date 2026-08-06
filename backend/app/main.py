@@ -4,15 +4,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes.interpretation_routes import (
     router as interpretation_router,
 )
+from app.routes.personality_routes import (
+    router as personality_router,
+)
 
 
 app = FastAPI(
     title="Palmistry & Tarot Intelligence Platform API",
     description=(
         "Backend API for palm analysis, tarot readings, "
-        "AI interpretation and recommendations."
+        "AI interpretation, personality intelligence "
+        "and recommendations."
     ),
-    version="1.0.0",
+    version="1.1.0",
 )
 
 
@@ -32,13 +36,21 @@ app.add_middleware(
 
 
 app.include_router(interpretation_router)
+app.include_router(personality_router)
 
 
 @app.get("/")
 def root():
     return {
-        "message": "Palmistry & Tarot Intelligence Platform API",
+        "message": (
+            "Palmistry & Tarot Intelligence Platform API"
+        ),
         "status": "running",
+        "version": "1.1.0",
+        "available_modules": [
+            "AI Interpretation Engine",
+            "Personality Intelligence Module",
+        ],
     }
 
 
@@ -48,4 +60,8 @@ def health_check():
         "status": "success",
         "backend": "FastAPI",
         "message": "Backend is working correctly.",
+        "modules": {
+            "interpretation_engine": "operational",
+            "personality_intelligence": "operational",
+        },
     }
