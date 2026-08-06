@@ -1,0 +1,620 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#222;
+}
+
+.main-container{
+    min-height:80vh;
+    padding:30px;
+}
+
+/* ===========================
+   NAVBAR
+=========================== */
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 60px;
+    background:#ffffff;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#2563eb;
+}
+
+.nav-links{
+    display:flex;
+    gap:30px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#333;
+    font-weight:600;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#2563eb;
+}
+
+.active-link{
+    color:#2563eb !important;
+}
+
+/* ===========================
+   HOME
+=========================== */
+
+.hero{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:80px;
+    margin-top:50px;
+    margin-bottom:90px;
+}
+
+.hero-content{
+    flex:1;
+}
+
+.hero-content h1{
+    font-size:62px;
+    line-height:1.15;
+    margin-bottom:25px;
+}
+
+.hero-content p{
+    font-size:22px;
+    color:#555;
+    line-height:1.8;
+    margin-bottom:35px;
+}
+
+.hero-buttons{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+}
+
+.hero-image{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.hero-image img{
+    width:390px;
+    border-radius:20px;
+    box-shadow:0 20px 45px rgba(0,0,0,.18);
+    transition:.3s;
+}
+
+.hero-image img:hover{
+    transform:scale(1.03);
+    box-shadow:0 25px 50px rgba(0,0,0,.22);
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+
+.primary-btn,
+.secondary-btn,
+.download-btn,
+.upload-card button,
+.feature-card button{
+
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:15px 32px;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:16px;
+    transition:.3s;
+}
+
+.primary-btn:hover,
+.secondary-btn:hover,
+.download-btn:hover,
+.upload-card button:hover,
+.feature-card button:hover{
+
+    transform:translateY(-3px);
+
+}
+
+.secondary-btn{
+
+    background:#7c3aed;
+
+}
+
+.download-btn{
+
+    margin-top:25px;
+
+}
+
+/* ===========================
+   FEATURES
+=========================== */
+
+.features{
+
+    margin-top:80px;
+
+}
+
+.features h2{
+
+    text-align:center;
+    font-size:42px;
+    margin-bottom:50px;
+
+}
+
+.feature-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:30px;
+
+}
+
+.feature-card{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+    text-align:center;
+
+    transition:.3s;
+
+}
+
+.feature-card:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.feature-icon{
+
+    font-size:60px;
+
+    margin-bottom:20px;
+
+}
+
+.feature-card h3{
+
+    margin-bottom:20px;
+
+}
+
+.feature-card p{
+
+    color:#666;
+
+    line-height:1.8;
+
+}
+
+/* ===========================
+   ABOUT HOME
+=========================== */
+
+.about-home{
+
+    margin-top:90px;
+
+    text-align:center;
+
+}
+
+.about-home h2{
+
+    margin-bottom:20px;
+
+}
+
+.about-home p{
+
+    max-width:900px;
+
+    margin:auto;
+
+    line-height:1.9;
+
+    color:#555;
+
+}
+
+/* ===========================
+   PAGE TITLE
+=========================== */
+
+.page-title{
+
+    text-align:center;
+
+    font-size:44px;
+
+    margin-bottom:40px;
+
+}
+
+/* ===========================
+   UPLOAD SECTION
+=========================== */
+
+.upload-layout{
+
+    display:flex;
+
+    gap:30px;
+
+    align-items:flex-start;
+
+}
+
+.upload-card,
+.preview-card{
+
+    flex:1;
+
+    background:white;
+
+    padding:30px;
+
+    border-radius:18px;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.upload-card input,
+.upload-card select{
+
+    width:100%;
+
+    padding:12px;
+
+    margin:20px 0;
+
+}
+
+.preview-image{
+
+    width:100%;
+
+    border-radius:15px;
+
+}
+
+.empty-box{
+
+    height:350px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border:2px dashed #ccc;
+
+    border-radius:15px;
+
+    color:#888;
+
+}
+
+/* ===========================
+   RESULT
+=========================== */
+
+.result-card{
+
+    margin-top:40px;
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.annotated-image{
+
+    width:350px;
+
+    display:block;
+
+    margin:20px auto;
+
+    border-radius:15px;
+
+}
+
+.reading-box{
+
+    margin-top:30px;
+
+}
+
+.reading-box h3{
+
+    margin-bottom:15px;
+
+}
+
+.reading-box p{
+
+    line-height:1.9;
+
+    color:#444;
+
+    text-align:justify;
+
+}
+
+/* ===========================
+   TAROT
+=========================== */
+
+.tarot-grid{
+
+    display:flex;
+
+    justify-content:center;
+
+    flex-wrap:wrap;
+
+    gap:25px;
+
+    margin:35px 0;
+
+}
+
+.tarot-card{
+
+    background:#fafafa;
+
+    width:220px;
+
+    padding:20px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    box-shadow:0 4px 10px rgba(0,0,0,.06);
+
+}
+
+.tarot-image{
+
+    width:150px;
+
+    transition:.3s;
+
+}
+
+.tarot-image:hover{
+
+    transform:scale(1.05);
+
+}
+
+.reversed{
+
+    transform:rotate(180deg);
+
+}
+
+/* ===========================
+   ABOUT
+=========================== */
+
+.about-card{
+
+    background:white;
+
+    padding:40px;
+
+    border-radius:20px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.about-card h3{
+
+    margin-top:30px;
+
+}
+
+.about-card p,
+.about-card li{
+
+    margin-top:15px;
+
+    line-height:1.9;
+
+}
+
+.about-card ul{
+
+    margin-left:25px;
+
+}
+
+/* ===========================
+   LOADING
+=========================== */
+
+.loading-container{
+
+    text-align:center;
+
+    margin:60px;
+
+}
+
+.loader{
+
+    width:60px;
+
+    height:60px;
+
+    border:6px solid #ddd;
+
+    border-top:6px solid #2563eb;
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+
+    margin:auto;
+
+}
+
+@keyframes spin{
+
+    to{
+
+        transform:rotate(360deg);
+
+    }
+
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+
+.footer{
+
+    margin-top:80px;
+
+    background:white;
+
+    padding:35px;
+
+    text-align:center;
+
+    box-shadow:0 -4px 12px rgba(0,0,0,.05);
+
+}
+
+.footer p{
+
+    color:#666;
+
+    margin-top:10px;
+
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:900px){
+
+.hero{
+
+    flex-direction:column-reverse;
+
+    text-align:center;
+
+    gap:40px;
+
+}
+
+.hero-content h1{
+
+    font-size:42px;
+
+}
+
+.hero-content p{
+
+    font-size:18px;
+
+}
+
+.hero-buttons{
+
+    justify-content:center;
+
+}
+
+.hero-image img{
+
+    width:300px;
+
+}
+
+.upload-layout{
+
+    flex-direction:column;
+
+}
+
+.navbar{
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+.nav-links{
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+}
+
+.page-title{
+
+    font-size:34px;
+
+}
+
+.features h2{
+
+    font-size:34px;
+
+}
+
+}
