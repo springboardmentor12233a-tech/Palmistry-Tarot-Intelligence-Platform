@@ -24,16 +24,54 @@ def generate_palm_llm_reading(lines_data):
         )
     lines_text = "\n".join(lines_description)
 
-    prompt = f"""You are a warm, insightful palm reader. Based on the following detected palm line data, write a natural, personalized palm reading of 3-4 short paragraphs.
+    prompt = f"""You are an AI palmistry interpretation assistant.
 
-Detected lines:
+Analyze the detected palm line features and create a short personalized palm reading.
+
+Detected Palm Features:
 {lines_text}
 
-Guidelines:
-- Write in a warm, conversational tone, as if speaking directly to the person.
-- Do not just repeat the raw measurements back — weave them into a narrative.
-- Do NOT make any medical claims, health predictions, or claims about lifespan.
-- Keep it positive and constructive, while still feeling personalized and specific.
+STRICT FORMAT:
+
+Personality & Character
+start in new line
+Write 2-3 sentences about personality, emotions, and strengths.
+
+Education & Learning Style
+start in new line
+Write 2-3 sentences about learning style, creativity, and skills.
+
+Career & Professional Strengths
+start in new line
+Write 2-3 sentences about career abilities, work style, and professional strengths.
+
+Relationships & Emotional Life
+start in new line
+Write 2-3 sentences about relationships and emotional nature.
+
+Finance & Growth
+start in new line
+Write 2-3 sentences about financial habits and personal growth.
+
+Personal Guidance
+start in new line
+Write 2-3 sentences with positive self-improvement advice.
+
+Overall Summary
+start in new line
+Write 2 sentences summarizing the complete reading.
+
+Disclaimer:
+This AI-generated reading is based on traditional palmistry concepts and is intended for entertainment and self-reflection purposes only.
+
+Rules:
+- Do not use markdown symbols (#, ##, *, -).
+- Do not put headings and text on the same line.
+- Leave one blank line after every heading.
+- Keep the total response under 350 words.
+- Do not make medical claims.
+- Do not predict exact future events.
+- Keep the tone positive and personalized.
 """
 
     response = _groq_client.chat.completions.create(
@@ -53,18 +91,63 @@ def generate_tarot_llm_reading(spread):
         )
     cards_text = "\n".join(cards_description)
 
-    prompt = f"""You are a warm, insightful tarot reader. Based on the following drawn spread, write a natural, personalized tarot reading of 3-4 short paragraphs that weaves the cards into one coherent narrative.
+    prompt = f"""You are an AI tarot interpretation assistant.
 
-Drawn spread:
-{cards_text}
+    Analyze the tarot cards below and create a short personalized tarot reading.
 
-Guidelines:
-- Write in a warm, conversational tone, as if speaking directly to the person.
-- Connect the cards into a flowing story across their positions, rather than describing each card in isolation.
-- Do NOT make any medical claims or claims about specific future events (e.g. exact dates, named people).
-- Keep it positive and constructive, while still feeling personalized and specific.
+    Drawn Tarot Cards:
+    {cards_text}
+
+    The reading structure must follow the card positions provided.
+
+    STRICT FORMAT:
+
+    """
+
+    if len(spread) == 1:
+
+        prompt += """
+    Focus
+
+    Explain the meaning of this card and how it relates to the person's current situation, thoughts, and personal growth in 3-4 sentences.
+
+    """
+
+    else:
+
+        prompt += """
+Past
+
+Explain what the past card represents and how previous experiences or lessons influence the person's current situation in 2-3 sentences.
+
+Present
+
+Explain the current energy, challenges, opportunities, and emotions represented by the present card in 2-3 sentences.
+
+Future
+
+Explain the possible direction, guidance, or lessons represented by the future card in 2-3 sentences.
+
 """
 
+
+    prompt += """
+Final Message
+
+Write a short encouraging conclusion based on the complete tarot spread.
+
+Disclaimer:
+This AI-generated tarot interpretation is based on traditional tarot symbolism and is intended for entertainment and self-reflection purposes only.
+
+Rules:
+- Do not use markdown symbols (#, ##, *, -).
+- Do not put headings and text on the same line.
+- Leave one blank line after every heading.
+- Keep the total response under 300 words.
+- Do not predict exact dates or guaranteed future events.
+- Do not claim guaranteed outcomes.
+- Keep the tone positive and meaningful.
+"""
     response = _groq_client.chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=[{"role": "user", "content": prompt}],
@@ -72,21 +155,50 @@ Guidelines:
 
     return response.choices[0].message.content
 def generate_combined_llm_reading(palm_reading, tarot_reading):
-    prompt = f"""You are a warm, insightful spiritual guide. Below are two separate readings for the same person — one from palmistry, one from tarot. Weave them into a single integrated narrative reading of 3-4 short paragraphs that draws connections between the two, rather than just presenting them side by side.
+    prompt = f"""You are an AI spiritual guidance assistant.
 
-Palm reading:
+Combine the palm reading and tarot reading into one short personalized report.
+
+Palm Reading:
 {palm_reading}
 
-Tarot reading:
+Tarot Reading:
 {tarot_reading}
 
-Guidelines:
-- Find genuine thematic connections between the two readings where they exist.
-- Write in a warm, conversational tone, as if speaking directly to the person.
-- Do NOT make medical claims or claims about specific future events.
-- End with a short, encouraging closing thought.
-"""
+STRICT FORMAT:
 
+Combined Insight
+
+Explain the common themes between palm and tarot readings in 3 sentences.
+
+Career & Life Direction
+
+Provide guidance about strengths, opportunities, and personal development in 2-3 sentences.
+
+Relationships & Balance
+
+Explain emotional and relationship insights in 2-3 sentences.
+
+Personal Growth
+
+Provide positive improvement suggestions in 2-3 sentences.
+
+Final Guidance
+
+Write a short motivational closing message.
+
+Disclaimer:
+This AI-generated combined reading uses traditional palmistry and tarot concepts for entertainment and self-reflection purposes only.
+
+Rules:
+- Do not use markdown symbols (#, ##, *, -).
+- Do not put headings and text on the same line.
+- Leave one blank line after every heading.
+- Keep the total response under 350 words.
+- Do not make medical claims.
+- Do not make guaranteed predictions.
+- Keep the tone warm and professional.
+"""
     response = _groq_client.chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=[{"role": "user", "content": prompt}],
