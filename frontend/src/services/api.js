@@ -11,13 +11,13 @@ async function postJson(endpoint, payload) {
       },
       body: JSON.stringify(payload),
     });
-  } catch (error) {
+  } catch {
     throw new Error(
       "Could not connect to the backend. Make sure FastAPI is running on port 8000."
     );
   }
 
-  let responseData;
+  let responseData = null;
 
   try {
     responseData = await response.json();
@@ -34,7 +34,7 @@ async function postJson(endpoint, payload) {
     if (response.status === 503) {
       throw new Error(
         backendMessage ||
-          "Gemini is temporarily busy. Please wait a moment and try again."
+          "Gemini is temporarily busy. Please wait and try again."
       );
     }
 
@@ -58,6 +58,18 @@ async function postJson(endpoint, payload) {
   return responseData;
 }
 
+export async function generateCompleteReading(readingData) {
+  return postJson(
+    "/api/readings/generate-complete",
+    readingData
+  );
+}
+
+/*
+These individual functions may still be used for Swagger testing
+or separate module development.
+*/
+
 export async function generateInterpretation(readingData) {
   return postJson(
     "/api/interpretation/generate",
@@ -71,9 +83,24 @@ export async function generatePersonality(readingData) {
     readingData
   );
 }
+
 export async function generateRecommendations(readingData) {
   return postJson(
     "/api/recommendations/generate",
     readingData
+  );
+}
+
+export async function generateLifeTrends(readingData) {
+  return postJson(
+    "/api/trends/generate",
+    readingData
+  );
+}
+
+export async function calculateGuidanceScores(scoreData) {
+  return postJson(
+    "/api/scores/calculate",
+    scoreData
   );
 }
