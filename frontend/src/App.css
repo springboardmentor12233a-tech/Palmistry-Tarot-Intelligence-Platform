@@ -1,0 +1,242 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at top right, #40235d, transparent 32%),
+    radial-gradient(circle at bottom left, #251848, transparent 35%),
+    #0e0b17;
+  color: #f8f3ff;
+  font-family: Arial, sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.app {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 60px 0 100px;
+}
+
+.hero {
+  max-width: 900px;
+  margin-bottom: 45px;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: #c898f2;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: Georgia, serif;
+  font-size: clamp(42px, 6vw, 68px);
+  font-weight: 500;
+  line-height: 1.08;
+}
+
+.hero-description {
+  max-width: 720px;
+  color: #bdb3c8;
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.reading-form,
+.result-section {
+  padding: 34px;
+  border: 1px solid rgba(224, 197, 248, 0.17);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(12px);
+}
+
+.reading-form > h2,
+.result-section > h2 {
+  margin-top: 0;
+  font-family: Georgia, serif;
+  font-size: 36px;
+  font-weight: 500;
+}
+
+.form-section {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+}
+
+.form-section h3 {
+  margin-top: 0;
+  color: #dfbaff;
+}
+
+.section-note {
+  color: #a99eb5;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.form-grid,
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 14px 15px;
+  border: 1px solid rgba(225, 203, 246, 0.18);
+  border-radius: 10px;
+  outline: none;
+  background: #171220;
+  color: #ffffff;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #b77ce4;
+  box-shadow: 0 0 0 3px rgba(183, 124, 228, 0.12);
+}
+
+.tarot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.tarot-card {
+  padding: 20px;
+  border: 1px solid rgba(224, 197, 248, 0.14);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.tarot-card span {
+  color: #b989dd;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.tarot-card h4 {
+  margin: 12px 0 7px;
+  font-family: Georgia, serif;
+  font-size: 20px;
+}
+
+.tarot-card p {
+  margin: 0;
+  color: #aaa0b5;
+  text-transform: capitalize;
+}
+
+.generate-button {
+  width: 100%;
+  margin-top: 30px;
+  padding: 16px 20px;
+  border: 0;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #b97ce7, #7543bd);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.generate-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.error-message {
+  margin-top: 20px;
+  padding: 16px;
+  border: 1px solid rgba(239, 117, 130, 0.4);
+  border-radius: 10px;
+  background: rgba(239, 117, 130, 0.12);
+  color: #ffc3cb;
+}
+
+.error-message p {
+  margin: 7px 0 0;
+}
+
+.result-section {
+  margin-top: 35px;
+}
+
+.result-section > h2 {
+  font-size: 44px;
+}
+
+.result-card {
+  margin-top: 18px;
+  padding: 22px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.result-card h3 {
+  margin-top: 0;
+  color: #deb8ff;
+}
+
+.result-card p,
+.result-card li {
+  color: #c4bacf;
+  line-height: 1.75;
+}
+
+.result-card ul {
+  padding-left: 20px;
+}
+
+.disclaimer {
+  margin: 25px 0 0;
+  color: #91869c;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+@media (max-width: 720px) {
+  .form-grid,
+  .result-grid,
+  .tarot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .reading-form,
+  .result-section {
+    padding: 22px;
+  }
+}

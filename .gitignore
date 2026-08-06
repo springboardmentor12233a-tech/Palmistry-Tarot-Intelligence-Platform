@@ -1,0 +1,18 @@
+﻿# Backend secrets and generated files
+backend/.env
+backend/venv/
+venv/
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# Frontend generated files
+frontend/node_modules/
+frontend/dist/
+node_modules/
+dist/
+
+# Editor and system files
+.vscode/
+Thumbs.db
+.DS_Store
