@@ -1,0 +1,9 @@
+# Backend
+.env
+__pycache__/
+venv/
+*.pt
+
+# Frontend
+node_modules/
+.DS_Store
