@@ -21,6 +21,9 @@ from app.routes.scoring_routes import (
 from app.routes.trend_routes import (
     router as trend_router,
 )
+from app.routes.tarot_routes import (
+    router as tarot_router,
+)
 
 
 app = FastAPI(
@@ -71,6 +74,7 @@ app.include_router(
 app.include_router(
     reading_router
 )
+app.include_router(tarot_router)
 
 
 @app.get("/")
@@ -81,7 +85,7 @@ def root():
             "Platform API"
         ),
         "status": "running",
-        "version": "1.5.0",
+        "version": "1.6.0",
         "available_modules": [
             "AI Interpretation Engine",
             "Personality Intelligence Module",
