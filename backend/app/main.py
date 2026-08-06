@@ -1,5 +1,7 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import (
+    CORSMiddleware,
+)
 
 from app.routes.interpretation_routes import (
     router as interpretation_router,
@@ -7,24 +9,32 @@ from app.routes.interpretation_routes import (
 from app.routes.personality_routes import (
     router as personality_router,
 )
+from app.routes.reading_routes import (
+    router as reading_router,
+)
 from app.routes.recommendation_routes import (
     router as recommendation_router,
-)
-from app.routes.trend_routes import (
-    router as trend_router,
 )
 from app.routes.scoring_routes import (
     router as scoring_router,
 )
+from app.routes.trend_routes import (
+    router as trend_router,
+)
+
 
 app = FastAPI(
-    title="Palmistry & Tarot Intelligence Platform API",
-    description=(
-        "Backend API for palm analysis, tarot readings, "
-        "AI interpretation, personality intelligence "
-        "and recommendations."
+    title=(
+        "Palmistry & Tarot Intelligence "
+        "Platform API"
     ),
-    version="1.1.0",
+    description=(
+        "Backend API for palm analysis, tarot "
+        "readings, AI interpretation, personality "
+        "intelligence, recommendations, life trends "
+        "and guidance scoring."
+    ),
+    version="1.5.0",
 )
 
 
@@ -43,23 +53,42 @@ app.add_middleware(
 )
 
 
-app.include_router(interpretation_router)
-app.include_router(personality_router)
-app.include_router(recommendation_router)
-app.include_router(trend_router)
-app.include_router(scoring_router)
+app.include_router(
+    interpretation_router
+)
+app.include_router(
+    personality_router
+)
+app.include_router(
+    recommendation_router
+)
+app.include_router(
+    trend_router
+)
+app.include_router(
+    scoring_router
+)
+app.include_router(
+    reading_router
+)
+
 
 @app.get("/")
 def root():
     return {
         "message": (
-            "Palmistry & Tarot Intelligence Platform API"
+            "Palmistry & Tarot Intelligence "
+            "Platform API"
         ),
         "status": "running",
-        "version": "1.4.0",
+        "version": "1.5.0",
         "available_modules": [
             "AI Interpretation Engine",
             "Personality Intelligence Module",
+            "Recommendation Engine",
+            "Life Trend Analysis",
+            "Guidance Scoring Engine",
+            "Complete Reading Workflow",
         ],
     }
 
@@ -69,9 +98,27 @@ def health_check():
     return {
         "status": "success",
         "backend": "FastAPI",
-        "message": "Backend is working correctly.",
+        "message": (
+            "Backend is working correctly."
+        ),
         "modules": {
-            "interpretation_engine": "operational",
-            "personality_intelligence": "operational",
+            "interpretation_engine": (
+                "operational"
+            ),
+            "personality_intelligence": (
+                "operational"
+            ),
+            "recommendation_engine": (
+                "operational"
+            ),
+            "life_trend_analysis": (
+                "operational"
+            ),
+            "guidance_scoring": (
+                "operational"
+            ),
+            "complete_reading_workflow": (
+                "operational"
+            ),
         },
     }
