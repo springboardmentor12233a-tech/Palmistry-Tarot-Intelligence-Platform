@@ -71,3 +71,9 @@ export async function generatePersonality(readingData) {
     readingData
   );
 }
+export async function generateRecommendations(readingData) {
+  return postJson(
+    "/api/recommendations/generate",
+    readingData
+  );
+}
