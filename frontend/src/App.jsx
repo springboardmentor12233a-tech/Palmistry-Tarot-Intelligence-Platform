@@ -69,33 +69,78 @@ function App() {
 
     const readingData = {
       user_profile: {
-        name: formData.name,
+        name: formData.name.trim(),
         age_group: formData.age_group,
         interests: interestsList,
-        spiritual_goal: formData.spiritual_goal,
+        spiritual_goal: formData.spiritual_goal.trim(),
         reading_preference: formData.reading_preference,
       },
+
       reading_context: {
-        question: formData.question,
+        question: formData.question.trim(),
         category: formData.category,
       },
+
       palm_analysis: {
         heart_line: formData.heart_line,
         head_line: formData.head_line,
         life_line: formData.life_line,
       },
+
       tarot_analysis: {
         spread: "Past-Present-Future",
         cards: sampleTarotCards,
       },
     };
 
+    console.log("REQUEST PAYLOAD:", readingData);
+
     try {
       const response = await generateInterpretation(readingData);
-      setResult(response.interpretation);
+
+      console.log("FULL API RESPONSE:", response);
+      console.log("INTERPRETATION:", response?.interpretation);
+
+      if (!response) {
+        throw new Error("No response was received from the backend.");
+      }
+
+      /*
+       * This supports both possible api.js return formats:
+       *
+       * 1. Complete backend response:
+       *    {
+       *      status: "success",
+       *      interpretation: {...}
+       *    }
+       *
+       * 2. Only the interpretation object:
+       *    {
+       *      overall_summary: "...",
+       *      ...
+       *    }
+       */
+      const interpretationData =
+        response?.interpretation || response;
+
+      if (
+        !interpretationData ||
+        typeof interpretationData !== "object"
+      ) {
+        throw new Error(
+          response?.message ||
+            "The backend did not return a valid interpretation."
+        );
+      }
+
+      setResult(interpretationData);
     } catch (error) {
-      console.error("Frontend error:", error);
-      setErrorMessage(error.message);
+      console.error("FRONTEND ERROR:", error);
+
+      setErrorMessage(
+        error?.message ||
+          "Failed to generate the AI interpretation."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -104,18 +149,24 @@ function App() {
   return (
     <div className="app">
       <header className="hero">
-        <p className="eyebrow">AI-POWERED SPIRITUAL GUIDANCE</p>
+        <p className="eyebrow">
+          AI-POWERED SPIRITUAL GUIDANCE
+        </p>
 
         <h1>Palmistry & Tarot Intelligence Platform</h1>
 
         <p className="hero-description">
-          Generate a personalized interpretation using palm findings, tarot
-          cards and Gemini through the FastAPI backend.
+          Generate a personalized interpretation using palm
+          findings, tarot cards and Gemini through the FastAPI
+          backend.
         </p>
       </header>
 
       <main>
-        <form className="reading-form" onSubmit={handleSubmit}>
+        <form
+          className="reading-form"
+          onSubmit={handleSubmit}
+        >
           <h2>Create Personalized Reading</h2>
 
           <section className="form-section">
@@ -128,15 +179,18 @@ function App() {
                 <input
                   id="name"
                   name="name"
+                  type="text"
                   value={formData.name}
                   onChange={handleChange}
-                  minLength="2"
+                  minLength={2}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="age_group">Age group</label>
+                <label htmlFor="age_group">
+                  Age group
+                </label>
 
                 <select
                   id="age_group"
@@ -144,7 +198,9 @@ function App() {
                   value={formData.age_group}
                   onChange={handleChange}
                 >
-                  <option value="Under 18">Under 18</option>
+                  <option value="Under 18">
+                    Under 18
+                  </option>
                   <option value="18-25">18-25</option>
                   <option value="26-40">26-40</option>
                   <option value="41-60">41-60</option>
@@ -163,15 +219,25 @@ function App() {
                   value={formData.reading_preference}
                   onChange={handleChange}
                 >
-                  <option value="Concise">Concise</option>
-                  <option value="Detailed">Detailed</option>
-                  <option value="Practical">Practical</option>
-                  <option value="Spiritual">Spiritual</option>
+                  <option value="Concise">
+                    Concise
+                  </option>
+                  <option value="Detailed">
+                    Detailed
+                  </option>
+                  <option value="Practical">
+                    Practical
+                  </option>
+                  <option value="Spiritual">
+                    Spiritual
+                  </option>
                 </select>
               </div>
 
               <div className="form-group">
-                <label htmlFor="category">Category</label>
+                <label htmlFor="category">
+                  Category
+                </label>
 
                 <select
                   id="category"
@@ -180,7 +246,9 @@ function App() {
                   onChange={handleChange}
                 >
                   <option value="Career">Career</option>
-                  <option value="Relationship">Relationship</option>
+                  <option value="Relationship">
+                    Relationship
+                  </option>
                   <option value="Personal Growth">
                     Personal Growth
                   </option>
@@ -199,6 +267,7 @@ function App() {
               <input
                 id="interests"
                 name="interests"
+                type="text"
                 value={formData.interests}
                 onChange={handleChange}
                 placeholder="Career, Education, Personal Growth"
@@ -216,21 +285,24 @@ function App() {
                 name="spiritual_goal"
                 value={formData.spiritual_goal}
                 onChange={handleChange}
-                rows="3"
+                rows={3}
+                minLength={3}
                 required
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="question">Question</label>
+              <label htmlFor="question">
+                Question
+              </label>
 
               <textarea
                 id="question"
                 name="question"
                 value={formData.question}
                 onChange={handleChange}
-                rows="4"
-                minLength="3"
+                rows={4}
+                minLength={3}
                 required
               />
             </div>
@@ -240,13 +312,15 @@ function App() {
             <h3>Palm Analysis Results</h3>
 
             <p className="section-note">
-              These values currently come from the Milestone 2 palm-analysis
-              prototype.
+              These values currently come from the
+              Milestone 2 palm-analysis prototype.
             </p>
 
             <div className="form-grid">
               <div className="form-group">
-                <label htmlFor="heart_line">Heart line</label>
+                <label htmlFor="heart_line">
+                  Heart line
+                </label>
 
                 <select
                   id="heart_line"
@@ -260,7 +334,9 @@ function App() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="head_line">Head line</label>
+                <label htmlFor="head_line">
+                  Head line
+                </label>
 
                 <select
                   id="head_line"
@@ -274,7 +350,9 @@ function App() {
               </div>
 
               <div className="form-group">
-                <label htmlFor="life_line">Life line</label>
+                <label htmlFor="life_line">
+                  Life line
+                </label>
 
                 <select
                   id="life_line"
@@ -292,9 +370,18 @@ function App() {
           <section className="form-section">
             <h3>Tarot Cards</h3>
 
+            <p className="section-note">
+              These sample cards will later be replaced
+              with the automatic tarot card drawing
+              engine.
+            </p>
+
             <div className="tarot-grid">
               {sampleTarotCards.map((card) => (
-                <article className="tarot-card" key={card.position}>
+                <article
+                  className="tarot-card"
+                  key={card.position}
+                >
                   <span>{card.position}</span>
                   <h4>{card.name}</h4>
                   <p>{card.orientation}</p>
@@ -314,7 +401,10 @@ function App() {
           </button>
 
           {errorMessage && (
-            <div className="error-message">
+            <div
+              className="error-message"
+              role="alert"
+            >
               <strong>Generation failed</strong>
               <p>{errorMessage}</p>
             </div>
@@ -323,29 +413,48 @@ function App() {
 
         {result && (
           <section className="result-section">
-            <p className="eyebrow">PERSONALIZED RESULT</p>
+            <p className="eyebrow">
+              PERSONALIZED RESULT
+            </p>
+
             <h2>AI Interpretation</h2>
 
             <article className="result-card">
               <h3>Overall Summary</h3>
-              <p>{result.overall_summary}</p>
+
+              <p>
+                {result?.overall_summary ||
+                  "No overall summary was returned."}
+              </p>
             </article>
 
             <div className="result-grid">
               <article className="result-card">
                 <h3>Palm Interpretation</h3>
-                <p>{result.palm_interpretation}</p>
+
+                <p>
+                  {result?.palm_interpretation ||
+                    "No palm interpretation was returned."}
+                </p>
               </article>
 
               <article className="result-card">
                 <h3>Tarot Interpretation</h3>
-                <p>{result.tarot_interpretation}</p>
+
+                <p>
+                  {result?.tarot_interpretation ||
+                    "No tarot interpretation was returned."}
+                </p>
               </article>
             </div>
 
             <article className="result-card">
               <h3>Combined Interpretation</h3>
-              <p>{result.combined_interpretation}</p>
+
+              <p>
+                {result?.combined_interpretation ||
+                  "No combined interpretation was returned."}
+              </p>
             </article>
 
             <div className="result-grid">
@@ -353,9 +462,24 @@ function App() {
                 <h3>Key Strengths</h3>
 
                 <ul>
-                  {result.key_strengths.map((strength, index) => (
-                    <li key={`${strength}-${index}`}>{strength}</li>
-                  ))}
+                  {Array.isArray(
+                    result?.key_strengths
+                  ) &&
+                  result.key_strengths.length > 0 ? (
+                    result.key_strengths.map(
+                      (strength, index) => (
+                        <li
+                          key={`strength-${index}`}
+                        >
+                          {strength}
+                        </li>
+                      )
+                    )
+                  ) : (
+                    <li>
+                      No key strengths were returned.
+                    </li>
+                  )}
                 </ul>
               </article>
 
@@ -363,29 +487,59 @@ function App() {
                 <h3>Growth Areas</h3>
 
                 <ul>
-                  {result.growth_areas.map((area, index) => (
-                    <li key={`${area}-${index}`}>{area}</li>
-                  ))}
+                  {Array.isArray(
+                    result?.growth_areas
+                  ) &&
+                  result.growth_areas.length > 0 ? (
+                    result.growth_areas.map(
+                      (area, index) => (
+                        <li
+                          key={`growth-area-${index}`}
+                        >
+                          {area}
+                        </li>
+                      )
+                    )
+                  ) : (
+                    <li>
+                      No growth areas were returned.
+                    </li>
+                  )}
                 </ul>
               </article>
             </div>
 
             <article className="result-card">
               <h3>Current Focus</h3>
-              <p>{result.current_focus}</p>
+
+              <p>
+                {result?.current_focus ||
+                  "No current focus was returned."}
+              </p>
             </article>
 
             <article className="result-card">
               <h3>Key Message</h3>
-              <p>{result.key_message}</p>
+
+              <p>
+                {result?.key_message ||
+                  "No key message was returned."}
+              </p>
             </article>
 
             <article className="result-card">
               <h3>Reflection Question</h3>
-              <p>{result.reflection_question}</p>
+
+              <p>
+                {result?.reflection_question ||
+                  "No reflection question was returned."}
+              </p>
             </article>
 
-            <p className="disclaimer">{result.disclaimer}</p>
+            <p className="disclaimer">
+              {result?.disclaimer ||
+                "This interpretation is provided only for entertainment and personal reflection. It is not medical, legal, financial or professional advice."}
+            </p>
           </section>
         )}
       </main>
