@@ -7,7 +7,9 @@ from app.routes.interpretation_routes import (
 from app.routes.personality_routes import (
     router as personality_router,
 )
-
+from app.routes.recommendation_routes import (
+    router as recommendation_router,
+)
 
 app = FastAPI(
     title="Palmistry & Tarot Intelligence Platform API",
@@ -37,7 +39,7 @@ app.add_middleware(
 
 app.include_router(interpretation_router)
 app.include_router(personality_router)
-
+app.include_router(recommendation_router)
 
 @app.get("/")
 def root():
@@ -46,7 +48,7 @@ def root():
             "Palmistry & Tarot Intelligence Platform API"
         ),
         "status": "running",
-        "version": "1.1.0",
+        "version": "1.2.0",
         "available_modules": [
             "AI Interpretation Engine",
             "Personality Intelligence Module",
