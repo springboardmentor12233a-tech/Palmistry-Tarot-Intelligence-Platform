@@ -1,0 +1,50 @@
+services:
+
+  backend:
+    build:
+      context: ./backend
+
+    container_name:
+      palmistry_tarot_backend
+
+    env_file:
+      - ./backend/.env
+
+    environment:
+      APP_ENV: development
+
+      DEBUG: "false"
+
+      PALM_PYTHON_EXECUTABLE: /opt/palm-venv/bin/python
+
+      FRONTEND_URLS: http://localhost:5173,http://127.0.0.1:5173
+
+      ALLOWED_HOSTS: localhost,127.0.0.1,testserver
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - analytics_data:/app/app/data
+      - palm_results:/app/app/static/palm_results
+
+    restart:
+      unless-stopped
+
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: http://127.0.0.1:8000
+    container_name: palmistry_tarot_frontend
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+    restart: unless-stopped
+
+
+volumes:
+  analytics_data:
+  palm_results:

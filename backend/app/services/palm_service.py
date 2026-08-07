@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import UploadFile
-
+from app.config import settings
 
 BACKEND_DIR = Path(__file__).resolve().parents[2]
 

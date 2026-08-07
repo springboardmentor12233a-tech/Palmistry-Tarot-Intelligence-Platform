@@ -93,3 +93,8 @@ backend/app/static/palm_results/*
 
 # Palm virtual environment
 backend/palm_venv/
+
+# Local analytics database
+backend/app/data/analytics.db
+backend/app/data/analytics.db-shm
+backend/app/data/analytics.db-wal

@@ -316,3 +316,172 @@ export async function analyzePalmImage(file) {
 
   return data;
 }
+
+export async function getAnalyticsSummary() {
+  const response = await fetch(
+    "http://127.0.0.1:8000/api/analytics/summary"
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data?.detail ||
+        "Analytics summary could not be loaded."
+    );
+  }
+
+  return data;
+}
+
+
+export async function getReadingHistory(
+  limit = 10
+) {
+  const response = await fetch(
+    `http://127.0.0.1:8000/api/analytics/history?limit=${limit}`
+  );
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(
+      data?.detail ||
+        "Reading history could not be loaded."
+    );
+  }
+
+  return data;
+}
+
+const BACKEND_URL =
+  import.meta.env.VITE_API_BASE_URL ||
+  "http://127.0.0.1:8000";
+ 
+
+function getDownloadFilename(
+  response,
+  fallbackFilename
+) {
+  const disposition =
+    response.headers.get(
+      "Content-Disposition"
+    );
+
+  if (!disposition) {
+    return fallbackFilename;
+  }
+
+  const match = disposition.match(
+    /filename="?([^"]+)"?/
+  );
+
+  return match?.[1] || fallbackFilename;
+}
+
+
+async function downloadResponseFile(
+  response,
+  fallbackFilename
+) {
+  if (!response.ok) {
+    let message =
+      "File download failed.";
+
+    try {
+      const errorData =
+        await response.json();
+
+      message =
+        errorData?.detail ||
+        message;
+    } catch {
+      // Ignore JSON parsing error.
+    }
+
+    throw new Error(message);
+  }
+
+  const blob =
+    await response.blob();
+
+  const fileUrl =
+    URL.createObjectURL(blob);
+
+  const filename =
+    getDownloadFilename(
+      response,
+      fallbackFilename
+    );
+
+  const link =
+    document.createElement("a");
+
+  link.href = fileUrl;
+  link.download = filename;
+
+  document.body.appendChild(link);
+
+  link.click();
+
+  link.remove();
+
+  URL.revokeObjectURL(fileUrl);
+}
+
+
+export async function downloadReadingPdf(
+  readingRequest,
+  readingResponse
+) {
+  const response = await fetch(
+    `${BACKEND_URL}/api/reports/reading-pdf`,
+    {
+      method: "POST",
+
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+
+      body: JSON.stringify({
+        reading_request:
+          readingRequest,
+
+        reading_response:
+          readingResponse,
+      }),
+    }
+  );
+
+  await downloadResponseFile(
+    response,
+    "palmistry_tarot_reading.pdf"
+  );
+}
+
+
+export async function downloadAnalyticsSummaryCsv() {
+  const response = await fetch(
+    `${BACKEND_URL}/api/reports/analytics-summary.csv`
+  );
+
+  await downloadResponseFile(
+    response,
+    "analytics_summary.csv"
+  );
+}
+
+
+export async function downloadReadingHistoryCsv(
+  limit = 100
+) {
+  const response = await fetch(
+    `${BACKEND_URL}/api/reports/reading-history.csv?limit=${limit}`
+  );
+
+  await downloadResponseFile(
+    response,
+    "reading_history.csv"
+  );
+}

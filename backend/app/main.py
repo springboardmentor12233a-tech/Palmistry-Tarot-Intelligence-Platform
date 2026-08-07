@@ -1,152 +1,358 @@
+import logging
 from pathlib import Path
 
-from fastapi.staticfiles import StaticFiles
-
-from app.routes.palm_routes import (
-    router as palm_router,
+from fastapi import (
+    FastAPI,
+    HTTPException,
 )
-from fastapi import FastAPI
+
+from fastapi.exceptions import (
+    RequestValidationError,
+)
+
 from fastapi.middleware.cors import (
     CORSMiddleware,
 )
 
+from fastapi.middleware.trustedhost import (
+    TrustedHostMiddleware,
+)
+
+from fastapi.staticfiles import (
+    StaticFiles,
+)
+
+
+# =========================================================
+# CONFIGURATION
+# =========================================================
+
+from app.config import settings
+
+
+# =========================================================
+# LOGGING
+# =========================================================
+
+from app.logging_config import (
+    configure_logging,
+)
+
+
+# =========================================================
+# GLOBAL ERROR HANDLERS
+# =========================================================
+
+from app.error_handlers import (
+    http_exception_handler,
+    unexpected_exception_handler,
+    validation_exception_handler,
+)
+
+
+# =========================================================
+# SECURITY MIDDLEWARE
+# =========================================================
+
+from app.middleware.security import (
+    add_security_headers,
+)
+
+
+# =========================================================
+# ROUTERS
+# =========================================================
+
 from app.routes.interpretation_routes import (
     router as interpretation_router,
 )
+
 from app.routes.personality_routes import (
     router as personality_router,
 )
-from app.routes.reading_routes import (
-    router as reading_router,
-)
+
 from app.routes.recommendation_routes import (
     router as recommendation_router,
 )
-from app.routes.scoring_routes import (
-    router as scoring_router,
-)
+
 from app.routes.trend_routes import (
     router as trend_router,
 )
+
+from app.routes.scoring_routes import (
+    router as scoring_router,
+)
+
 from app.routes.tarot_routes import (
     router as tarot_router,
 )
 
-
-app = FastAPI(
-    title=(
-        "Palmistry & Tarot Intelligence "
-        "Platform API"
-    ),
-    description=(
-        "Backend API for palm analysis, tarot "
-        "readings, AI interpretation, personality "
-        "intelligence, recommendations, life trends "
-        "and guidance scoring."
-    ),
-    version="1.5.0",
+from app.routes.palm_routes import (
+    router as palm_router,
 )
-STATIC_DIRECTORY = (
-    Path(__file__).resolve().parent
+
+from app.routes.reading_routes import (
+    router as reading_router,
+)
+
+from app.routes.analytics_routes import (
+    router as analytics_router,
+)
+
+from app.routes.report_routes import (
+    router as report_router,
+)
+
+
+# =========================================================
+# LOGGING INITIALIZATION
+# =========================================================
+
+configure_logging()
+
+logger = logging.getLogger(__name__)
+
+
+# =========================================================
+# PATH CONFIGURATION
+# =========================================================
+
+APP_DIR = Path(__file__).resolve().parent
+
+STATIC_DIR = (
+    APP_DIR
     / "static"
 )
 
-STATIC_DIRECTORY.mkdir(
+PALM_RESULTS_DIR = (
+    STATIC_DIR
+    / "palm_results"
+)
+
+
+# Make sure folders exist.
+STATIC_DIR.mkdir(
     parents=True,
     exist_ok=True,
 )
 
+PALM_RESULTS_DIR.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+
+
+# =========================================================
+# FASTAPI APPLICATION
+# =========================================================
+
+app = FastAPI(
+    title=settings.APP_NAME,
+
+    version=settings.APP_VERSION,
+
+    description=(
+        "AI-powered Palmistry and Tarot "
+        "Intelligence Platform using palm "
+        "analysis, tarot interpretation, "
+        "Gemini AI, analytics and report "
+        "generation."
+    ),
+
+    docs_url=(
+        "/docs"
+        if not settings.is_production
+        else None
+    ),
+
+    redoc_url=(
+        "/redoc"
+        if not settings.is_production
+        else None
+    ),
+
+    openapi_url=(
+        "/openapi.json"
+        if not settings.is_production
+        else None
+    ),
+)
+
+
+# =========================================================
+# CORS CONFIGURATION
+# =========================================================
+
+app.add_middleware(
+    CORSMiddleware,
+
+    allow_origins=
+        settings.FRONTEND_URLS,
+
+    allow_credentials=True,
+
+    allow_methods=[
+        "GET",
+        "POST",
+        "OPTIONS",
+    ],
+
+    allow_headers=[
+        "Content-Type",
+        "Authorization",
+    ],
+)
+
+
+# =========================================================
+# TRUSTED HOST PROTECTION
+# =========================================================
+
+app.add_middleware(
+    TrustedHostMiddleware,
+
+    allowed_hosts=
+        settings.ALLOWED_HOSTS,
+)
+
+
+# =========================================================
+# SECURITY HEADERS
+# =========================================================
+
+app.middleware("http")(
+    add_security_headers
+)
+
+
+# =========================================================
+# GLOBAL EXCEPTION HANDLERS
+# =========================================================
+
+app.add_exception_handler(
+    HTTPException,
+    http_exception_handler,
+)
+
+app.add_exception_handler(
+    RequestValidationError,
+    validation_exception_handler,
+)
+
+app.add_exception_handler(
+    Exception,
+    unexpected_exception_handler,
+)
+
+
+# =========================================================
+# STATIC FILES
+# =========================================================
+
 app.mount(
     "/static",
+
     StaticFiles(
-        directory=str(STATIC_DIRECTORY)
+        directory=str(
+            STATIC_DIR
+        )
     ),
+
     name="static",
 )
 
 
-allowed_origins = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
-
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
+# =========================================================
+# REGISTER ROUTERS
+# =========================================================
 
 app.include_router(
     interpretation_router
 )
+
 app.include_router(
     personality_router
 )
+
 app.include_router(
     recommendation_router
 )
+
 app.include_router(
     trend_router
 )
+
 app.include_router(
     scoring_router
 )
+
+app.include_router(
+    tarot_router
+)
+
+app.include_router(
+    palm_router
+)
+
 app.include_router(
     reading_router
 )
-app.include_router(tarot_router)
-app.include_router(palm_router)
 
-@app.get("/")
+app.include_router(
+    analytics_router
+)
+
+app.include_router(
+    report_router
+)
+
+
+# =========================================================
+# ROOT ENDPOINT
+# =========================================================
+
+@app.get(
+    "/",
+    tags=["System"],
+)
 def root():
+
     return {
         "message": (
-            "Palmistry & Tarot Intelligence "
-            "Platform API"
+            "Palmistry & Tarot "
+            "Intelligence Platform API"
         ),
+
         "status": "running",
-        "version": "1.6.0",
-        "available_modules": [
-            "AI Interpretation Engine",
-            "Personality Intelligence Module",
-            "Recommendation Engine",
-            "Life Trend Analysis",
-            "Guidance Scoring Engine",
-            "Complete Reading Workflow",
-        ],
+
+        "version":
+            settings.APP_VERSION,
+
+        "environment":
+            settings.APP_ENV,
     }
 
 
-@app.get("/api/health")
+# =========================================================
+# HEALTH CHECK
+# =========================================================
+
+@app.get(
+    "/api/health",
+    tags=["System"],
+)
 def health_check():
+
     return {
-        "status": "success",
-        "backend": "FastAPI",
-        "message": (
-            "Backend is working correctly."
-        ),
-        "modules": {
-            "interpretation_engine": (
-                "operational"
-            ),
-            "personality_intelligence": (
-                "operational"
-            ),
-            "recommendation_engine": (
-                "operational"
-            ),
-            "life_trend_analysis": (
-                "operational"
-            ),
-            "guidance_scoring": (
-                "operational"
-            ),
-            "complete_reading_workflow": (
-                "operational"
-            ),
-        },
+        "status":
+            "healthy",
+
+        "application":
+            settings.APP_NAME,
+
+        "version":
+            settings.APP_VERSION,
+
+        "environment":
+            settings.APP_ENV,
     }

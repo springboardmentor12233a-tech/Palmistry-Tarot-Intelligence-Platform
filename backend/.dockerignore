@@ -1,0 +1,37 @@
+# Python caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Local backend virtual environment
+venv/
+
+# Secrets
+.env
+
+# Git
+.git/
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Temporary uploads
+app/data/palm_uploads/
+
+# Local analytics database
+app/data/analytics.db
+app/data/analytics.db-shm
+app/data/analytics.db-wal
+
+# Generated palm results
+app/static/palm_results/
+
+# Do NOT exclude:
+# external/palmistry
+# requirements-backend.txt
+# requirements-palm.txt
