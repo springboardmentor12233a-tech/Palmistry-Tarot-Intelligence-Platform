@@ -55,3 +55,41 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Separate palm-model environment
+backend/palm_venv/
+
+# Palm model generated inputs and results
+backend/external/palmistry/code/input/*
+backend/external/palmistry/code/results/*
+!backend/external/palmistry/code/input/.gitkeep
+!backend/external/palmistry/code/results/.gitkeep
+
+# Generated palm API results
+backend/app/static/palm_results/*
+
+# Keep the directory structure
+!backend/app/static/palm_results/.gitkeep
+
+# External palm-model temporary files
+backend/external/palmistry/code/input/api_*
+backend/external/palmistry/code/results/api_*.json
+
+# Palm model checkpoints
+backend/external/palmistry/code/checkpoint/*.pth
+backend/external/palmistry/code/checkpoint/*.pt
+backend/external/palmistry/code/checkpoint/*.ckpt
+
+# Palm generated outputs
+backend/external/palmistry/code/results/*
+!backend/external/palmistry/code/results/.gitkeep
+
+# Temporary uploaded API images
+backend/external/palmistry/code/input/api_*
+
+# Generated static palm results
+backend/app/static/palm_results/*
+!backend/app/static/palm_results/.gitkeep
+
+# Palm virtual environment
+backend/palm_venv/

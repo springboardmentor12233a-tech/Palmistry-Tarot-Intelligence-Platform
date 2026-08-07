@@ -1,0 +1,8 @@
+.idea
+.DS_Store
+*.zip
+*.tar.gz
+venv
+/data
+/results
+/data_failed

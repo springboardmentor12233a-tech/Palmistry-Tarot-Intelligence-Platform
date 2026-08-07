@@ -1,3 +1,10 @@
+from pathlib import Path
+
+from fastapi.staticfiles import StaticFiles
+
+from app.routes.palm_routes import (
+    router as palm_router,
+)
 from fastapi import FastAPI
 from fastapi.middleware.cors import (
     CORSMiddleware,
@@ -39,6 +46,23 @@ app = FastAPI(
     ),
     version="1.5.0",
 )
+STATIC_DIRECTORY = (
+    Path(__file__).resolve().parent
+    / "static"
+)
+
+STATIC_DIRECTORY.mkdir(
+    parents=True,
+    exist_ok=True,
+)
+
+app.mount(
+    "/static",
+    StaticFiles(
+        directory=str(STATIC_DIRECTORY)
+    ),
+    name="static",
+)
 
 
 allowed_origins = [
@@ -75,7 +99,7 @@ app.include_router(
     reading_router
 )
 app.include_router(tarot_router)
-
+app.include_router(palm_router)
 
 @app.get("/")
 def root():
