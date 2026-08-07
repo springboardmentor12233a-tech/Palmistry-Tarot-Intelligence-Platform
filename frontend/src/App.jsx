@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 import {
+  analyzePalmImage,
   drawTarotCards,
   generateCompleteReading,
 } from "./services/api";
+
 import "./App.css";
 
 
@@ -54,19 +57,41 @@ function App() {
   const [formData, setFormData] = useState({
     name: "Ankita Pagare",
     age_group: "18-25",
-    interests: "Career, Education, Personal Growth",
+    interests:
+      "Career, Education, Personal Growth",
     spiritual_goal:
       "Improve study focus and personal growth",
     reading_preference: "Detailed",
     question:
       "What should I focus on most in my studies right now?",
     category: "Career",
-    heart_line: "short",
-    head_line: "long",
-    life_line: "long",
     spread: "Past-Present-Future",
   });
 
+
+  // Palm states
+  const [palmFile, setPalmFile] =
+    useState(null);
+
+  const [palmPreview, setPalmPreview] =
+    useState("");
+
+  const [palmResult, setPalmResult] =
+    useState(null);
+
+  const [isAnalyzingPalm, setIsAnalyzingPalm] =
+    useState(false);
+
+
+  // Tarot states
+  const [tarotCards, setTarotCards] =
+    useState([]);
+
+  const [isDrawingTarot, setIsDrawingTarot] =
+    useState(false);
+
+
+  // Reading result states
   const [
     interpretationResult,
     setInterpretationResult,
@@ -88,19 +113,17 @@ function App() {
   const [scoreResult, setScoreResult] =
     useState(null);
 
-  const [tarotCards, setTarotCards] =
-    useState([]);
+  const [
+    submittedQuestion,
+    setSubmittedQuestion,
+  ] = useState("");
 
-  const [submittedQuestion, setSubmittedQuestion] =
-    useState("");
 
+  // General UI states
   const [errorMessage, setErrorMessage] =
     useState("");
 
   const [isLoading, setIsLoading] =
-    useState(false);
-
-  const [isDrawingTarot, setIsDrawingTarot] =
     useState(false);
 
 
@@ -112,6 +135,16 @@ function App() {
     setScoreResult(null);
     setSubmittedQuestion("");
   };
+
+
+  // Clean up browser-generated preview URL
+  useEffect(() => {
+    return () => {
+      if (palmPreview) {
+        URL.revokeObjectURL(palmPreview);
+      }
+    };
+  }, [palmPreview]);
 
 
   const handleChange = (event) => {
@@ -130,10 +163,131 @@ function App() {
   };
 
 
+  const handlePalmFileChange = (event) => {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const allowedExtensions = [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".heic",
+      ".heif",
+    ];
+
+    const fileName = file.name.toLowerCase();
+
+    const hasValidExtension =
+      allowedExtensions.some((extension) =>
+        fileName.endsWith(extension)
+      );
+
+    if (!hasValidExtension) {
+      setErrorMessage(
+        "Please upload a JPG, JPEG, PNG, HEIC or HEIF image."
+      );
+
+      event.target.value = "";
+
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      setErrorMessage(
+        "Palm image must be smaller than 10 MB."
+      );
+
+      event.target.value = "";
+
+      return;
+    }
+
+    if (palmPreview) {
+      URL.revokeObjectURL(palmPreview);
+    }
+
+    const previewUrl =
+      URL.createObjectURL(file);
+
+    setPalmFile(file);
+    setPalmPreview(previewUrl);
+    setPalmResult(null);
+
+    clearPreviousResults();
+
+    setErrorMessage("");
+  };
+
+
+  const handleAnalyzePalm = async () => {
+    if (!palmFile) {
+      setErrorMessage(
+        "Please select a palm image first."
+      );
+
+      return;
+    }
+
+    setIsAnalyzingPalm(true);
+    setErrorMessage("");
+    setPalmResult(null);
+
+    clearPreviousResults();
+
+    try {
+      const response =
+        await analyzePalmImage(palmFile);
+
+      console.log(
+        "PALM ANALYSIS RESPONSE:",
+        response
+      );
+
+      if (
+        !response ||
+        !response.palm_analysis ||
+        !response.output_files
+      ) {
+        throw new Error(
+          "The backend returned an invalid palm analysis response."
+        );
+      }
+
+      if (
+        !response.palm_analysis.heart_line ||
+        !response.palm_analysis.head_line ||
+        !response.palm_analysis.life_line
+      ) {
+        throw new Error(
+          "The palm model did not return all three palm-line results."
+        );
+      }
+
+      setPalmResult(response);
+    } catch (error) {
+      console.error(
+        "PALM ANALYSIS ERROR:",
+        error
+      );
+
+      setErrorMessage(
+        error?.message ||
+          "Palm image could not be analyzed."
+      );
+    } finally {
+      setIsAnalyzingPalm(false);
+    }
+  };
+
+
   const handleDrawTarot = async () => {
     setIsDrawingTarot(true);
     setErrorMessage("");
     setTarotCards([]);
+
     clearPreviousResults();
 
     try {
@@ -179,6 +333,14 @@ function App() {
     setErrorMessage("");
     clearPreviousResults();
 
+    if (!palmResult?.palm_analysis) {
+      setErrorMessage(
+        "Please upload and analyze a palm image before generating the reading."
+      );
+
+      return;
+    }
+
     if (
       !Array.isArray(tarotCards) ||
       tarotCards.length === 0
@@ -214,9 +376,14 @@ function App() {
       },
 
       palm_analysis: {
-        heart_line: formData.heart_line,
-        head_line: formData.head_line,
-        life_line: formData.life_line,
+        heart_line:
+          palmResult.palm_analysis.heart_line,
+
+        head_line:
+          palmResult.palm_analysis.head_line,
+
+        life_line:
+          palmResult.palm_analysis.life_line,
       },
 
       tarot_analysis: {
@@ -227,7 +394,9 @@ function App() {
           name: card.name,
           orientation: card.orientation,
 
-          keywords: Array.isArray(card.keywords)
+          keywords: Array.isArray(
+            card.keywords
+          )
             ? card.keywords
             : [],
 
@@ -333,6 +502,10 @@ function App() {
     scoreResult;
 
 
+  const backendBaseUrl =
+    "http://127.0.0.1:8000";
+
+
   return (
     <div className="app">
       <header className="hero">
@@ -345,13 +518,14 @@ function App() {
         </h1>
 
         <p className="hero-description">
-          Draw tarot cards from the complete
-          78-card dataset and generate a personalized
-          palm and tarot interpretation, personality
-          profile, recommendations, life trends and
-          guidance scores.
+          Upload a palm image, automatically analyze
+          the principal palm lines, draw tarot cards
+          from the complete 78-card tarot dataset,
+          and generate a personalized AI-powered
+          reading.
         </p>
       </header>
+
 
       <main>
         <form
@@ -360,6 +534,8 @@ function App() {
         >
           <h2>Create Personalized Reading</h2>
 
+
+          {/* USER PROFILE */}
           <section className="form-section">
             <h3>User Profile</h3>
 
@@ -380,6 +556,7 @@ function App() {
                   required
                 />
               </div>
+
 
               <div className="form-group">
                 <label htmlFor="age_group">
@@ -414,6 +591,7 @@ function App() {
                 </select>
               </div>
 
+
               <div className="form-group">
                 <label htmlFor="reading_preference">
                   Reading preference
@@ -445,6 +623,7 @@ function App() {
                 </select>
               </div>
 
+
               <div className="form-group">
                 <label htmlFor="category">
                   Category
@@ -475,6 +654,7 @@ function App() {
               </div>
             </div>
 
+
             <div className="form-group">
               <label htmlFor="interests">
                 Interests, separated by commas
@@ -491,6 +671,7 @@ function App() {
               />
             </div>
 
+
             <div className="form-group">
               <label htmlFor="spiritual_goal">
                 Personal or spiritual goal
@@ -506,6 +687,7 @@ function App() {
                 required
               />
             </div>
+
 
             <div className="form-group">
               <label htmlFor="question">
@@ -525,88 +707,229 @@ function App() {
             </div>
           </section>
 
+
+          {/* PALM ANALYSIS */}
           <section className="form-section">
-            <h3>Palm Analysis Results</h3>
+            <h3>Palm Image Analysis</h3>
 
             <p className="section-note">
-              The current palm-analysis prototype
-              supports only heart line, head line
-              and life line results.
+              Upload a clear front-facing palm image.
+              The palm-analysis model will
+              automatically analyze the heart line,
+              head line and life line.
             </p>
 
-            <div className="form-grid">
-              <div className="form-group">
-                <label htmlFor="heart_line">
-                  Heart line
-                </label>
 
-                <select
-                  id="heart_line"
-                  name="heart_line"
-                  value={formData.heart_line}
-                  onChange={handleChange}
-                >
-                  <option value="short">
-                    Short
-                  </option>
+            <div className="form-group">
+              <label htmlFor="palm-image">
+                Upload palm image
+              </label>
 
-                  <option value="long">
-                    Long
-                  </option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="head_line">
-                  Head line
-                </label>
-
-                <select
-                  id="head_line"
-                  name="head_line"
-                  value={formData.head_line}
-                  onChange={handleChange}
-                >
-                  <option value="short">
-                    Short
-                  </option>
-
-                  <option value="long">
-                    Long
-                  </option>
-                </select>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="life_line">
-                  Life line
-                </label>
-
-                <select
-                  id="life_line"
-                  name="life_line"
-                  value={formData.life_line}
-                  onChange={handleChange}
-                >
-                  <option value="short">
-                    Short
-                  </option>
-
-                  <option value="long">
-                    Long
-                  </option>
-                </select>
-              </div>
+              <input
+                id="palm-image"
+                type="file"
+                accept=".jpg,.jpeg,.png,.heic,.heif,image/jpeg,image/png"
+                onChange={handlePalmFileChange}
+                disabled={
+                  isAnalyzingPalm ||
+                  isLoading
+                }
+              />
             </div>
+
+
+            {palmPreview && (
+              <div className="palm-preview-container">
+                <h4>Selected Palm Image</h4>
+
+                <img
+                  src={palmPreview}
+                  alt="Selected palm preview"
+                  className="palm-preview-image"
+                />
+              </div>
+            )}
+
+
+            <button
+              className="generate-button"
+              type="button"
+              onClick={handleAnalyzePalm}
+              disabled={
+                !palmFile ||
+                isAnalyzingPalm ||
+                isLoading
+              }
+            >
+              {isAnalyzingPalm
+                ? "Analyzing Palm..."
+                : palmResult
+                  ? "Analyze Palm Again"
+                  : "Analyze Palm"}
+            </button>
+
+
+            {isAnalyzingPalm && (
+              <p className="section-note">
+                Palm analysis is running. This may
+                take several seconds because the
+                external computer-vision model is
+                processing the image.
+              </p>
+            )}
+
+
+            {palmResult && (
+              <div className="palm-analysis-results">
+                <article className="result-card">
+                  <h4>
+                    Palm Analysis Result
+                  </h4>
+
+                  <p>
+                    <strong>
+                      Heart line:
+                    </strong>{" "}
+                    {
+                      palmResult.palm_analysis
+                        .heart_line
+                    }
+                  </p>
+
+                  <p>
+                    <strong>
+                      Head line:
+                    </strong>{" "}
+                    {
+                      palmResult.palm_analysis
+                        .head_line
+                    }
+                  </p>
+
+                  <p>
+                    <strong>
+                      Life line:
+                    </strong>{" "}
+                    {
+                      palmResult.palm_analysis
+                        .life_line
+                    }
+                  </p>
+                </article>
+
+
+                {palmResult.descriptions && (
+                  <article className="result-card">
+                    <h4>
+                      Palm Line Descriptions
+                    </h4>
+
+                    <p>
+                      <strong>
+                        Heart:
+                      </strong>{" "}
+                      {
+                        palmResult.descriptions
+                          .heart_line
+                      }
+                    </p>
+
+                    <p>
+                      <strong>
+                        Head:
+                      </strong>{" "}
+                      {
+                        palmResult.descriptions
+                          .head_line
+                      }
+                    </p>
+
+                    <p>
+                      <strong>
+                        Life:
+                      </strong>{" "}
+                      {
+                        palmResult.descriptions
+                          .life_line
+                      }
+                    </p>
+                  </article>
+                )}
+
+
+                {palmResult.output_files
+                  ?.result_image_url && (
+                  <article className="result-card">
+                    <h4>
+                      Processed Palm Result
+                    </h4>
+
+                    <img
+                      src={
+                        backendBaseUrl +
+                        palmResult.output_files
+                          .result_image_url
+                      }
+                      alt="Palm analysis result"
+                      className="palm-result-image"
+                    />
+                  </article>
+                )}
+
+
+                {palmResult.output_files
+                  ?.warped_palm_url && (
+                  <article className="result-card">
+                    <h4>
+                      Warped Palm
+                    </h4>
+
+                    <img
+                      src={
+                        backendBaseUrl +
+                        palmResult.output_files
+                          .warped_palm_url
+                      }
+                      alt="Warped palm"
+                      className="palm-result-image"
+                    />
+                  </article>
+                )}
+
+
+                {palmResult.output_files
+                  ?.palm_lines_url && (
+                  <article className="result-card">
+                    <h4>
+                      Detected Palm Lines
+                    </h4>
+
+                    <img
+                      src={
+                        backendBaseUrl +
+                        palmResult.output_files
+                          .palm_lines_url
+                      }
+                      alt="Detected palm lines"
+                      className="palm-result-image"
+                    />
+                  </article>
+                )}
+              </div>
+            )}
           </section>
 
+
+          {/* TAROT */}
           <section className="form-section">
             <h3>Tarot Reading</h3>
 
             <p className="section-note">
               Select a spread and draw random cards
-              from the complete 78-card tarot dataset.
+              from the complete 78-card tarot
+              dataset.
             </p>
+
 
             <div className="form-group">
               <label htmlFor="spread">
@@ -629,12 +952,14 @@ function App() {
               </select>
             </div>
 
+
             <button
               className="generate-button"
               type="button"
               onClick={handleDrawTarot}
               disabled={
                 isDrawingTarot ||
+                isAnalyzingPalm ||
                 isLoading
               }
             >
@@ -644,6 +969,7 @@ function App() {
                   ? "Draw New Tarot Cards"
                   : "Draw Tarot Cards"}
             </button>
+
 
             {tarotCards.length > 0 && (
               <div className="tarot-grid">
@@ -663,12 +989,14 @@ function App() {
 
                       <h4>{card.name}</h4>
 
+
                       <p>
                         <strong>
                           Orientation:
                         </strong>{" "}
                         {card.orientation}
                       </p>
+
 
                       {card.number && (
                         <p>
@@ -679,6 +1007,7 @@ function App() {
                         </p>
                       )}
 
+
                       {card.arcana && (
                         <p>
                           <strong>
@@ -688,6 +1017,7 @@ function App() {
                         </p>
                       )}
 
+
                       {card.suit && (
                         <p>
                           <strong>
@@ -696,6 +1026,7 @@ function App() {
                           {card.suit}
                         </p>
                       )}
+
 
                       {Array.isArray(
                         card.keywords
@@ -712,6 +1043,7 @@ function App() {
                           </p>
                         )}
 
+
                       <p>
                         <strong>
                           Selected meaning:
@@ -725,12 +1057,16 @@ function App() {
             )}
           </section>
 
+
+          {/* GENERATE BUTTON */}
           <button
             className="generate-button"
             type="submit"
             disabled={
               isLoading ||
               isDrawingTarot ||
+              isAnalyzingPalm ||
+              !palmResult ||
               tarotCards.length === 0
             }
           >
@@ -739,13 +1075,26 @@ function App() {
               : "Generate Complete Reading"}
           </button>
 
-          {tarotCards.length === 0 &&
+
+          {!palmResult &&
             !errorMessage && (
               <p className="section-note">
-                Draw tarot cards before generating
-                the complete reading.
+                Upload and analyze a palm image
+                before generating the complete
+                reading.
               </p>
             )}
+
+
+          {palmResult &&
+            tarotCards.length === 0 &&
+            !errorMessage && (
+              <p className="section-note">
+                Palm analysis is complete. Draw
+                tarot cards to continue.
+              </p>
+            )}
+
 
           {errorMessage && (
             <div
@@ -753,7 +1102,7 @@ function App() {
               role="alert"
             >
               <strong>
-                Generation failed
+                Operation failed
               </strong>
 
               <p>{errorMessage}</p>
@@ -761,6 +1110,8 @@ function App() {
           )}
         </form>
 
+
+        {/* BASIC READING SUMMARY */}
         {hasResults && (
           <section className="result-section">
             <p className="eyebrow">
@@ -771,11 +1122,44 @@ function App() {
               Complete Reading Results
             </h2>
 
+
             <article className="result-card">
               <h3>User Question</h3>
 
               <p>{submittedQuestion}</p>
             </article>
+
+
+            <article className="result-card">
+              <h3>
+                Palm Results Used
+              </h3>
+
+              <p>
+                <strong>Heart line:</strong>{" "}
+                {
+                  palmResult?.palm_analysis
+                    ?.heart_line
+                }
+              </p>
+
+              <p>
+                <strong>Head line:</strong>{" "}
+                {
+                  palmResult?.palm_analysis
+                    ?.head_line
+                }
+              </p>
+
+              <p>
+                <strong>Life line:</strong>{" "}
+                {
+                  palmResult?.palm_analysis
+                    ?.life_line
+                }
+              </p>
+            </article>
+
 
             <article className="result-card">
               <h3>Selected Tarot Spread</h3>
@@ -783,8 +1167,11 @@ function App() {
               <p>{formData.spread}</p>
             </article>
 
+
             <article className="result-card">
-              <h3>Cards Used in This Reading</h3>
+              <h3>
+                Cards Used in This Reading
+              </h3>
 
               <SafeList
                 items={tarotCards.map(
@@ -800,6 +1187,8 @@ function App() {
           </section>
         )}
 
+
+        {/* AI INTERPRETATION */}
         {interpretationResult && (
           <section className="result-section">
             <p className="eyebrow">
@@ -810,6 +1199,7 @@ function App() {
               Combined Palm and Tarot Reading
             </h2>
 
+
             <article className="result-card">
               <h3>Overall Summary</h3>
 
@@ -819,6 +1209,7 @@ function App() {
                   "No overall summary was returned."}
               </p>
             </article>
+
 
             <div className="result-grid">
               <article className="result-card">
@@ -833,6 +1224,7 @@ function App() {
                 </p>
               </article>
 
+
               <article className="result-card">
                 <h3>
                   Tarot Interpretation
@@ -846,6 +1238,7 @@ function App() {
               </article>
             </div>
 
+
             <article className="result-card">
               <h3>
                 Combined Interpretation
@@ -857,6 +1250,7 @@ function App() {
                   "No combined interpretation was returned."}
               </p>
             </article>
+
 
             <div className="result-grid">
               <article className="result-card">
@@ -872,6 +1266,7 @@ function App() {
                 />
               </article>
 
+
               <article className="result-card">
                 <h3>Growth Areas</h3>
 
@@ -886,6 +1281,7 @@ function App() {
               </article>
             </div>
 
+
             <article className="result-card">
               <h3>Current Focus</h3>
 
@@ -896,6 +1292,7 @@ function App() {
               </p>
             </article>
 
+
             <article className="result-card">
               <h3>Key Message</h3>
 
@@ -905,6 +1302,7 @@ function App() {
                   "No key message was returned."}
               </p>
             </article>
+
 
             <article className="result-card">
               <h3>
@@ -918,6 +1316,7 @@ function App() {
               </p>
             </article>
 
+
             <p className="disclaimer">
               {interpretationResult
                 ?.disclaimer ||
@@ -926,6 +1325,8 @@ function App() {
           </section>
         )}
 
+
+        {/* PERSONALITY */}
         {personalityResult && (
           <section className="result-section">
             <p className="eyebrow">
@@ -936,6 +1337,7 @@ function App() {
               Symbolic Personality Profile
             </h2>
 
+
             <article className="result-card">
               <h3>Personality Summary</h3>
 
@@ -945,6 +1347,7 @@ function App() {
                   "No personality summary was returned."}
               </p>
             </article>
+
 
             <article className="result-card">
               <h3>Dominant Traits</h3>
@@ -959,6 +1362,7 @@ function App() {
               />
             </article>
 
+
             <div className="result-grid">
               <article className="result-card">
                 <h3>Emotional Style</h3>
@@ -969,6 +1373,7 @@ function App() {
                     "No emotional style was returned."}
                 </p>
               </article>
+
 
               <article className="result-card">
                 <h3>Thinking Style</h3>
@@ -981,6 +1386,7 @@ function App() {
               </article>
             </div>
 
+
             <div className="result-grid">
               <article className="result-card">
                 <h3>Decision Style</h3>
@@ -991,6 +1397,7 @@ function App() {
                     "No decision style was returned."}
                 </p>
               </article>
+
 
               <article className="result-card">
                 <h3>
@@ -1004,6 +1411,7 @@ function App() {
                 </p>
               </article>
             </div>
+
 
             <div className="result-grid">
               <article className="result-card">
@@ -1021,6 +1429,7 @@ function App() {
                 />
               </article>
 
+
               <article className="result-card">
                 <h3>
                   Development Areas
@@ -1037,6 +1446,7 @@ function App() {
               </article>
             </div>
 
+
             <article className="result-card">
               <h3>Growth Advice</h3>
 
@@ -1050,15 +1460,18 @@ function App() {
               />
             </article>
 
+
             <p className="disclaimer">
-              This personality profile is a
-              symbolic self-reflection output. It
-              is not a scientific personality
-              assessment or diagnosis.
+              This personality profile is a symbolic
+              self-reflection output. It is not a
+              scientific personality assessment or
+              diagnosis.
             </p>
           </section>
         )}
 
+
+        {/* RECOMMENDATIONS */}
         {recommendationResult && (
           <section className="result-section">
             <p className="eyebrow">
@@ -1066,6 +1479,7 @@ function App() {
             </p>
 
             <h2>Recommendation Engine</h2>
+
 
             <article className="result-card">
               <h3>
@@ -1078,6 +1492,7 @@ function App() {
                   "No recommendation summary was returned."}
               </p>
             </article>
+
 
             <div className="result-grid">
               <article className="result-card">
@@ -1093,6 +1508,7 @@ function App() {
                 />
               </article>
 
+
               <article className="result-card">
                 <h3>Career</h3>
 
@@ -1106,6 +1522,7 @@ function App() {
                 />
               </article>
             </div>
+
 
             <div className="result-grid">
               <article className="result-card">
@@ -1121,6 +1538,7 @@ function App() {
                 />
               </article>
 
+
               <article className="result-card">
                 <h3>Goal Alignment</h3>
 
@@ -1134,6 +1552,7 @@ function App() {
                 />
               </article>
             </div>
+
 
             <article className="result-card">
               <h3>
@@ -1149,6 +1568,7 @@ function App() {
                 itemKeyPrefix="spiritual-development"
               />
             </article>
+
 
             <div className="result-grid">
               <article className="result-card">
@@ -1169,6 +1589,7 @@ function App() {
                 />
               </article>
 
+
               <article className="result-card">
                 <h3>Long-Term Actions</h3>
 
@@ -1188,15 +1609,17 @@ function App() {
               </article>
             </div>
 
+
             <p className="disclaimer">
               These recommendations are reflective
-              guidance. They are not medical,
-              legal, financial or professional
-              advice.
+              guidance. They are not medical, legal,
+              financial or professional advice.
             </p>
           </section>
         )}
 
+
+        {/* TRENDS */}
         {trendResult && (
           <section className="result-section">
             <p className="eyebrow">
@@ -1204,6 +1627,7 @@ function App() {
             </p>
 
             <h2>Symbolic Life Trends</h2>
+
 
             <article className="result-card">
               <h3>Trend Summary</h3>
@@ -1214,6 +1638,7 @@ function App() {
               </p>
             </article>
 
+
             <article className="result-card">
               <h3>Current Theme</h3>
 
@@ -1222,6 +1647,7 @@ function App() {
                   "No current theme was returned."}
               </p>
             </article>
+
 
             <div className="result-grid">
               <article className="result-card">
@@ -1236,6 +1662,7 @@ function App() {
                 </p>
               </article>
 
+
               <article className="result-card">
                 <h3>
                   Possible Theme for the Next
@@ -1248,6 +1675,7 @@ function App() {
                 </p>
               </article>
             </div>
+
 
             <div className="result-grid">
               <article className="result-card">
@@ -1262,6 +1690,7 @@ function App() {
                 />
               </article>
 
+
               <article className="result-card">
                 <h3>Challenges</h3>
 
@@ -1274,6 +1703,7 @@ function App() {
                 />
               </article>
             </div>
+
 
             <div className="result-grid">
               <article className="result-card">
@@ -1291,6 +1721,7 @@ function App() {
                 />
               </article>
 
+
               <article className="result-card">
                 <h3>Practical Actions</h3>
 
@@ -1305,6 +1736,7 @@ function App() {
               </article>
             </div>
 
+
             <p className="disclaimer">
               {trendResult?.disclaimer ||
                 "Life trends are symbolic themes, not guaranteed predictions."}
@@ -1312,6 +1744,8 @@ function App() {
           </section>
         )}
 
+
+        {/* GUIDANCE SCORES */}
         {scoreResult && (
           <section className="result-section">
             <p className="eyebrow">
@@ -1319,9 +1753,9 @@ function App() {
             </p>
 
             <h2>
-              Reading Quality and Alignment
-              Scores
+              Reading Quality and Alignment Scores
             </h2>
+
 
             <div className="result-grid">
               <ScoreCard
@@ -1341,6 +1775,7 @@ function App() {
               />
             </div>
 
+
             <div className="result-grid">
               <ScoreCard
                 title="Personality Alignment"
@@ -1358,6 +1793,7 @@ function App() {
                 }
               />
             </div>
+
 
             <div className="result-grid">
               <ScoreCard
@@ -1391,6 +1827,7 @@ function App() {
               </article>
             </div>
 
+
             <article className="result-card">
               <h3>Calculation Method</h3>
 
@@ -1400,6 +1837,7 @@ function App() {
                   "No calculation method was returned."}
               </p>
             </article>
+
 
             <p className="disclaimer">
               {scoreResult?.disclaimer ||
