@@ -5,7 +5,9 @@ import {
 } from "react";
 
 import {
+  API_BASE_URL,
   analyzePalmImage,
+  buildBackendUrl,
   drawTarotCards,
   generateCompleteReading,
   getAnalyticsSummary,
@@ -18,6 +20,10 @@ import AnalyticsDashboard from
 
 import "./App.css";
 
+
+// ============================================================
+// SMALL REUSABLE COMPONENTS
+// ============================================================
 
 function SafeList({
   items,
@@ -37,13 +43,15 @@ function SafeList({
 
   return (
     <ul>
-      {items.map((item, index) => (
-        <li
-          key={`${itemKeyPrefix}-${index}`}
-        >
-          {item}
-        </li>
-      ))}
+      {items.map(
+        (item, index) => (
+          <li
+            key={`${itemKeyPrefix}-${index}`}
+          >
+            {String(item)}
+          </li>
+        )
+      )}
     </ul>
   );
 }
@@ -53,10 +61,13 @@ function ScoreCard({
   title,
   value,
 }) {
-  const numericValue = Number(value);
+  const numericValue =
+    Number(value);
 
   const formattedValue =
-    Number.isFinite(numericValue)
+    Number.isFinite(
+      numericValue
+    )
       ? numericValue.toFixed(2)
       : "0.00";
 
@@ -74,43 +85,64 @@ function ScoreCard({
 }
 
 
+function TextCard({
+  title,
+  children,
+}) {
+  return (
+    <article className="result-card">
+      <h3>{title}</h3>
+
+      <p>
+        {children ||
+          "No information was returned."}
+      </p>
+    </article>
+  );
+}
+
+
+// ============================================================
+// MAIN APPLICATION
+// ============================================================
+
 function App() {
-  const backendBaseUrl =
-    "http://127.0.0.1:8000";
-
-
-  // ==========================================
+  // ==========================================================
   // USER FORM
-  // ==========================================
+  // ==========================================================
 
-  const [formData, setFormData] =
-    useState({
-      name: "Ankita Pagare",
+  const [
+    formData,
+    setFormData,
+  ] = useState({
+    name: "Ankita Pagare",
 
-      age_group: "18-25",
+    age_group:
+      "18-25",
 
-      interests:
-        "Career, Education, Personal Growth",
+    interests:
+      "Career, Education, Personal Growth",
 
-      spiritual_goal:
-        "Improve study focus and personal growth",
+    spiritual_goal:
+      "Improve study focus and personal growth",
 
-      reading_preference:
-        "Detailed",
+    reading_preference:
+      "Detailed",
 
-      question:
-        "What should I focus on most in my studies right now?",
+    question:
+      "What should I focus on most in my studies right now?",
 
-      category: "Career",
+    category:
+      "Career",
 
-      spread:
-        "Past-Present-Future",
-    });
+    spread:
+      "Past-Present-Future",
+  });
 
 
-  // ==========================================
+  // ==========================================================
   // PALM STATES
-  // ==========================================
+  // ==========================================================
 
   const [
     palmFile,
@@ -133,9 +165,9 @@ function App() {
   ] = useState(false);
 
 
-  // ==========================================
+  // ==========================================================
   // TAROT STATES
-  // ==========================================
+  // ==========================================================
 
   const [
     tarotCards,
@@ -148,9 +180,9 @@ function App() {
   ] = useState(false);
 
 
-  // ==========================================
-  // READING RESULT STATES
-  // ==========================================
+  // ==========================================================
+  // COMPLETE READING STATES
+  // ==========================================================
 
   const [
     interpretationResult,
@@ -183,9 +215,9 @@ function App() {
   ] = useState("");
 
 
-  // ==========================================
-  // PDF REPORT STATES
-  // ==========================================
+  // ==========================================================
+  // PDF STATES
+  // ==========================================================
 
   const [
     lastReadingRequest,
@@ -203,9 +235,9 @@ function App() {
   ] = useState(false);
 
 
-  // ==========================================
+  // ==========================================================
   // ANALYTICS STATES
-  // ==========================================
+  // ==========================================================
 
   const [
     analyticsSummary,
@@ -228,9 +260,9 @@ function App() {
   ] = useState("");
 
 
-  // ==========================================
+  // ==========================================================
   // GENERAL UI STATES
-  // ==========================================
+  // ==========================================================
 
   const [
     errorMessage,
@@ -243,83 +275,105 @@ function App() {
   ] = useState(false);
 
 
-  // ==========================================
-  // CLEAR PREVIOUS AI RESULTS
-  // ==========================================
+  // ==========================================================
+  // CLEAR PREVIOUS COMPLETE READING
+  // ==========================================================
 
-  const clearPreviousResults = () => {
-    setInterpretationResult(null);
+  const clearPreviousResults =
+    () => {
+      setInterpretationResult(
+        null
+      );
 
-    setPersonalityResult(null);
+      setPersonalityResult(
+        null
+      );
 
-    setRecommendationResult(null);
+      setRecommendationResult(
+        null
+      );
 
-    setTrendResult(null);
+      setTrendResult(
+        null
+      );
 
-    setScoreResult(null);
+      setScoreResult(
+        null
+      );
 
-    setSubmittedQuestion("");
+      setSubmittedQuestion("");
 
-    setLastReadingRequest(null);
+      setLastReadingRequest(
+        null
+      );
 
-    setLastReadingResponse(null);
-  };
+      setLastReadingResponse(
+        null
+      );
+    };
 
 
-  // ==========================================
-  // LOAD ANALYTICS
-  // ==========================================
+  // ==========================================================
+  // ANALYTICS
+  // ==========================================================
 
   const loadAnalytics =
-    useCallback(async () => {
-      setIsLoadingAnalytics(true);
-
-      setAnalyticsError("");
-
-      try {
-        const [
-          summaryResponse,
-          historyResponse,
-        ] = await Promise.all([
-          getAnalyticsSummary(),
-          getReadingHistory(10),
-        ]);
-
-        setAnalyticsSummary(
-          summaryResponse
+    useCallback(
+      async () => {
+        setIsLoadingAnalytics(
+          true
         );
 
-        setReadingHistory(
-          historyResponse
-        );
-      } catch (error) {
-        console.error(
-          "ANALYTICS ERROR:",
-          error
-        );
+        setAnalyticsError("");
 
-        setAnalyticsError(
-          error?.message ||
-            "Analytics could not be loaded."
-        );
-      } finally {
-        setIsLoadingAnalytics(false);
-      }
-    }, []);
+        try {
+          const [
+            summaryResponse,
+            historyResponse,
+          ] = await Promise.all([
+            getAnalyticsSummary(),
+            getReadingHistory(10),
+          ]);
 
+          setAnalyticsSummary(
+            summaryResponse
+          );
 
-  // ==========================================
-  // LOAD ANALYTICS ON PAGE OPEN
-  // ==========================================
+          setReadingHistory(
+            Array.isArray(
+              historyResponse
+            )
+              ? historyResponse
+              : []
+          );
+        } catch (error) {
+          console.error(
+            "ANALYTICS ERROR:",
+            error
+          );
+
+          setAnalyticsError(
+            error?.message ||
+              "Analytics could not be loaded."
+          );
+        } finally {
+          setIsLoadingAnalytics(
+            false
+          );
+        }
+      },
+      []
+    );
+
 
   useEffect(() => {
     loadAnalytics();
   }, [loadAnalytics]);
 
 
-  // ==========================================
-  // CLEAN PALM PREVIEW URL
-  // ==========================================
+  // ==========================================================
+  // CLEAN PALM PREVIEW
+  // ==========================================================
 
   useEffect(() => {
     return () => {
@@ -332,115 +386,122 @@ function App() {
   }, [palmPreview]);
 
 
-  // ==========================================
+  // ==========================================================
   // FORM FIELD CHANGE
-  // ==========================================
+  // ==========================================================
 
-  const handleChange = (event) => {
-    const {
-      name,
-      value,
-    } = event.target;
+  const handleChange =
+    (event) => {
+      const {
+        name,
+        value,
+      } = event.target;
 
-    setFormData(
-      (previousData) => ({
-        ...previousData,
-        [name]: value,
-      })
-    );
+      setFormData(
+        (previousData) => ({
+          ...previousData,
+          [name]: value,
+        })
+      );
 
-    if (name === "spread") {
-      setTarotCards([]);
+      if (
+        name === "spread"
+      ) {
+        setTarotCards([]);
+
+        clearPreviousResults();
+
+        setErrorMessage("");
+      }
+    };
+
+
+  // ==========================================================
+  // PALM IMAGE SELECTION
+  // ==========================================================
+
+  const handlePalmFileChange =
+    (event) => {
+      const file =
+        event.target
+          .files?.[0];
+
+      if (!file) {
+        return;
+      }
+
+      const allowedExtensions = [
+        ".jpg",
+        ".jpeg",
+        ".jfif",
+        ".png",
+        ".webp",
+        ".heic",
+        ".heif",
+      ];
+
+      const fileName =
+        file.name.toLowerCase();
+
+      const isAllowed =
+        allowedExtensions.some(
+          (extension) =>
+            fileName.endsWith(
+              extension
+            )
+        );
+
+      if (!isAllowed) {
+        setErrorMessage(
+          "Please upload a JPG, JPEG, JFIF, PNG, WEBP, HEIC or HEIF image."
+        );
+
+        event.target.value = "";
+
+        return;
+      }
+
+      if (
+        file.size >
+        10 * 1024 * 1024
+      ) {
+        setErrorMessage(
+          "Palm image must be smaller than 10 MB."
+        );
+
+        event.target.value = "";
+
+        return;
+      }
+
+      if (palmPreview) {
+        URL.revokeObjectURL(
+          palmPreview
+        );
+      }
+
+      const previewUrl =
+        URL.createObjectURL(
+          file
+        );
+
+      setPalmFile(file);
+
+      setPalmPreview(
+        previewUrl
+      );
+
+      setPalmResult(null);
 
       clearPreviousResults();
 
       setErrorMessage("");
-    }
-  };
+    };
 
 
-  // ==========================================
-  // PALM IMAGE SELECTION
-  // ==========================================
-
-  const handlePalmFileChange = (
-    event
-  ) => {
-    const file =
-      event.target.files?.[0];
-
-    if (!file) {
-      return;
-    }
-
-    const allowedExtensions = [
-      ".jpg",
-      ".jpeg",
-      ".png",
-      ".heic",
-      ".heif",
-    ];
-
-    const fileName =
-      file.name.toLowerCase();
-
-    const hasValidExtension =
-      allowedExtensions.some(
-        (extension) =>
-          fileName.endsWith(
-            extension
-          )
-      );
-
-    if (!hasValidExtension) {
-      setErrorMessage(
-        "Please upload a JPG, JPEG, PNG, HEIC or HEIF image."
-      );
-
-      event.target.value = "";
-
-      return;
-    }
-
-    if (
-      file.size >
-      10 * 1024 * 1024
-    ) {
-      setErrorMessage(
-        "Palm image must be smaller than 10 MB."
-      );
-
-      event.target.value = "";
-
-      return;
-    }
-
-    if (palmPreview) {
-      URL.revokeObjectURL(
-        palmPreview
-      );
-    }
-
-    const previewUrl =
-      URL.createObjectURL(file);
-
-    setPalmFile(file);
-
-    setPalmPreview(
-      previewUrl
-    );
-
-    setPalmResult(null);
-
-    clearPreviousResults();
-
-    setErrorMessage("");
-  };
-
-
-  // ==========================================
-  // ANALYZE PALM
-  // ==========================================
+  // ==========================================================
+  // PALM ANALYSIS
+  // ==========================================================
 
   const handleAnalyzePalm =
     async () => {
@@ -452,7 +513,9 @@ function App() {
         return;
       }
 
-      setIsAnalyzingPalm(true);
+      setIsAnalyzingPalm(
+        true
+      );
 
       setErrorMessage("");
 
@@ -472,22 +535,24 @@ function App() {
         );
 
         if (
-          !response ||
-          !response.palm_analysis ||
-          !response.output_files
+          !response?.palm_analysis
         ) {
           throw new Error(
             "The backend returned an invalid palm analysis response."
           );
         }
 
+        const {
+          heart_line,
+          head_line,
+          life_line,
+        } =
+          response.palm_analysis;
+
         if (
-          !response.palm_analysis
-            .heart_line ||
-          !response.palm_analysis
-            .head_line ||
-          !response.palm_analysis
-            .life_line
+          !heart_line ||
+          !head_line ||
+          !life_line
         ) {
           throw new Error(
             "The palm model did not return all three palm-line results."
@@ -515,13 +580,15 @@ function App() {
     };
 
 
-  // ==========================================
+  // ==========================================================
   // DRAW TAROT CARDS
-  // ==========================================
+  // ==========================================================
 
   const handleDrawTarot =
     async () => {
-      setIsDrawingTarot(true);
+      setIsDrawingTarot(
+        true
+      );
 
       setErrorMessage("");
 
@@ -541,11 +608,11 @@ function App() {
         );
 
         if (
-          !response ||
           !Array.isArray(
-            response.cards
+            response?.cards
           ) ||
-          response.cards.length === 0
+          response.cards.length ===
+            0
         ) {
           throw new Error(
             "The backend did not return any tarot cards."
@@ -573,53 +640,9 @@ function App() {
     };
 
 
-  // ==========================================
-  // DOWNLOAD COMPLETE READING PDF
-  // ==========================================
-
-  const handleDownloadReadingPdf =
-    async () => {
-      if (
-        !lastReadingRequest ||
-        !lastReadingResponse
-      ) {
-        setErrorMessage(
-          "Generate a complete reading before downloading the PDF report."
-        );
-
-        return;
-      }
-
-      setIsDownloadingPdf(true);
-
-      setErrorMessage("");
-
-      try {
-        await downloadReadingPdf(
-          lastReadingRequest,
-          lastReadingResponse
-        );
-      } catch (error) {
-        console.error(
-          "PDF DOWNLOAD ERROR:",
-          error
-        );
-
-        setErrorMessage(
-          error?.message ||
-            "The PDF report could not be downloaded."
-        );
-      } finally {
-        setIsDownloadingPdf(
-          false
-        );
-      }
-    };
-
-
-  // ==========================================
-  // GENERATE COMPLETE READING
-  // ==========================================
+  // ==========================================================
+  // COMPLETE READING
+  // ==========================================================
 
   const handleSubmit =
     async (event) => {
@@ -629,10 +652,9 @@ function App() {
 
       clearPreviousResults();
 
-
-      // Palm analysis required
       if (
-        !palmResult?.palm_analysis
+        !palmResult
+          ?.palm_analysis
       ) {
         setErrorMessage(
           "Please upload and analyze a palm image before generating the reading."
@@ -641,8 +663,6 @@ function App() {
         return;
       }
 
-
-      // Tarot cards required
       if (
         !Array.isArray(
           tarotCards
@@ -656,10 +676,6 @@ function App() {
         return;
       }
 
-
-      setIsLoading(true);
-
-
       const interestsList =
         formData.interests
           .split(",")
@@ -668,7 +684,6 @@ function App() {
               interest.trim()
           )
           .filter(Boolean);
-
 
       const readingData = {
         user_profile: {
@@ -682,21 +697,24 @@ function App() {
             interestsList,
 
           spiritual_goal:
-            formData.spiritual_goal.trim(),
+            formData
+              .spiritual_goal
+              .trim(),
 
           reading_preference:
-            formData.reading_preference,
+            formData
+              .reading_preference,
         },
-
 
         reading_context: {
           question:
-            formData.question.trim(),
+            formData
+              .question
+              .trim(),
 
           category:
             formData.category,
         },
-
 
         palm_analysis: {
           heart_line:
@@ -714,7 +732,6 @@ function App() {
               .palm_analysis
               .life_line,
         },
-
 
         tarot_analysis: {
           spread:
@@ -746,14 +763,14 @@ function App() {
         },
       };
 
-
-      console.log(
-        "COMPLETE READING REQUEST:",
-        readingData
-      );
-
+      setIsLoading(true);
 
       try {
+        console.log(
+          "COMPLETE READING REQUEST:",
+          readingData
+        );
+
         const response =
           await generateCompleteReading(
             readingData
@@ -763,7 +780,6 @@ function App() {
           "COMPLETE READING RESPONSE:",
           response
         );
-
 
         if (
           !response ||
@@ -775,13 +791,11 @@ function App() {
           );
         }
 
-
         const reading =
           response.reading;
 
         const scores =
           response.scores;
-
 
         if (
           !reading ||
@@ -792,7 +806,6 @@ function App() {
             "The complete reading was missing from the backend response."
           );
         }
-
 
         if (
           !reading.interpretation ||
@@ -805,9 +818,6 @@ function App() {
           );
         }
 
-
-        // Store request and response
-        // for PDF generation
         setLastReadingRequest(
           readingData
         );
@@ -815,7 +825,6 @@ function App() {
         setLastReadingResponse(
           response
         );
-
 
         setInterpretationResult(
           reading.interpretation
@@ -833,7 +842,6 @@ function App() {
           reading.trends
         );
 
-
         if (
           scores &&
           typeof scores ===
@@ -844,16 +852,11 @@ function App() {
           );
         }
 
-
         setSubmittedQuestion(
           formData.question.trim()
         );
 
-
-        // Refresh analytics after
-        // successful reading
         await loadAnalytics();
-
       } catch (error) {
         console.error(
           "COMPLETE READING ERROR:",
@@ -870,24 +873,76 @@ function App() {
     };
 
 
-  // ==========================================
-  // READING RESULT CHECK
-  // ==========================================
+  // ==========================================================
+  // PDF
+  // ==========================================================
+
+  const handleDownloadReadingPdf =
+    async () => {
+      if (
+        !lastReadingRequest ||
+        !lastReadingResponse
+      ) {
+        setErrorMessage(
+          "Generate a complete reading before downloading the PDF report."
+        );
+
+        return;
+      }
+
+      setIsDownloadingPdf(
+        true
+      );
+
+      setErrorMessage("");
+
+      try {
+        await downloadReadingPdf(
+          lastReadingRequest,
+          lastReadingResponse
+        );
+      } catch (error) {
+        console.error(
+          "PDF DOWNLOAD ERROR:",
+          error
+        );
+
+        setErrorMessage(
+          error?.message ||
+            "The PDF report could not be downloaded."
+        );
+      } finally {
+        setIsDownloadingPdf(
+          false
+        );
+      }
+    };
+
+
+  // ==========================================================
+  // RESULT CHECK
+  // ==========================================================
 
   const hasResults =
-    interpretationResult ||
-    personalityResult ||
-    recommendationResult ||
-    trendResult ||
-    scoreResult;
+    Boolean(
+      interpretationResult ||
+        personalityResult ||
+        recommendationResult ||
+        trendResult ||
+        scoreResult
+    );
 
+
+  // ==========================================================
+  // UI
+  // ==========================================================
 
   return (
     <div className="app">
 
-      {/* ===================================== */}
+      {/* ==================================================== */}
       {/* HERO */}
-      {/* ===================================== */}
+      {/* ==================================================== */}
 
       <header className="hero">
 
@@ -903,11 +958,14 @@ function App() {
         <p className="hero-description">
           Upload a palm image,
           automatically analyze the
-          principal palm lines, draw
-          tarot cards from the complete
-          78-card tarot dataset and
-          generate a personalized
+          principal palm lines, draw tarot
+          cards from the 78-card dataset
+          and generate a personalized
           AI-powered reading.
+        </p>
+
+        <p className="section-note">
+          Backend: {API_BASE_URL}
         </p>
 
       </header>
@@ -915,9 +973,9 @@ function App() {
 
       <main>
 
-        {/* =================================== */}
-        {/* USER READING FORM */}
-        {/* =================================== */}
+        {/* ================================================== */}
+        {/* FORM */}
+        {/* ================================================== */}
 
         <form
           className="reading-form"
@@ -929,19 +987,17 @@ function App() {
           </h2>
 
 
-          {/* ================================= */}
+          {/* ================================================ */}
           {/* USER PROFILE */}
-          {/* ================================= */}
+          {/* ================================================ */}
 
           <section className="form-section">
 
             <h3>User Profile</h3>
 
-
             <div className="form-grid">
 
               <div className="form-group">
-
                 <label htmlFor="name">
                   Name
                 </label>
@@ -960,7 +1016,6 @@ function App() {
                   maxLength={100}
                   required
                 />
-
               </div>
 
 
@@ -980,7 +1035,6 @@ function App() {
                     handleChange
                   }
                 >
-
                   <option value="Under 18">
                     Under 18
                   </option>
@@ -1000,7 +1054,6 @@ function App() {
                   <option value="60+">
                     60+
                   </option>
-
                 </select>
 
               </div>
@@ -1008,9 +1061,7 @@ function App() {
 
               <div className="form-group">
 
-                <label
-                  htmlFor="reading_preference"
-                >
+                <label htmlFor="reading_preference">
                   Reading preference
                 </label>
 
@@ -1025,7 +1076,6 @@ function App() {
                     handleChange
                   }
                 >
-
                   <option value="Concise">
                     Concise
                   </option>
@@ -1041,7 +1091,6 @@ function App() {
                   <option value="Spiritual">
                     Spiritual
                   </option>
-
                 </select>
 
               </div>
@@ -1063,7 +1112,6 @@ function App() {
                     handleChange
                   }
                 >
-
                   <option value="Career">
                     Career
                   </option>
@@ -1079,7 +1127,6 @@ function App() {
                   <option value="General Guidance">
                     General Guidance
                   </option>
-
                 </select>
 
               </div>
@@ -1159,9 +1206,9 @@ function App() {
           </section>
 
 
-          {/* ================================= */}
-          {/* PALM ANALYSIS */}
-          {/* ================================= */}
+          {/* ================================================ */}
+          {/* PALM */}
+          {/* ================================================ */}
 
           <section className="form-section">
 
@@ -1172,9 +1219,8 @@ function App() {
             <p className="section-note">
               Upload a clear front-facing
               palm image. The model will
-              automatically analyze the
-              heart line, head line and
-              life line.
+              analyze the heart line,
+              head line and life line.
             </p>
 
 
@@ -1187,7 +1233,7 @@ function App() {
               <input
                 id="palm-image"
                 type="file"
-                accept=".jpg,.jpeg,.png,.heic,.heif,image/jpeg,image/png"
+                accept=".jpg,.jpeg,.jfif,.png,.webp,.heic,.heif,image/jpeg,image/png,image/webp"
                 onChange={
                   handlePalmFileChange
                 }
@@ -1202,9 +1248,7 @@ function App() {
 
             {palmPreview && (
 
-              <div
-                className="palm-preview-container"
-              >
+              <div className="palm-preview-container">
 
                 <h4>
                   Selected Palm Image
@@ -1247,8 +1291,9 @@ function App() {
 
               <p className="section-note">
                 Palm analysis is running.
-                This may take several
-                seconds.
+                On a free cloud service this
+                can take longer when the
+                backend wakes from sleep.
               </p>
 
             )}
@@ -1256,13 +1301,9 @@ function App() {
 
             {palmResult && (
 
-              <div
-                className="palm-analysis-results"
-              >
+              <div className="palm-analysis-results">
 
-                <article
-                  className="result-card"
-                >
+                <article className="result-card">
 
                   <h4>
                     Palm Analysis Result
@@ -1275,7 +1316,7 @@ function App() {
                     {
                       palmResult
                         .palm_analysis
-                        .heart_line
+                        ?.heart_line
                     }
                   </p>
 
@@ -1286,7 +1327,7 @@ function App() {
                     {
                       palmResult
                         .palm_analysis
-                        .head_line
+                        ?.head_line
                     }
                   </p>
 
@@ -1297,7 +1338,7 @@ function App() {
                     {
                       palmResult
                         .palm_analysis
-                        .life_line
+                        ?.life_line
                     }
                   </p>
 
@@ -1306,9 +1347,7 @@ function App() {
 
                 {palmResult.descriptions && (
 
-                  <article
-                    className="result-card"
-                  >
+                  <article className="result-card">
 
                     <h4>
                       Palm Line Descriptions
@@ -1321,7 +1360,7 @@ function App() {
                       {
                         palmResult
                           .descriptions
-                          .heart_line
+                          ?.heart_line
                       }
                     </p>
 
@@ -1332,7 +1371,7 @@ function App() {
                       {
                         palmResult
                           .descriptions
-                          .head_line
+                          ?.head_line
                       }
                     </p>
 
@@ -1343,7 +1382,7 @@ function App() {
                       {
                         palmResult
                           .descriptions
-                          .life_line
+                          ?.life_line
                       }
                     </p>
 
@@ -1356,9 +1395,7 @@ function App() {
                   .output_files
                   ?.result_image_url && (
 
-                  <article
-                    className="result-card"
-                  >
+                  <article className="result-card">
 
                     <h4>
                       Processed Palm Result
@@ -1366,10 +1403,11 @@ function App() {
 
                     <img
                       src={
-                        backendBaseUrl +
-                        palmResult
-                          .output_files
-                          .result_image_url
+                        buildBackendUrl(
+                          palmResult
+                            .output_files
+                            .result_image_url
+                        )
                       }
                       alt="Palm analysis result"
                       className="palm-result-image"
@@ -1384,9 +1422,7 @@ function App() {
                   .output_files
                   ?.warped_palm_url && (
 
-                  <article
-                    className="result-card"
-                  >
+                  <article className="result-card">
 
                     <h4>
                       Warped Palm
@@ -1394,10 +1430,11 @@ function App() {
 
                     <img
                       src={
-                        backendBaseUrl +
-                        palmResult
-                          .output_files
-                          .warped_palm_url
+                        buildBackendUrl(
+                          palmResult
+                            .output_files
+                            .warped_palm_url
+                        )
                       }
                       alt="Warped palm"
                       className="palm-result-image"
@@ -1412,9 +1449,7 @@ function App() {
                   .output_files
                   ?.palm_lines_url && (
 
-                  <article
-                    className="result-card"
-                  >
+                  <article className="result-card">
 
                     <h4>
                       Detected Palm Lines
@@ -1422,10 +1457,11 @@ function App() {
 
                     <img
                       src={
-                        backendBaseUrl +
-                        palmResult
-                          .output_files
-                          .palm_lines_url
+                        buildBackendUrl(
+                          palmResult
+                            .output_files
+                            .palm_lines_url
+                        )
                       }
                       alt="Detected palm lines"
                       className="palm-result-image"
@@ -1442,19 +1478,20 @@ function App() {
           </section>
 
 
-          {/* ================================= */}
+          {/* ================================================ */}
           {/* TAROT */}
-          {/* ================================= */}
+          {/* ================================================ */}
 
           <section className="form-section">
 
-            <h3>Tarot Reading</h3>
+            <h3>
+              Tarot Reading
+            </h3>
 
             <p className="section-note">
               Select a spread and draw
               random cards from the
-              complete 78-card tarot
-              dataset.
+              complete tarot dataset.
             </p>
 
 
@@ -1534,26 +1571,24 @@ function App() {
                         {card.name}
                       </h4>
 
-
                       <p>
                         <strong>
                           Orientation:
                         </strong>{" "}
-                        {
-                          card.orientation
-                        }
+                        {card.orientation}
                       </p>
 
 
-                      {card.number && (
+                      {card.number !==
+                        undefined &&
+                        card.number !==
+                          null && (
 
                         <p>
                           <strong>
                             Number:
                           </strong>{" "}
-                          {
-                            card.number
-                          }
+                          {card.number}
                         </p>
 
                       )}
@@ -1565,9 +1600,7 @@ function App() {
                           <strong>
                             Arcana:
                           </strong>{" "}
-                          {
-                            card.arcana
-                          }
+                          {card.arcana}
                         </p>
 
                       )}
@@ -1579,9 +1612,7 @@ function App() {
                           <strong>
                             Suit:
                           </strong>{" "}
-                          {
-                            card.suit
-                          }
+                          {card.suit}
                         </p>
 
                       )}
@@ -1590,15 +1621,17 @@ function App() {
                       {Array.isArray(
                         card.keywords
                       ) &&
-                        card.keywords.length > 0 && (
+                        card.keywords.length >
+                          0 && (
 
                         <p>
                           <strong>
                             Keywords:
                           </strong>{" "}
                           {
-                            card.keywords
-                              .join(", ")
+                            card.keywords.join(
+                              ", "
+                            )
                           }
                         </p>
 
@@ -1610,8 +1643,7 @@ function App() {
                           Selected Meaning:
                         </strong>{" "}
                         {
-                          card
-                            .selected_meaning
+                          card.selected_meaning
                         }
                       </p>
 
@@ -1627,9 +1659,9 @@ function App() {
           </section>
 
 
-          {/* ================================= */}
-          {/* COMPLETE READING BUTTON */}
-          {/* ================================= */}
+          {/* ================================================ */}
+          {/* GENERATE */}
+          {/* ================================================ */}
 
           <button
             className="generate-button"
@@ -1653,25 +1685,25 @@ function App() {
           {!palmResult &&
             !errorMessage && (
 
-            <p className="section-note">
-              Upload and analyze a palm
-              image before generating the
-              complete reading.
-            </p>
+              <p className="section-note">
+                Upload and analyze a palm
+                image before generating the
+                complete reading.
+              </p>
 
-          )}
+            )}
 
 
           {palmResult &&
             tarotCards.length === 0 &&
             !errorMessage && (
 
-            <p className="section-note">
-              Palm analysis is complete.
-              Draw tarot cards to continue.
-            </p>
+              <p className="section-note">
+                Palm analysis is complete.
+                Draw tarot cards to continue.
+              </p>
 
-          )}
+            )}
 
 
           {errorMessage && (
@@ -1696,26 +1728,40 @@ function App() {
         </form>
 
 
-        {/* =================================== */}
-        {/* PERSONALIZED DASHBOARD */}
-        {/* =================================== */}
+        {/* ================================================== */}
+        {/* COMPLETE READING HEADER / PDF */}
+        {/* ================================================== */}
 
         {hasResults && (
 
-          <section
-            className="result-section"
-          >
+          <section className="result-section">
 
             <p className="eyebrow">
-              PERSONALIZED DASHBOARD
+              COMPLETE PERSONALIZED READING
             </p>
 
             <h2>
-              Complete Reading Results
+              Reading for {
+                formData.name
+              }
             </h2>
 
+            {submittedQuestion && (
 
-            {/* PDF DOWNLOAD */}
+              <article className="result-card">
+
+                <h3>
+                  Question
+                </h3>
+
+                <p>
+                  {submittedQuestion}
+                </p>
+
+              </article>
+
+            )}
+
 
             <button
               type="button"
@@ -1724,8 +1770,7 @@ function App() {
                 handleDownloadReadingPdf
               }
               disabled={
-                isDownloadingPdf ||
-                !lastReadingResponse
+                isDownloadingPdf
               }
             >
 
@@ -1735,212 +1780,75 @@ function App() {
 
             </button>
 
-
-            <article
-              className="result-card"
-            >
-
-              <h3>User Question</h3>
-
-              <p>
-                {submittedQuestion}
-              </p>
-
-            </article>
-
-
-            <article
-              className="result-card"
-            >
-
-              <h3>
-                Palm Results Used
-              </h3>
-
-              <p>
-                <strong>
-                  Heart line:
-                </strong>{" "}
-                {
-                  palmResult
-                    ?.palm_analysis
-                    ?.heart_line
-                }
-              </p>
-
-              <p>
-                <strong>
-                  Head line:
-                </strong>{" "}
-                {
-                  palmResult
-                    ?.palm_analysis
-                    ?.head_line
-                }
-              </p>
-
-              <p>
-                <strong>
-                  Life line:
-                </strong>{" "}
-                {
-                  palmResult
-                    ?.palm_analysis
-                    ?.life_line
-                }
-              </p>
-
-            </article>
-
-
-            <article
-              className="result-card"
-            >
-
-              <h3>
-                Selected Tarot Spread
-              </h3>
-
-              <p>
-                {formData.spread}
-              </p>
-
-            </article>
-
-
-            <article
-              className="result-card"
-            >
-
-              <h3>
-                Cards Used in This Reading
-              </h3>
-
-              <SafeList
-                items={
-                  tarotCards.map(
-                    (card) =>
-                      `${card.position}: ` +
-                      `${card.name} ` +
-                      `(${card.orientation})`
-                  )
-                }
-                emptyMessage="No tarot cards were used."
-                itemKeyPrefix="used-tarot-card"
-              />
-
-            </article>
-
           </section>
 
         )}
 
 
-        {/* =================================== */}
+        {/* ================================================== */}
         {/* AI INTERPRETATION */}
-        {/* =================================== */}
+        {/* ================================================== */}
 
         {interpretationResult && (
 
-          <section
-            className="result-section"
-          >
+          <section className="result-section">
 
             <p className="eyebrow">
               AI INTERPRETATION
             </p>
 
             <h2>
-              Combined Palm and Tarot
-              Reading
+              Combined Palm and Tarot Reading
             </h2>
 
 
-            <article
-              className="result-card"
+            <TextCard
+              title="Overall Summary"
             >
-
-              <h3>
-                Overall Summary
-              </h3>
-
-              <p>
-                {
-                  interpretationResult
-                    ?.overall_summary ||
-                  "No overall summary was returned."
-                }
-              </p>
-
-            </article>
+              {
+                interpretationResult
+                  ?.overall_summary
+              }
+            </TextCard>
 
 
             <div className="result-grid">
 
-              <article
-                className="result-card"
+              <TextCard
+                title="Palm Interpretation"
               >
-
-                <h3>
-                  Palm Interpretation
-                </h3>
-
-                <p>
-                  {
-                    interpretationResult
-                      ?.palm_interpretation ||
-                    "No palm interpretation was returned."
-                  }
-                </p>
-
-              </article>
+                {
+                  interpretationResult
+                    ?.palm_interpretation
+                }
+              </TextCard>
 
 
-              <article
-                className="result-card"
+              <TextCard
+                title="Tarot Interpretation"
               >
-
-                <h3>
-                  Tarot Interpretation
-                </h3>
-
-                <p>
-                  {
-                    interpretationResult
-                      ?.tarot_interpretation ||
-                    "No tarot interpretation was returned."
-                  }
-                </p>
-
-              </article>
+                {
+                  interpretationResult
+                    ?.tarot_interpretation
+                }
+              </TextCard>
 
             </div>
 
 
-            <article
-              className="result-card"
+            <TextCard
+              title="Combined Interpretation"
             >
-
-              <h3>
-                Combined Interpretation
-              </h3>
-
-              <p>
-                {
-                  interpretationResult
-                    ?.combined_interpretation ||
-                  "No combined interpretation was returned."
-                }
-              </p>
-
-            </article>
+              {
+                interpretationResult
+                  ?.combined_interpretation
+              }
+            </TextCard>
 
 
             <div className="result-grid">
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Key Strengths
@@ -1958,9 +1866,7 @@ function App() {
               </article>
 
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Growth Areas
@@ -1980,71 +1886,42 @@ function App() {
             </div>
 
 
-            <article
-              className="result-card"
+            <TextCard
+              title="Current Focus"
             >
-
-              <h3>
-                Current Focus
-              </h3>
-
-              <p>
-                {
-                  interpretationResult
-                    ?.current_focus ||
-                  "No current focus was returned."
-                }
-              </p>
-
-            </article>
+              {
+                interpretationResult
+                  ?.current_focus
+              }
+            </TextCard>
 
 
-            <article
-              className="result-card"
+            <TextCard
+              title="Key Message"
             >
-
-              <h3>
-                Key Message
-              </h3>
-
-              <p>
-                {
-                  interpretationResult
-                    ?.key_message ||
-                  "No key message was returned."
-                }
-              </p>
-
-            </article>
+              {
+                interpretationResult
+                  ?.key_message
+              }
+            </TextCard>
 
 
-            <article
-              className="result-card"
+            <TextCard
+              title="Reflection Question"
             >
-
-              <h3>
-                Reflection Question
-              </h3>
-
-              <p>
-                {
-                  interpretationResult
-                    ?.reflection_question ||
-                  "No reflection question was returned."
-                }
-              </p>
-
-            </article>
+              {
+                interpretationResult
+                  ?.reflection_question
+              }
+            </TextCard>
 
 
             <p className="disclaimer">
-
               {
                 interpretationResult
                   ?.disclaimer ||
                 "This reading is intended for entertainment and personal reflection only."
               }
-
             </p>
 
           </section>
@@ -2052,48 +1929,34 @@ function App() {
         )}
 
 
-        {/* =================================== */}
+        {/* ================================================== */}
         {/* PERSONALITY */}
-        {/* =================================== */}
+        {/* ================================================== */}
 
         {personalityResult && (
 
-          <section
-            className="result-section"
-          >
+          <section className="result-section">
 
             <p className="eyebrow">
               PERSONALITY INTELLIGENCE
             </p>
 
             <h2>
-              Symbolic Personality
-              Profile
+              Symbolic Personality Profile
             </h2>
 
 
-            <article
-              className="result-card"
+            <TextCard
+              title="Personality Summary"
             >
-
-              <h3>
-                Personality Summary
-              </h3>
-
-              <p>
-                {
-                  personalityResult
-                    ?.personality_summary ||
-                  "No personality summary was returned."
-                }
-              </p>
-
-            </article>
+              {
+                personalityResult
+                  ?.personality_summary
+              }
+            </TextCard>
 
 
-            <article
-              className="result-card"
-            >
+            <article className="result-card">
 
               <h3>
                 Dominant Traits
@@ -2113,93 +1976,55 @@ function App() {
 
             <div className="result-grid">
 
-              <article
-                className="result-card"
+              <TextCard
+                title="Emotional Style"
               >
-
-                <h3>
-                  Emotional Style
-                </h3>
-
-                <p>
-                  {
-                    personalityResult
-                      ?.emotional_style ||
-                    "No emotional style was returned."
-                  }
-                </p>
-
-              </article>
+                {
+                  personalityResult
+                    ?.emotional_style
+                }
+              </TextCard>
 
 
-              <article
-                className="result-card"
+              <TextCard
+                title="Thinking Style"
               >
-
-                <h3>
-                  Thinking Style
-                </h3>
-
-                <p>
-                  {
-                    personalityResult
-                      ?.thinking_style ||
-                    "No thinking style was returned."
-                  }
-                </p>
-
-              </article>
+                {
+                  personalityResult
+                    ?.thinking_style
+                }
+              </TextCard>
 
             </div>
 
 
             <div className="result-grid">
 
-              <article
-                className="result-card"
+              <TextCard
+                title="Decision Style"
               >
-
-                <h3>
-                  Decision Style
-                </h3>
-
-                <p>
-                  {
-                    personalityResult
-                      ?.decision_style ||
-                    "No decision style was returned."
-                  }
-                </p>
-
-              </article>
+                {
+                  personalityResult
+                    ?.decision_style
+                }
+              </TextCard>
 
 
-              <article
-                className="result-card"
+              <TextCard
+                title="Relationship Style"
               >
-
-                <h3>
-                  Relationship Style
-                </h3>
-
-                <p>
-                  {
-                    personalityResult
-                      ?.relationship_style ||
-                    "No relationship style was returned."
-                  }
-                </p>
-
-              </article>
+                {
+                  personalityResult
+                    ?.relationship_style
+                }
+              </TextCard>
 
             </div>
 
 
             <div className="result-grid">
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Personality Strengths
@@ -2217,9 +2042,7 @@ function App() {
               </article>
 
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Development Areas
@@ -2239,9 +2062,7 @@ function App() {
             </div>
 
 
-            <article
-              className="result-card"
-            >
+            <article className="result-card">
 
               <h3>
                 Growth Advice
@@ -2262,9 +2083,9 @@ function App() {
             <p className="disclaimer">
               This personality profile is
               a symbolic self-reflection
-              output. It is not a
-              scientific personality
-              assessment or diagnosis.
+              output. It is not a scientific
+              personality assessment or
+              diagnosis.
             </p>
 
           </section>
@@ -2272,19 +2093,16 @@ function App() {
         )}
 
 
-        {/* =================================== */}
+        {/* ================================================== */}
         {/* RECOMMENDATIONS */}
-        {/* =================================== */}
+        {/* ================================================== */}
 
         {recommendationResult && (
 
-          <section
-            className="result-section"
-          >
+          <section className="result-section">
 
             <p className="eyebrow">
-              PERSONALIZED
-              RECOMMENDATIONS
+              PERSONALIZED RECOMMENDATIONS
             </p>
 
             <h2>
@@ -2292,30 +2110,19 @@ function App() {
             </h2>
 
 
-            <article
-              className="result-card"
+            <TextCard
+              title="Recommendation Summary"
             >
-
-              <h3>
-                Recommendation Summary
-              </h3>
-
-              <p>
-                {
-                  recommendationResult
-                    ?.recommendation_summary ||
-                  "No recommendation summary was returned."
-                }
-              </p>
-
-            </article>
+              {
+                recommendationResult
+                  ?.recommendation_summary
+              }
+            </TextCard>
 
 
             <div className="result-grid">
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Personal Growth
@@ -2333,11 +2140,11 @@ function App() {
               </article>
 
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
-                <h3>Career</h3>
+                <h3>
+                  Career
+                </h3>
 
                 <SafeList
                   items={
@@ -2355,9 +2162,7 @@ function App() {
 
             <div className="result-grid">
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Relationships
@@ -2375,9 +2180,7 @@ function App() {
               </article>
 
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Goal Alignment
@@ -2397,9 +2200,7 @@ function App() {
             </div>
 
 
-            <article
-              className="result-card"
-            >
+            <article className="result-card">
 
               <h3>
                 Spiritual Development
@@ -2419,9 +2220,7 @@ function App() {
 
             <div className="result-grid">
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Immediate Actions
@@ -2439,9 +2238,7 @@ function App() {
               </article>
 
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Long-Term Actions
@@ -2473,15 +2270,13 @@ function App() {
         )}
 
 
-        {/* =================================== */}
+        {/* ================================================== */}
         {/* LIFE TRENDS */}
-        {/* =================================== */}
+        {/* ================================================== */}
 
         {trendResult && (
 
-          <section
-            className="result-section"
-          >
+          <section className="result-section">
 
             <p className="eyebrow">
               LIFE TREND ANALYSIS
@@ -2492,93 +2287,53 @@ function App() {
             </h2>
 
 
-            <article
-              className="result-card"
+            <TextCard
+              title="Trend Summary"
             >
-
-              <h3>
-                Trend Summary
-              </h3>
-
-              <p>
-                {
-                  trendResult
-                    ?.trend_summary ||
-                  "No trend summary was returned."
-                }
-              </p>
-
-            </article>
+              {
+                trendResult
+                  ?.trend_summary
+              }
+            </TextCard>
 
 
-            <article
-              className="result-card"
+            <TextCard
+              title="Current Theme"
             >
-
-              <h3>
-                Current Theme
-              </h3>
-
-              <p>
-                {
-                  trendResult
-                    ?.current_theme ||
-                  "No current theme was returned."
-                }
-              </p>
-
-            </article>
+              {
+                trendResult
+                  ?.current_theme
+              }
+            </TextCard>
 
 
             <div className="result-grid">
 
-              <article
-                className="result-card"
+              <TextCard
+                title="Possible Theme for the Next 30 Days"
               >
-
-                <h3>
-                  Possible Theme for
-                  the Next 30 Days
-                </h3>
-
-                <p>
-                  {
-                    trendResult
-                      ?.next_30_days ||
-                    "No short-term theme was returned."
-                  }
-                </p>
-
-              </article>
+                {
+                  trendResult
+                    ?.next_30_days
+                }
+              </TextCard>
 
 
-              <article
-                className="result-card"
+              <TextCard
+                title="Possible Theme for the Next 3 Months"
               >
-
-                <h3>
-                  Possible Theme for
-                  the Next 3 Months
-                </h3>
-
-                <p>
-                  {
-                    trendResult
-                      ?.next_3_months ||
-                    "No three-month theme was returned."
-                  }
-                </p>
-
-              </article>
+                {
+                  trendResult
+                    ?.next_3_months
+                }
+              </TextCard>
 
             </div>
 
 
             <div className="result-grid">
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Opportunities
@@ -2596,9 +2351,7 @@ function App() {
               </article>
 
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Challenges
@@ -2620,9 +2373,7 @@ function App() {
 
             <div className="result-grid">
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Recommended Focus
@@ -2640,9 +2391,7 @@ function App() {
               </article>
 
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Practical Actions
@@ -2663,13 +2412,11 @@ function App() {
 
 
             <p className="disclaimer">
-
               {
                 trendResult
                   ?.disclaimer ||
                 "Life trends are symbolic themes, not guaranteed predictions."
               }
-
             </p>
 
           </section>
@@ -2677,15 +2424,13 @@ function App() {
         )}
 
 
-        {/* =================================== */}
+        {/* ================================================== */}
         {/* GUIDANCE SCORES */}
-        {/* =================================== */}
+        {/* ================================================== */}
 
         {scoreResult && (
 
-          <section
-            className="result-section"
-          >
+          <section className="result-section">
 
             <p className="eyebrow">
               GUIDANCE SCORING
@@ -2750,9 +2495,7 @@ function App() {
               />
 
 
-              <article
-                className="result-card"
-              >
+              <article className="result-card">
 
                 <h3>
                   Overall Insight Score
@@ -2760,7 +2503,6 @@ function App() {
 
                 <p>
                   <strong>
-
                     {
                       Number(
                         scoreResult
@@ -2769,7 +2511,6 @@ function App() {
                       ).toFixed(2)
                     }{" "}
                     / 100
-
                   </strong>
                 </p>
 
@@ -2786,33 +2527,22 @@ function App() {
             </div>
 
 
-            <article
-              className="result-card"
+            <TextCard
+              title="Calculation Method"
             >
-
-              <h3>
-                Calculation Method
-              </h3>
-
-              <p>
-                {
-                  scoreResult
-                    ?.calculation_method ||
-                  "No calculation method was returned."
-                }
-              </p>
-
-            </article>
+              {
+                scoreResult
+                  ?.calculation_method
+              }
+            </TextCard>
 
 
             <p className="disclaimer">
-
               {
                 scoreResult
                   ?.disclaimer ||
                 "These scores measure prototype completeness, relevance and consistency. They do not measure scientific accuracy."
               }
-
             </p>
 
           </section>
@@ -2820,9 +2550,9 @@ function App() {
         )}
 
 
-        {/* =================================== */}
-        {/* MILESTONE 4 ANALYTICS DASHBOARD */}
-        {/* =================================== */}
+        {/* ================================================== */}
+        {/* ANALYTICS */}
+        {/* ================================================== */}
 
         <AnalyticsDashboard
           summary={

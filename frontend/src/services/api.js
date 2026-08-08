@@ -1,32 +1,105 @@
-const API_BASE_URL =
+// ============================================================
+// API CONFIGURATION
+// ============================================================
+
+// Render / production:
+// VITE_API_BASE_URL=https://palmistry-tarot-intelligence-platform.onrender.com
+//
+// Local development fallback:
+// http://127.0.0.1:8000
+
+export const API_BASE_URL = (
   import.meta.env.VITE_API_BASE_URL ||
-  "http://127.0.0.1:8000";
+  "http://127.0.0.1:8000"
+).replace(/\/+$/, "");
 
 
-function extractErrorMessage(responseData, fallbackMessage) {
-  const detail = responseData?.detail;
+// ============================================================
+// URL HELPERS
+// ============================================================
 
-  if (typeof detail === "string") {
-    return detail;
+export function buildBackendUrl(path = "") {
+  if (!path) {
+    return "";
   }
 
-  if (Array.isArray(detail)) {
-    return detail
+  if (
+    path.startsWith("http://") ||
+    path.startsWith("https://") ||
+    path.startsWith("blob:") ||
+    path.startsWith("data:")
+  ) {
+    return path;
+  }
+
+  const normalizedPath = path.startsWith("/")
+    ? path
+    : `/${path}`;
+
+  return `${API_BASE_URL}${normalizedPath}`;
+}
+
+
+// ============================================================
+// ERROR HELPERS
+// ============================================================
+
+function extractErrorMessage(
+  responseData,
+  fallbackMessage = "The request could not be completed."
+) {
+  if (!responseData) {
+    return fallbackMessage;
+  }
+
+  // New global backend error format
+  if (
+    typeof responseData.message === "string" &&
+    responseData.message.trim()
+  ) {
+    return responseData.message;
+  }
+
+  // Traditional FastAPI detail string
+  if (
+    typeof responseData.detail === "string" &&
+    responseData.detail.trim()
+  ) {
+    return responseData.detail;
+  }
+
+  // FastAPI validation details
+  if (Array.isArray(responseData.detail)) {
+    return responseData.detail
       .map((item) => {
         const location = Array.isArray(item?.loc)
           ? item.loc.join(" → ")
           : "request";
 
         const message =
-          item?.msg || "Invalid request data.";
+          item?.msg ||
+          "Invalid request data.";
 
         return `${location}: ${message}`;
       })
       .join(" | ");
   }
 
-  if (typeof responseData?.message === "string") {
-    return responseData.message;
+  // New validation handler format
+  if (Array.isArray(responseData.errors)) {
+    return responseData.errors
+      .map((item) => {
+        const location = Array.isArray(item?.loc)
+          ? item.loc.join(" → ")
+          : "request";
+
+        const message =
+          item?.msg ||
+          "Invalid request data.";
+
+        return `${location}: ${message}`;
+      })
+      .join(" | ");
   }
 
   return fallbackMessage;
@@ -49,18 +122,39 @@ async function readJsonResponse(response) {
 }
 
 
-async function postJson(endpoint, payload) {
+function createNetworkError(endpoint) {
+  return new Error(
+    `Could not connect to the backend at ${API_BASE_URL}. ` +
+      `The service may be starting or temporarily unavailable. ` +
+      `Request: ${endpoint}`
+  );
+}
+
+
+// ============================================================
+// GENERIC JSON REQUESTS
+// ============================================================
+
+async function requestJson(
+  endpoint,
+  {
+    method = "GET",
+    body = undefined,
+    headers = {},
+  } = {}
+) {
   let response;
 
   try {
     response = await fetch(
-      `${API_BASE_URL}${endpoint}`,
+      buildBackendUrl(endpoint),
       {
-        method: "POST",
+        method,
         headers: {
-          "Content-Type": "application/json",
+          Accept: "application/json",
+          ...headers,
         },
-        body: JSON.stringify(payload),
+        body,
       }
     );
   } catch (error) {
@@ -69,52 +163,72 @@ async function postJson(endpoint, payload) {
       error
     );
 
-    throw new Error(
-      "Could not connect to the backend. Make sure FastAPI is running on port 8000."
-    );
+    throw createNetworkError(endpoint);
   }
 
   const responseData =
     await readJsonResponse(response);
 
   if (!response.ok) {
-    const defaultMessage =
+    const fallback =
       `Request failed with status ${response.status}.`;
 
-    const backendMessage = extractErrorMessage(
-      responseData,
-      defaultMessage
-    );
+    const message =
+      extractErrorMessage(
+        responseData,
+        fallback
+      );
+
+    if (response.status === 400) {
+      throw new Error(
+        message ||
+          "The submitted request is invalid."
+      );
+    }
+
+    if (response.status === 413) {
+      throw new Error(
+        message ||
+          "The uploaded file is too large."
+      );
+    }
+
+    if (response.status === 415) {
+      throw new Error(
+        message ||
+          "The uploaded file type is not supported."
+      );
+    }
 
     if (response.status === 422) {
       throw new Error(
-        backendMessage ||
+        message ||
           "Some submitted information is invalid or incomplete."
       );
     }
 
     if (response.status === 429) {
       throw new Error(
-        backendMessage ||
-          "The Gemini usage limit has been reached. Please wait and try again."
+        message ||
+          "The AI service usage limit has been reached. Please wait and try again."
       );
     }
 
     if (response.status === 503) {
       throw new Error(
-        backendMessage ||
-          "Gemini is temporarily busy or unavailable. Please wait and try again."
+        message ||
+          "The AI service is temporarily unavailable. Please try again shortly."
       );
     }
 
     if (response.status >= 500) {
       throw new Error(
-        backendMessage ||
+        message ||
           "The backend could not complete the request."
       );
     }
 
-    throw new Error(backendMessage);
+    throw new Error(message);
   }
 
   if (!responseData) {
@@ -128,58 +242,33 @@ async function postJson(endpoint, payload) {
 
 
 async function getJson(endpoint) {
-  let response;
-
-  try {
-    response = await fetch(
-      `${API_BASE_URL}${endpoint}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    );
-  } catch (error) {
-    console.error(
-      `Backend connection error for ${endpoint}:`,
-      error
-    );
-
-    throw new Error(
-      "Could not connect to the backend. Make sure FastAPI is running on port 8000."
-    );
-  }
-
-  const responseData =
-    await readJsonResponse(response);
-
-  if (!response.ok) {
-    const backendMessage = extractErrorMessage(
-      responseData,
-      `Request failed with status ${response.status}.`
-    );
-
-    throw new Error(backendMessage);
-  }
-
-  if (!responseData) {
-    throw new Error(
-      "The backend returned an empty or invalid response."
-    );
-  }
-
-  return responseData;
+  return requestJson(endpoint);
 }
 
 
-/*
-Complete reading workflow
+async function postJson(
+  endpoint,
+  payload
+) {
+  return requestJson(
+    endpoint,
+    {
+      method: "POST",
 
-This is the main endpoint used by the React application.
-It returns interpretation, personality, recommendations,
-life trends and guidance scores in one response.
-*/
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+
+      body: JSON.stringify(payload),
+    }
+  );
+}
+
+
+// ============================================================
+// COMPLETE READING
+// ============================================================
 
 export async function generateCompleteReading(
   readingData
@@ -191,12 +280,17 @@ export async function generateCompleteReading(
 }
 
 
-/*
-Automatic tarot drawing
-*/
+// ============================================================
+// TAROT
+// ============================================================
 
-export async function drawTarotCards(spread) {
-  if (!spread || typeof spread !== "string") {
+export async function drawTarotCards(
+  spread
+) {
+  if (
+    !spread ||
+    typeof spread !== "string"
+  ) {
     throw new Error(
       "Please select a valid tarot spread."
     );
@@ -218,12 +312,9 @@ export async function getTarotDatasetSummary() {
 }
 
 
-/*
-Individual AI modules
-
-These functions can still be used for separate testing,
-Swagger comparison or future module pages.
-*/
+// ============================================================
+// INDIVIDUAL AI MODULES
+// ============================================================
 
 export async function generateInterpretation(
   readingData
@@ -265,9 +356,9 @@ export async function generateLifeTrends(
 }
 
 
-/*
-Python-based guidance scoring
-*/
+// ============================================================
+// GUIDANCE SCORING
+// ============================================================
 
 export async function calculateGuidanceScores(
   scoreData
@@ -279,12 +370,14 @@ export async function calculateGuidanceScores(
 }
 
 
-/*
-Backend status checks
-*/
+// ============================================================
+// BACKEND STATUS
+// ============================================================
 
 export async function checkBackendHealth() {
-  return getJson("/api/health");
+  return getJson(
+    "/api/health"
+  );
 }
 
 
@@ -292,72 +385,105 @@ export async function getApiInformation() {
   return getJson("/");
 }
 
-export async function analyzePalmImage(file) {
-  const formData = new FormData();
 
-  formData.append("file", file);
+// ============================================================
+// PALM IMAGE ANALYSIS
+// ============================================================
 
-  const response = await fetch(
-    "http://127.0.0.1:8000/api/palm/analyze",
-    {
-      method: "POST",
-      body: formData,
-    }
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
+export async function analyzePalmImage(
+  file
+) {
+  if (!file) {
     throw new Error(
-      data?.detail ||
-        "Palm image analysis failed."
+      "Please select a palm image."
     );
   }
 
-  return data;
+  const formData =
+    new FormData();
+
+  formData.append(
+    "file",
+    file
+  );
+
+  let response;
+
+  try {
+    response = await fetch(
+      buildBackendUrl(
+        "/api/palm/analyze"
+      ),
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+  } catch (error) {
+    console.error(
+      "Palm backend connection error:",
+      error
+    );
+
+    throw createNetworkError(
+      "/api/palm/analyze"
+    );
+  }
+
+  const responseData =
+    await readJsonResponse(response);
+
+  if (!response.ok) {
+    throw new Error(
+      extractErrorMessage(
+        responseData,
+        "Palm image analysis failed."
+      )
+    );
+  }
+
+  if (!responseData) {
+    throw new Error(
+      "The palm-analysis service returned an invalid response."
+    );
+  }
+
+  return responseData;
 }
 
+
+// ============================================================
+// ANALYTICS
+// ============================================================
+
 export async function getAnalyticsSummary() {
-  const response = await fetch(
-    "http://127.0.0.1:8000/api/analytics/summary"
+  return getJson(
+    "/api/analytics/summary"
   );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data?.detail ||
-        "Analytics summary could not be loaded."
-    );
-  }
-
-  return data;
 }
 
 
 export async function getReadingHistory(
   limit = 10
 ) {
-  const response = await fetch(
-    `http://127.0.0.1:8000/api/analytics/history?limit=${limit}`
-  );
-
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(
-      data?.detail ||
-        "Reading history could not be loaded."
+  const safeLimit =
+    Math.max(
+      1,
+      Math.min(
+        Number(limit) || 10,
+        1000
+      )
     );
-  }
 
-  return data;
+  return getJson(
+    `/api/analytics/history?limit=${safeLimit}`
+  );
 }
 
-const BACKEND_URL =
-  import.meta.env.VITE_API_BASE_URL ||
-  "http://127.0.0.1:8000";
- 
+
+// ============================================================
+// FILE DOWNLOAD HELPERS
+// ============================================================
 
 function getDownloadFilename(
   response,
@@ -372,11 +498,30 @@ function getDownloadFilename(
     return fallbackFilename;
   }
 
-  const match = disposition.match(
-    /filename="?([^"]+)"?/
-  );
+  const utfMatch =
+    disposition.match(
+      /filename\*=UTF-8''([^;]+)/
+    );
 
-  return match?.[1] || fallbackFilename;
+  if (utfMatch?.[1]) {
+    try {
+      return decodeURIComponent(
+        utfMatch[1]
+      );
+    } catch {
+      return utfMatch[1];
+    }
+  }
+
+  const normalMatch =
+    disposition.match(
+      /filename="?([^";]+)"?/
+    );
+
+  return (
+    normalMatch?.[1] ||
+    fallbackFilename
+  );
 }
 
 
@@ -385,21 +530,17 @@ async function downloadResponseFile(
   fallbackFilename
 ) {
   if (!response.ok) {
-    let message =
-      "File download failed.";
+    const responseData =
+      await readJsonResponse(
+        response
+      );
 
-    try {
-      const errorData =
-        await response.json();
-
-      message =
-        errorData?.detail ||
-        message;
-    } catch {
-      // Ignore JSON parsing error.
-    }
-
-    throw new Error(message);
+    throw new Error(
+      extractErrorMessage(
+        responseData,
+        "File download failed."
+      )
+    );
   }
 
   const blob =
@@ -420,39 +561,62 @@ async function downloadResponseFile(
   link.href = fileUrl;
   link.download = filename;
 
-  document.body.appendChild(link);
+  document.body.appendChild(
+    link
+  );
 
   link.click();
 
   link.remove();
 
-  URL.revokeObjectURL(fileUrl);
+  URL.revokeObjectURL(
+    fileUrl
+  );
 }
 
+
+// ============================================================
+// PDF REPORT
+// ============================================================
 
 export async function downloadReadingPdf(
   readingRequest,
   readingResponse
 ) {
-  const response = await fetch(
-    `${BACKEND_URL}/api/reports/reading-pdf`,
-    {
-      method: "POST",
+  let response;
 
-      headers: {
-        "Content-Type":
-          "application/json",
-      },
+  try {
+    response = await fetch(
+      buildBackendUrl(
+        "/api/reports/reading-pdf"
+      ),
+      {
+        method: "POST",
 
-      body: JSON.stringify({
-        reading_request:
-          readingRequest,
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
 
-        reading_response:
-          readingResponse,
-      }),
-    }
-  );
+        body: JSON.stringify({
+          reading_request:
+            readingRequest,
+
+          reading_response:
+            readingResponse,
+        }),
+      }
+    );
+  } catch (error) {
+    console.error(
+      "PDF backend connection error:",
+      error
+    );
+
+    throw createNetworkError(
+      "/api/reports/reading-pdf"
+    );
+  }
 
   await downloadResponseFile(
     response,
@@ -461,10 +625,29 @@ export async function downloadReadingPdf(
 }
 
 
+// ============================================================
+// ANALYTICS CSV EXPORT
+// ============================================================
+
 export async function downloadAnalyticsSummaryCsv() {
-  const response = await fetch(
-    `${BACKEND_URL}/api/reports/analytics-summary.csv`
-  );
+  let response;
+
+  try {
+    response = await fetch(
+      buildBackendUrl(
+        "/api/reports/analytics-summary.csv"
+      )
+    );
+  } catch (error) {
+    console.error(
+      "Analytics CSV connection error:",
+      error
+    );
+
+    throw createNetworkError(
+      "/api/reports/analytics-summary.csv"
+    );
+  }
 
   await downloadResponseFile(
     response,
@@ -476,9 +659,33 @@ export async function downloadAnalyticsSummaryCsv() {
 export async function downloadReadingHistoryCsv(
   limit = 100
 ) {
-  const response = await fetch(
-    `${BACKEND_URL}/api/reports/reading-history.csv?limit=${limit}`
-  );
+  const safeLimit =
+    Math.max(
+      1,
+      Math.min(
+        Number(limit) || 100,
+        1000
+      )
+    );
+
+  let response;
+
+  try {
+    response = await fetch(
+      buildBackendUrl(
+        `/api/reports/reading-history.csv?limit=${safeLimit}`
+      )
+    );
+  } catch (error) {
+    console.error(
+      "History CSV connection error:",
+      error
+    );
+
+    throw createNetworkError(
+      "/api/reports/reading-history.csv"
+    );
+  }
 
   await downloadResponseFile(
     response,
