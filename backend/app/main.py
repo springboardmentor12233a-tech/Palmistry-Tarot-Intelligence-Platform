@@ -2,7 +2,7 @@ import os
 import shutil
 import uuid
 
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File , Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -21,6 +21,10 @@ from app.pdf_export import (
     export_combined_pdf,
 )
 
+from app.auth_routes import router as auth_router
+from app.auth import get_current_user
+from app.database import save_reading, get_user_readings
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))  # backend/
 UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
 RESULTS_DIR = os.path.join(BASE_DIR, "results")
@@ -36,6 +40,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(auth_router, prefix="/auth", tags=["auth"])
 
 # Serve annotated images so the frontend can display them directly
 app.mount("/results", StaticFiles(directory=RESULTS_DIR), name="results")
@@ -47,7 +52,10 @@ def read_root():
 
 
 @app.post("/analyze-palm")
-async def analyze_palm_endpoint(file: UploadFile = File(...)):
+async def analyze_palm_endpoint(
+    file: UploadFile = File(...),
+    current_user_email: str = Depends(get_current_user)
+):
     request_id = str(uuid.uuid4())
 
     upload_path = os.path.join(
@@ -90,7 +98,7 @@ async def analyze_palm_endpoint(file: UploadFile = File(...)):
         result["result_image_path"]
     )
 
-    return {
+    response_data = {
         "success": True,
         "lines": lines_summary,
         "annotated_image_url": image_url,
@@ -98,9 +106,13 @@ async def analyze_palm_endpoint(file: UploadFile = File(...)):
         "pdf_url": f"/results/{request_id}/palm_reading.pdf",
     }
 
+    await save_reading(current_user_email, "palm", response_data)
+
+    return response_data
 @app.post("/draw-tarot")
 async def draw_tarot_endpoint(
-    spread_type: str = "three_card"
+    spread_type: str = "three_card",
+    current_user_email: str = Depends(get_current_user)
 ):
 
     request_id = str(uuid.uuid4())
@@ -126,15 +138,23 @@ async def draw_tarot_endpoint(
         for card in spread
     ]
 
-    return {
+    response_data = {
         "success": True,
         "cards": cards_summary,
         "reading": reading,
         "pdf_url": f"/results/{request_id}/tarot_reading.pdf",
     }
 
+    await save_reading(current_user_email, "tarot", response_data)
+
+    return response_data
+
 @app.post("/combined-reading")
-async def combined_reading_endpoint(file: UploadFile = File(...), spread_type: str = "three_card"):
+async def combined_reading_endpoint(
+    file: UploadFile = File(...),
+    spread_type: str = "three_card",
+    current_user_email: str = Depends(get_current_user)
+):
     request_id = str(uuid.uuid4())
 
     upload_path = os.path.join(UPLOADS_DIR, f"{request_id}_{file.filename}")
@@ -174,7 +194,7 @@ async def combined_reading_endpoint(file: UploadFile = File(...), spread_type: s
         palm_result["result_image_path"]
     )
 
-    return {
+    response_data = {
         "success": True,
         "lines": lines_summary,
         "annotated_image_url": f"/results/{request_id}/annotated_palm.jpg",
@@ -192,3 +212,16 @@ async def combined_reading_endpoint(file: UploadFile = File(...), spread_type: s
         "combined_reading": combined_reading,
         "pdf_url": f"/results/{request_id}/combined_reading.pdf"
     }
+
+    await save_reading(current_user_email, "combined", response_data)
+
+    return response_data
+
+@app.get("/auth/me")
+async def read_current_user(current_user_email: str = Depends(get_current_user)):
+    return {"email": current_user_email}
+
+@app.get("/my-readings")
+async def my_readings_endpoint(current_user_email: str = Depends(get_current_user)):
+    readings = await get_user_readings(current_user_email)
+    return {"success": True, "readings": readings}

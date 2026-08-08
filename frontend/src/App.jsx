@@ -2,12 +2,16 @@ import { Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Home from "./pages/Home";
 import PalmReading from "./pages/PalmReading";
 import TarotReading from "./pages/TarotReading";
 import CombinedReading from "./pages/CombinedReading";
 import About from "./pages/About";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import MyReadings from "./pages/MyReadings";
 
 import "./App.css";
 
@@ -19,26 +23,46 @@ function App() {
       <main className="main-container">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
 
           <Route
             path="/palm-reading"
-            element={<PalmReading />}
+            element={
+              <ProtectedRoute>
+                <PalmReading />
+              </ProtectedRoute>
+            }
           />
 
           <Route
             path="/tarot-reading"
-            element={<TarotReading />}
+            element={
+              <ProtectedRoute>
+                <TarotReading />
+              </ProtectedRoute>
+            }
           />
 
           <Route
             path="/combined-reading"
-            element={<CombinedReading />}
+            element={
+              <ProtectedRoute>
+                <CombinedReading />
+              </ProtectedRoute>
+            }
           />
 
           <Route
-            path="/about"
-            element={<About />}
+            path="/my-readings"
+            element={
+              <ProtectedRoute>
+                <MyReadings />
+              </ProtectedRoute>
+            }
           />
+
+          <Route path="/about" element={<About />} />
         </Routes>
       </main>
 
