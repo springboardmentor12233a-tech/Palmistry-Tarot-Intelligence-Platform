@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// 1. IMPORT THE NEW COMPONENT HERE
+import AuraReveal from './components/AuraReveal'; 
 
 // --- SHARED CHAT COMPONENT ---
 const ChatBox = ({ history, setHistory, isLoading }) => {
@@ -11,7 +13,6 @@ const ChatBox = ({ history, setHistory, isLoading }) => {
     setInput('');
 
     try {
-      // Pointed to port 8001
       const res = await fetch("http://localhost:8001/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -59,7 +60,6 @@ const Palmistry = ({ goBack }) => {
     formData.append("file", file);
     
     try {
-      // Pointed to port 8001
       const res = await fetch("http://localhost:8001/api/palm/analyze", { method: "POST", body: formData });
       const data = await res.json();
       setImgData(`data:image/jpeg;base64,${data.image_base64}`);
@@ -95,26 +95,37 @@ const Palmistry = ({ goBack }) => {
 };
 
 // --- TAROT COMPONENT ---
+// --- TAROT COMPONENT ---
 const Tarot = ({ goBack }) => {
   const [name, setName] = useState('');
   const [question, setQuestion] = useState('');
-  const [cardData, setCardData] = useState(null);
+  
+  const [cards, setCards] = useState([]);
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
+  const [chatActive, setChatActive] = useState(false);
 
   const drawCard = async () => {
     if (!name || !question) return alert("Please enter your name and question.");
     setLoading(true);
+    
     try {
-      // Pointed to port 8001
       const res = await fetch("http://localhost:8001/api/tarot/draw", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_name: name, user_question: question })
+        body: JSON.stringify({ 
+          user_name: name, 
+          user_question: question,
+          session_id: sessionId
+        })
       });
       const data = await res.json();
-      setCardData(data);
+      
+      setCards(prevCards => [...prevCards, data]);
       setHistory(data.history);
+      if (!sessionId) setSessionId(data.session_id);
+      
     } catch (err) {
       alert("Error drawing card. Make sure the Python backend is running on port 8001!");
     }
@@ -122,24 +133,98 @@ const Tarot = ({ goBack }) => {
   };
 
   return (
-    <div>
-      <button onClick={goBack} style={btnStyle}>← Back to Portal</button>
-      <h2>🃏 AI Tarot Reader</h2>
-      {!cardData ? (
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '85vh' }}>
+      <div style={{ flexShrink: 0, marginBottom: '20px' }}>
+        <button onClick={goBack} style={btnStyle}>← Back to Portal</button>
+        <h2 style={{ marginTop: 0 }}>🃏 AI Tarot Reader</h2>
+      </div>
+      
+      {cards.length === 0 ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', maxWidth: '400px' }}>
           <input placeholder="Your Name" value={name} onChange={e => setName(e.target.value)} style={inputStyle} />
           <input placeholder="What is your question?" value={question} onChange={e => setQuestion(e.target.value)} style={inputStyle} />
-          <button onClick={drawCard} disabled={loading} style={btnStyle}>{loading ? "Shuffling Deck..." : "Draw a Card"}</button>
+          <button onClick={drawCard} disabled={loading} style={btnStyle}>
+            {loading ? "Shuffling Deck..." : "Draw a Card"}
+          </button>
         </div>
       ) : (
-        <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-          <div style={{ flex: '1', minWidth: '250px', textAlign: 'center' }}>
-            <h3>{cardData.card_name}</h3>
-            <img src={`data:image/jpeg;base64,${cardData.image_base64}`} alt="Tarot Card" style={{ width: '100%', maxWidth: '300px', borderRadius: '10px' }} />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', flexGrow: 1 }}>
+          
+          {!chatActive && (
+            <h3 style={{ textAlign: 'center', color: '#d8b4fe', margin: '0' }}>
+               ✨ Scratch the card's aura to reveal your reading... ✨
+            </h3>
+          )}
+
+          {/* THE CARD SPREAD (Responsive Flexbox Layout) */}
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', // Magic! Centers all cards dynamically in the box
+            alignItems: 'center',
+            overflowX: 'auto', 
+            padding: '20px', 
+            background: 'rgba(0,0,0,0.2)',
+            borderRadius: '12px',
+            minHeight: '310px', 
+            width: '100%',
+            boxSizing: 'border-box'
+          }}>
+            {cards.map((card, index) => (
+              <div 
+                key={index} 
+                style={{
+                  // Negative margin creates the overlap, flex shrink prevents squishing
+                  marginLeft: index > 0 ? '-50px' : '0',
+                  zIndex: index, 
+                  position: 'relative',
+                  flexShrink: 0, 
+                  transition: 'all 0.3s ease'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-15px)';
+                  // Brings the hovered card to the absolute front!
+                  e.currentTarget.style.zIndex = 100; 
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  // Puts it back into its normal stacking order
+                  e.currentTarget.style.zIndex = index; 
+                }}
+              >
+                <AuraReveal 
+                  base64Image={card.image_base64} 
+                  cardName={card.card_name}
+                  onRevealComplete={() => {
+                    if (index === 0) setChatActive(true); 
+                  }}
+                />
+              </div>
+            ))}
           </div>
-          <div style={{ flex: '2', minWidth: '300px' }}>
-             <ChatBox history={history} setHistory={setHistory} isLoading={loading} />
+          
+          {/* CHAT SECTION */}
+          <div style={{ 
+            opacity: chatActive ? 1 : 0, 
+            transition: 'opacity 1.5s ease',
+            pointerEvents: chatActive ? 'auto' : 'none',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '15px',
+            flexGrow: 1
+          }}>
+            <button 
+               onClick={drawCard} 
+               disabled={loading} 
+               style={{...btnStyle, background: '#a855f7', width: '100%', margin: '0', flexShrink: 0}}
+            >
+               {loading ? "Drawing..." : "Draw Another Card to Continue the Story"}
+            </button>
+            
+            <div style={{ flexGrow: 1, minHeight: '400px' }}>
+              <ChatBox history={history} setHistory={setHistory} isLoading={loading} />
+            </div>
           </div>
+          
         </div>
       )}
     </div>
@@ -179,15 +264,15 @@ export default function App() {
 
 // --- BASIC STYLES ---
 const cardStyle = {
-  border: '1px solid rgba(168, 85, 247, 0.4)', // Subtle glowing purple border
+  border: '1px solid rgba(168, 85, 247, 0.4)', 
   borderRadius: '16px',
   padding: '30px',
   width: '260px',
   cursor: 'pointer',
-  background: 'rgba(30, 27, 46, 0.7)', // Dark semi-transparent purple/slate
-  backdropFilter: 'blur(10px)', // Glassmorphic blur effect
+  background: 'rgba(30, 27, 46, 0.7)', 
+  backdropFilter: 'blur(10px)', 
   boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-  color: '#f3e8ff', // Soft lavender white text for high readability
+  color: '#f3e8ff', 
   transition: 'all 0.3s ease',
   textAlign: 'center'
 };
