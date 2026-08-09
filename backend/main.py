@@ -14,6 +14,9 @@ from ultralytics import YOLO
 from groq import Groq
 from dotenv import load_dotenv
 
+# --- 1. IMPORT DATABASE ---
+from database import MysticalDB
+
 # Load variables from .env file
 load_dotenv()
 
@@ -29,6 +32,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# --- 2. INITIALIZE DATABASE ---
+db = MysticalDB()
 
 # Load both API keys into a list
 GROQ_API_KEYS = [
@@ -93,11 +99,12 @@ print("Tarot Dataset Loaded successfully!")
 class ChatRequest(BaseModel):
     message: str
     history: list
+    session_id: str = None  # Added optionally so the DB knows which session to save to
 
 class TarotRequest(BaseModel):
     user_name: str
     user_question: str
-
+    session_id: str = None  # NEW: allows us to add cards to an existing chat!
 # ==========================================
 # 3. PALMISTRY ENDPOINTS
 # ==========================================
@@ -144,7 +151,14 @@ async def analyze_palm(file: UploadFile = File(...)):
         reading = get_groq_response(history, max_tokens=1000)
         history.append({"role": "assistant", "content": reading})
         
-        return {"image_base64": img_base64, "reading": reading, "history": history}
+        # --- DB INTEGRATION: Save silently in background ---
+        user_id = db.get_or_create_user("Guest")
+        session_id = db.start_session(user_id, "Palmistry", {"detected_lines": detected_items})
+        db.save_message(session_id, "system", "You are a wise, mystical Master Palm Reader.")
+        db.save_message(session_id, "user", initial_prompt)
+        db.save_message(session_id, "assistant", reading)
+        
+        return {"image_base64": img_base64, "reading": reading, "history": history, "session_id": session_id}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -168,32 +182,61 @@ async def draw_tarot(req: TarotRequest):
         img.save(buffered, format="JPEG")
         img_base64 = base64.b64encode(buffered.getvalue()).decode('utf-8')
         
-        prompt = f"""
-        You are reading for {req.user_name}. Question: "{req.user_question}"
-        CARD DRAWN: {selected_card['name']} ({orientation_str})
-        KEYWORDS: {', '.join(selected_card['keywords'])}
-        MEANINGS: {chr(10).join(['- ' + m for m in meanings])}
-        
-        1. Greet {req.user_name}.
-        2. Explain the card's imagery/energy.
-        3. Deliver a personalized interpretation answering their question.
-        4. Invite them to ask a follow-up question.
-        """
-        
-        history = [
-            {"role": "system", "content": "You are a mystical, empathetic tarot reader."},
-            {"role": "user", "content": prompt}
-        ]
-        
-        # Use our rotating helper function
-        reading = get_groq_response(history, max_tokens=800)
-        history.append({"role": "assistant", "content": reading})
+        # PATH A: If we are adding a card to an EXISTING session
+        if req.session_id:
+            prompt = f"""
+            [NEW CARD DRAWN]
+            CARD: {selected_card['name']} ({orientation_str})
+            KEYWORDS: {', '.join(selected_card['keywords'])}
+            
+            The user has drawn another card for clarification on their question: "{req.user_question}". 
+            Integrate this new card into the current reading context and explain what it adds to the answer.
+            """
+            
+            history = db.get_session_history(req.session_id)
+            history.append({"role": "user", "content": prompt})
+            db.save_message(req.session_id, "user", prompt)
+            
+            reading = get_groq_response(history, max_tokens=800)
+            history.append({"role": "assistant", "content": reading})
+            db.save_message(req.session_id, "assistant", reading)
+            
+            session_id = req.session_id
+            
+        # PATH B: If this is the FIRST card being drawn
+        else:
+            prompt = f"""
+            You are reading for {req.user_name}. Question: "{req.user_question}"
+            CARD DRAWN: {selected_card['name']} ({orientation_str})
+            KEYWORDS: {', '.join(selected_card['keywords'])}
+            MEANINGS: {chr(10).join(['- ' + m for m in meanings])}
+            
+            1. Greet {req.user_name}.
+            2. Explain the card's imagery/energy.
+            3. Deliver a personalized interpretation answering their question.
+            4. Invite them to ask a follow-up question.
+            """
+            
+            history = [
+                {"role": "system", "content": "You are a mystical, empathetic tarot reader."},
+                {"role": "user", "content": prompt}
+            ]
+            
+            reading = get_groq_response(history, max_tokens=800)
+            history.append({"role": "assistant", "content": reading})
+            
+            user_id = db.get_or_create_user(req.user_name)
+            session_id = db.start_session(user_id, "Tarot", {"card": selected_card['name'], "orientation": orientation_str})
+            db.save_message(session_id, "system", "You are a mystical, empathetic tarot reader.")
+            db.save_message(session_id, "user", prompt)
+            db.save_message(session_id, "assistant", reading)
         
         return {
-            "image_base64": img_base64, 
+            "image_base64": img_base64,
             "card_name": f"{selected_card['name']} ({orientation_str})",
-            "reading": reading, 
-            "history": history
+            "reading": reading,
+            "history": history,
+            "session_id": session_id
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
@@ -204,10 +247,25 @@ async def draw_tarot(req: TarotRequest):
 @app.post("/api/chat")
 async def chat(req: ChatRequest):
     try:
-        req.history.append({"role": "user", "content": req.message})
-        # Use our rotating helper function
+        # 1. Save user message to DB if session_id exists
+        if req.session_id:
+            db.save_message(req.session_id, "user", req.message)
+
+        # 2. Check if frontend already appended the user message to history
+        user_msg_obj = {"role": "user", "content": req.message}
+        if not req.history or req.history[-1] != user_msg_obj:
+            req.history.append(user_msg_obj)
+        
+        # 3. Get response from Groq
         answer = get_groq_response(req.history, max_tokens=600)
+        
+        # 4. Append assistant response
         req.history.append({"role": "assistant", "content": answer})
+        
+        # 5. Save assistant response to DB
+        if req.session_id:
+            db.save_message(req.session_id, "assistant", answer)
+            
         return {"reply": answer, "history": req.history}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
