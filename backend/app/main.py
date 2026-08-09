@@ -23,7 +23,7 @@ from app.pdf_export import (
 
 from app.auth_routes import router as auth_router
 from app.auth import get_current_user
-from app.database import save_reading, get_user_readings
+from app.database import save_reading, get_user_readings, get_reading_stats
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))  # backend/
 UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
@@ -225,3 +225,8 @@ async def read_current_user(current_user_email: str = Depends(get_current_user))
 async def my_readings_endpoint(current_user_email: str = Depends(get_current_user)):
     readings = await get_user_readings(current_user_email)
     return {"success": True, "readings": readings}
+
+@app.get("/profile-stats")
+async def profile_stats_endpoint(current_user_email: str = Depends(get_current_user)):
+    stats = await get_reading_stats(current_user_email)
+    return {"success": True, "stats": stats}

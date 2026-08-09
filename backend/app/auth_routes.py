@@ -1,9 +1,11 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from datetime import datetime, timezone
+from pydantic import BaseModel
 
 from app.database import users_collection
-from app.auth import hash_password, verify_password, create_access_token
+from app.auth import hash_password, verify_password, create_access_token, get_current_user
 from app.models import UserSignup, UserLogin, TokenResponse
+
 router = APIRouter()
 
 
@@ -33,3 +35,16 @@ async def login(credentials: UserLogin):
 
     token = create_access_token({"sub": user_doc["email"]})
     return TokenResponse(access_token=token, name=user_doc["name"], email=user_doc["email"])
+
+
+class UpdateProfileRequest(BaseModel):
+    name: str
+
+
+@router.put("/profile")
+async def update_profile(update: UpdateProfileRequest, current_user_email: str = Depends(get_current_user)):
+    await users_collection.update_one(
+        {"email": current_user_email},
+        {"$set": {"name": update.name}}
+    )
+    return {"success": True, "name": update.name, "email": current_user_email}

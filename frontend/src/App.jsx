@@ -12,7 +12,7 @@ import About from "./pages/About";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import MyReadings from "./pages/MyReadings";
-
+import Profile from "./pages/Profile";
 import "./App.css";
 
 function App() {
@@ -61,7 +61,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+             }
+          />
           <Route path="/about" element={<About />} />
         </Routes>
       </main>

@@ -34,13 +34,11 @@ function Navbar() {
           </NavLink>
         )}
 
-        <NavLink to="/about" className={({ isActive }) => (isActive ? "active-link" : "")}>
-          About
-        </NavLink>
-
         {isAuthenticated ? (
           <>
-            <span style={{ marginLeft: "10px" }}>Hi, {user.name}</span>
+            <NavLink to="/profile" style={{ marginLeft: "10px" }}>
+              Hi, {user.name}
+            </NavLink>
             <button onClick={handleLogout} className="primary-btn" style={{ marginLeft: "10px" }}>
               Logout
             </button>

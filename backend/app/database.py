@@ -36,3 +36,16 @@ async def get_user_readings(user_email: str, limit: int = 20):
         readings.append(doc)
 
     return readings
+
+async def get_reading_stats(user_email: str):
+    pipeline = [
+        {"$match": {"user_email": user_email}},
+        {"$group": {"_id": "$reading_type", "count": {"$sum": 1}}}
+    ]
+    results = await readings_collection.aggregate(pipeline).to_list(length=None)
+
+    stats = {"palm": 0, "tarot": 0, "combined": 0}
+    for r in results:
+        stats[r["_id"]] = r["count"]
+    stats["total"] = sum(stats.values())
+    return stats
