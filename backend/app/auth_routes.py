@@ -3,9 +3,9 @@ from datetime import datetime, timezone
 from pydantic import BaseModel
 
 from app.database import users_collection
-from app.auth import hash_password, verify_password, create_access_token, get_current_user
+from app.auth import hash_password, verify_password, create_access_token, get_current_user,create_reset_token, verify_reset_token
 from app.models import UserSignup, UserLogin, TokenResponse
-
+from app.email_utils import send_reset_email
 router = APIRouter()
 
 
@@ -48,3 +48,34 @@ async def update_profile(update: UpdateProfileRequest, current_user_email: str =
         {"$set": {"name": update.name}}
     )
     return {"success": True, "name": update.name, "email": current_user_email}
+class ForgotPasswordRequest(BaseModel):
+    email: str
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str
+
+
+@router.post("/forgot-password")
+async def forgot_password(request: ForgotPasswordRequest):
+    user_doc = await users_collection.find_one({"email": request.email})
+
+    if user_doc:
+        reset_token = create_reset_token(request.email)
+        send_reset_email(request.email, reset_token)
+
+    return {"success": True, "message": "If that email is registered, a reset link has been sent."}
+
+@router.post("/reset-password")
+async def reset_password(request: ResetPasswordRequest):
+    email = verify_reset_token(request.token)
+    if email is None:
+        raise HTTPException(status_code=400, detail="Invalid or expired reset link.")
+
+    await users_collection.update_one(
+        {"email": email},
+        {"$set": {"hashed_password": hash_password(request.new_password)}}
+    )
+
+    return {"success": True, "message": "Password has been reset successfully."}
