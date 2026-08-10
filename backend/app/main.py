@@ -1,3 +1,13 @@
+from app.logging_config import configure_logging
+
+from app.middleware.request_logging import (
+    RequestLoggingMiddleware,
+)
+
+from app.routes.monitoring_routes import (
+    router as monitoring_router,
+)
+
 import logging
 from pathlib import Path
 
@@ -145,7 +155,7 @@ PALM_RESULTS_DIR.mkdir(
 # =========================================================
 # FASTAPI APPLICATION
 # =========================================================
-
+configure_logging()
 app = FastAPI(
     title=settings.APP_NAME,
 
@@ -185,24 +195,27 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-
-    allow_origins=
-        settings.FRONTEND_URLS,
-
+    allow_origins=settings.FRONTEND_URLS,
     allow_credentials=True,
-
     allow_methods=[
         "GET",
         "POST",
         "OPTIONS",
     ],
-
     allow_headers=[
         "Content-Type",
         "Authorization",
     ],
 )
 
+
+# =========================================================
+# REQUEST LOGGING / MONITORING
+# =========================================================
+
+app.add_middleware(
+    RequestLoggingMiddleware
+)
 
 # =========================================================
 # TRUSTED HOST PROTECTION
@@ -276,6 +289,10 @@ app.include_router(
 
 app.include_router(
     recommendation_router
+)
+
+app.include_router(
+    monitoring_router
 )
 
 app.include_router(
