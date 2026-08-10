@@ -16,11 +16,17 @@ from tools import remove_background, resize, save_result
 
 
 BASE_DIR = Path(__file__).resolve().parent
+
+PALMISTRY_ROOT = BASE_DIR.parent
+
 INPUT_DIR = BASE_DIR / "input"
+
 RESULTS_DIR = BASE_DIR / "results"
+
 CHECKPOINT_PATH = (
-    BASE_DIR
-    / "checkpoint"
+    PALMISTRY_ROOT
+    / "detect"
+    / "checkpoints"
     / "checkpoint_aug_epoch70.pth"
 )
 
