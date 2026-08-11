@@ -15,6 +15,8 @@ import MyReadings from "./pages/MyReadings";
 import Profile from "./pages/Profile";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+
+import Dashboard from "./pages/Dashboard";
 import "./App.css";
 
 function App() {
@@ -29,7 +31,16 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+           
 
+           <Route
+            path="/dashboard"
+            element={
+            <ProtectedRoute>
+               <Dashboard />
+            </ProtectedRoute>
+            }
+          />
           <Route
             path="/palm-reading"
             element={

@@ -30,65 +30,112 @@ function MyReadings() {
   };
 
   return (
-    <div>
-      <h1>My Readings</h1>
+    <div className="my-readings-page">
+      <div className="my-readings-container">
 
-      {loading && <Loading text="Loading your readings..." />}
+        <h1 className="my-readings-heading">
+          My Readings
+        </h1>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
+        {loading && (
+          <Loading text="Loading your readings..." />
+        )}
 
-      {!loading && readings.length === 0 && (
-        <p>You haven't generated any readings yet.</p>
-      )}
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "20px",
-        }}
-      >
-        {readings.map((reading) => (
-          <div key={reading._id} className="upload-card">
-            <h2>
-              {typeLabel[reading.reading_type] || reading.reading_type}
-            </h2>
-
-            <p style={{ color: "#888", fontSize: "14px" }}>
-              {new Date(reading.created_at).toLocaleString()}
-            </p>
-
-            {reading.reading_type === "palm" && (
-              <p>{reading.data.reading?.slice(0, 200)}...</p>
-            )}
-
-            {reading.reading_type === "tarot" && (
-              <p>{reading.data.reading?.slice(0, 200)}...</p>
-            )}
-
-            {reading.reading_type === "combined" && (
-              <p>
-                {reading.data.combined_reading?.slice(0, 200)}...
-              </p>
-            )}
-
-            {reading.data.pdf_url && (
-              <a
-                href={`http://127.0.0.1:8000${reading.data.pdf_url}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="primary-btn"
-                style={{
-                  display: "inline-block",
-                  marginTop: "10px",
-                  textDecoration: "none",
-                }}
-              >
-                📄 View PDF
-              </a>
-            )}
+        {error && (
+          <div className="my-readings-error">
+            {error}
           </div>
-        ))}
+        )}
+
+        {!loading && readings.length === 0 && (
+          <div className="my-readings-empty">
+            <div className="my-readings-empty-icon">🔮</div>
+            <h2>No readings yet</h2>
+            <p>
+              You haven't generated any readings yet.
+            </p>
+          </div>
+        )}
+
+        {!loading && readings.length > 0 && (
+          <div className="my-readings-list">
+
+            {readings.map((reading) => (
+              <div
+                key={reading._id}
+                className="my-reading-card"
+              >
+                <div className="my-reading-header">
+
+                  <div>
+                    <h2>
+                      {typeLabel[reading.reading_type] ||
+                        reading.reading_type}
+                    </h2>
+
+                    <p className="my-reading-date">
+                      {new Date(
+                        reading.created_at
+                      ).toLocaleString()}
+                    </p>
+                  </div>
+
+                  <span className="my-reading-badge">
+                    {reading.reading_type}
+                  </span>
+
+                </div>
+
+                <div className="my-reading-content">
+
+                  {reading.reading_type === "palm" && (
+                    <p>
+                      {reading.data.reading?.slice(0, 250)}
+                      {reading.data.reading?.length > 250
+                        ? "..."
+                        : ""}
+                    </p>
+                  )}
+
+                  {reading.reading_type === "tarot" && (
+                    <p>
+                      {reading.data.reading?.slice(0, 250)}
+                      {reading.data.reading?.length > 250
+                        ? "..."
+                        : ""}
+                    </p>
+                  )}
+
+                  {reading.reading_type === "combined" && (
+                    <p>
+                      {reading.data.combined_reading?.slice(0, 250)}
+                      {reading.data.combined_reading?.length > 250
+                        ? "..."
+                        : ""}
+                    </p>
+                  )}
+
+                </div>
+
+                {reading.data.pdf_url && (
+                  <div className="my-reading-actions">
+                    <a
+                      href={`http://127.0.0.1:8000${reading.data.pdf_url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="my-reading-pdf-btn"
+                    >
+                      📄 View PDF
+                    </a>
+                  </div>
+                )}
+
+              </div>
+            ))}
+
+          </div>
+        )}
+
       </div>
     </div>
   );

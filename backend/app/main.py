@@ -5,9 +5,10 @@ import uuid
 from fastapi import FastAPI, UploadFile, File , Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-
+from pydantic import BaseModel
 from app.palm_pipeline import analyze_palm
 from app.tarot_pipeline import draw_spread
+from datetime import datetime
 
 from app.llm_interpretation import (
     generate_palm_llm_reading,
@@ -23,7 +24,7 @@ from app.pdf_export import (
 
 from app.auth_routes import router as auth_router
 from app.auth import get_current_user
-from app.database import save_reading, get_user_readings, get_reading_stats
+from app.database import save_reading, get_user_readings, get_reading_stats, users_collection
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))  # backend/
 UPLOADS_DIR = os.path.join(BASE_DIR, "uploads")
@@ -217,9 +218,31 @@ async def combined_reading_endpoint(
 
     return response_data
 
-@app.get("/auth/me")
-async def read_current_user(current_user_email: str = Depends(get_current_user)):
-    return {"email": current_user_email}
+
+class CurrentUserResponse(BaseModel):
+    name: str | None = None
+    email: str
+    created_at: datetime | None = None
+
+@app.get("/auth/me", response_model=CurrentUserResponse)
+async def read_current_user(
+    current_user_email: str = Depends(get_current_user)
+):
+    user_doc = await users_collection.find_one(
+        {"email": current_user_email}
+    )
+
+    if not user_doc:
+        return {
+            "email": current_user_email,
+            "created_at": None
+        }
+
+    return {
+        "name": user_doc.get("name"),
+        "email": user_doc.get("email"),
+        "created_at": user_doc.get("created_at")
+    }
 
 @app.get("/my-readings")
 async def my_readings_endpoint(current_user_email: str = Depends(get_current_user)):

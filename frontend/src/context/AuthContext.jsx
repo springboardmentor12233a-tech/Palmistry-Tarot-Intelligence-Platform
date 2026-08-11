@@ -12,19 +12,59 @@ export function AuthProvider({ children }) {
   const isAuthenticated = !!user;
 
   const signup = async (name, email, password) => {
-    const response = await api.post("/auth/signup", { name, email, password });
-    const { access_token, name: userName, email: userEmail } = response.data;
+    const response = await api.post("/auth/signup", {
+      name,
+      email,
+      password,
+    });
+
+    const { access_token } = response.data;
+
     localStorage.setItem("token", access_token);
-    localStorage.setItem("user", JSON.stringify({ name: userName, email: userEmail }));
-    setUser({ name: userName, email: userEmail });
+
+    const meResponse = await api.get("/auth/me");
+
+    const newUser = {
+      name: meResponse.data.name,
+      email: meResponse.data.email,
+      created_at: meResponse.data.created_at,
+    };
+
+    localStorage.setItem("user", JSON.stringify(newUser));
+    setUser(newUser);
   };
 
   const login = async (email, password) => {
-    const response = await api.post("/auth/login", { email, password });
-    const { access_token, name: userName, email: userEmail } = response.data;
+    const response = await api.post("/auth/login", {
+      email,
+      password,
+    });
+
+    const { access_token } = response.data;
+
     localStorage.setItem("token", access_token);
-    localStorage.setItem("user", JSON.stringify({ name: userName, email: userEmail }));
-    setUser({ name: userName, email: userEmail });
+
+    const meResponse = await api.get("/auth/me");
+
+    const loggedInUser = {
+      name: meResponse.data.name,
+      email: meResponse.data.email,
+      created_at: meResponse.data.created_at,
+    };
+
+    localStorage.setItem("user", JSON.stringify(loggedInUser));
+    setUser(loggedInUser);
+  };
+
+  // Update user information after profile changes
+  const updateUser = (updatedUser) => {
+    const mergedUser = {
+      ...user,
+      ...updatedUser,
+    };
+
+    localStorage.setItem("user", JSON.stringify(mergedUser));
+    setUser(mergedUser);
   };
 
   const logout = () => {
@@ -34,7 +74,16 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, signup, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        login,
+        signup,
+        updateUser,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -42,8 +91,10 @@ export function AuthProvider({ children }) {
 
 export function useAuth() {
   const context = useContext(AuthContext);
+
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
+
   return context;
 }

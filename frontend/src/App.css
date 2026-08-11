@@ -618,3 +618,636 @@ body{
 }
 
 }
+/* ===========================
+   USER DASHBOARD
+=========================== */
+
+.dashboard-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0 60px;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    margin-bottom: 35px;
+}
+
+.dashboard-welcome {
+    color: #666;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.dashboard-header h1 {
+    font-size: 40px;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.dashboard-header p:last-child {
+    color: #666;
+    font-size: 16px;
+}
+
+.dashboard-profile-btn {
+    background: #2563eb;
+    color: white;
+    padding: 13px 22px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.dashboard-profile-btn:hover {
+    background: #1d4ed8;
+}
+
+.dashboard-section {
+    margin-bottom: 40px;
+}
+
+.dashboard-section > h2,
+.section-heading-row h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+/* Statistics */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+}
+
+.stat-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #eff6ff;
+    border-radius: 14px;
+    font-size: 28px;
+}
+
+.stat-card p {
+    color: #666;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.stat-card h3 {
+    font-size: 30px;
+    color: #222;
+}
+
+.total-stat {
+    border: 2px solid #2563eb;
+}
+
+/* Reading Options */
+
+.reading-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+
+.reading-card {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+    text-decoration: none;
+    color: #222;
+    transition: 0.3s;
+}
+
+.reading-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+.reading-card-icon {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.reading-card h3 {
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+
+.reading-card p {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.reading-card span {
+    color: #2563eb;
+    font-weight: 600;
+}
+
+/* Recent Readings */
+
+.section-heading-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.view-all-link {
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.recent-readings {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.recent-reading-card {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.recent-reading-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.recent-reading-top h3 {
+    margin-bottom: 6px;
+}
+
+.reading-date {
+    color: #888;
+    font-size: 13px;
+}
+
+.reading-badge {
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.reading-preview {
+    color: #666;
+    line-height: 1.6;
+    margin: 18px 0;
+}
+
+.dashboard-pdf-btn {
+    display: inline-block;
+    color: #2563eb;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.dashboard-pdf-btn:hover {
+    text-decoration: underline;
+}
+
+/* Empty Readings */
+
+.empty-readings {
+    background: white;
+    padding: 50px 30px;
+    text-align: center;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.empty-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.empty-readings h3 {
+    margin-bottom: 10px;
+}
+
+.empty-readings p {
+    color: #666;
+}
+
+/* Error */
+
+.dashboard-error {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .reading-options {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-page {
+        padding: 10px 0 40px;
+    }
+
+    .dashboard-header {
+        padding: 25px;
+    }
+
+    .dashboard-header h1 {
+        font-size: 30px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .recent-reading-top {
+        flex-direction: column;
+    }
+}
+/* ===========================
+   MY READINGS PAGE
+=========================== */
+
+.my-readings-page {
+    min-height: calc(100vh - 80px);
+    background: #f4f7fb;
+    padding: 30px 28px 60px;
+}
+
+.my-readings-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.my-readings-heading {
+    font-size: 36px;
+    font-weight: 700;
+    color: #171717;
+    margin: 0 0 20px;
+}
+
+/* Reading list */
+
+.my-readings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+}
+
+/* Reading card */
+
+.my-reading-card {
+    background: white;
+    padding: 30px 32px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+    transition: transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.my-reading-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.10);
+}
+
+/* Header */
+
+.my-reading-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.my-reading-header h2 {
+    font-size: 25px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 5px;
+}
+
+.my-reading-date {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Badge */
+
+.my-reading-badge {
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 7px 15px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+/* Reading text */
+
+.my-reading-content {
+    margin-top: 20px;
+}
+
+.my-reading-content p {
+    color: #334155;
+    font-size: 16px;
+    line-height: 1.65;
+    margin: 0;
+}
+
+/* PDF button */
+
+.my-reading-actions {
+    margin-top: 22px;
+}
+
+.my-reading-pdf-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 9px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background 0.2s ease,
+                transform 0.2s ease;
+}
+
+.my-reading-pdf-btn:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+
+/* Empty state */
+
+.my-readings-empty {
+    background: white;
+    border-radius: 20px;
+    padding: 60px 30px;
+    text-align: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+}
+
+.my-readings-empty-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+
+.my-readings-empty h2 {
+    color: #111827;
+    margin-bottom: 10px;
+}
+
+.my-readings-empty p {
+    color: #64748b;
+}
+
+/* Error */
+
+.my-readings-error {
+    background: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .my-readings-page {
+        padding: 25px 18px 50px;
+    }
+
+    .my-readings-heading {
+        font-size: 30px;
+    }
+
+    .my-reading-card {
+        padding: 25px;
+    }
+
+    .my-reading-header {
+        flex-direction: column;
+    }
+
+    .my-reading-badge {
+        align-self: flex-start;
+    }
+}
+
+/* ===========================
+   PROFILE PAGE
+=========================== */
+
+.profile-page {
+    min-height: calc(100vh - 80px);
+    background: #f4f7fb;
+    padding: 35px 28px 60px;
+}
+
+.profile-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.profile-header h1 {
+    font-size: 38px;
+    color: #222;
+    margin-bottom: 8px;
+}
+
+.profile-header p {
+    color: #666;
+    font-size: 16px;
+}
+
+/* Profile Cards */
+
+.profile-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+}
+
+.profile-card h2 {
+    font-size: 24px;
+    color: #222;
+    margin-bottom: 25px;
+}
+
+/* Form */
+
+.profile-form-group {
+    margin-bottom: 20px;
+}
+
+.profile-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.profile-form-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 9px;
+    font-size: 15px;
+    outline: none;
+}
+
+.profile-form-group input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.profile-form-group input:disabled {
+    background: #f1f1f1;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+.profile-form-group small {
+    display: block;
+    margin-top: 6px;
+    color: #888;
+    font-size: 12px;
+}
+
+/* Message */
+
+.profile-message {
+    color: #2563eb;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+/* Account Summary */
+
+.account-summary-card {
+    margin-bottom: 0;
+}
+
+.account-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    padding: 18px 20px;
+    border-radius: 12px;
+    margin-bottom: 18px;
+}
+
+.account-summary-row span {
+    color: #475569;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.account-summary-row strong {
+    font-size: 28px;
+    color: #2563eb;
+}
+
+.account-summary-description {
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+    .profile-page {
+        padding: 25px 18px 50px;
+    }
+
+    .profile-header h1 {
+        font-size: 30px;
+    }
+
+    .profile-card {
+        padding: 25px;
+    }
+
+    .profile-card h2 {
+        font-size: 22px;
+    }
+}
+
+.profile-member-since {
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid #e5e7eb;
+  color: #555;
+  font-size: 14px;
+}
+
+.profile-member-since strong {
+  color: #2563eb;
+}

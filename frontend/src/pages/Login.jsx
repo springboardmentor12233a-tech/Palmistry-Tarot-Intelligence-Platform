@@ -12,7 +12,7 @@ function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   const redirectMessage = location.state?.message;
-  const redirectTo = location.state?.from || "/";
+  const redirectTo = location.state?.from || "/dashboard";
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");

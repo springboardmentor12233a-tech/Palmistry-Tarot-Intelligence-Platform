@@ -29,10 +29,22 @@ function Navbar() {
         </NavLink>
 
         {isAuthenticated && (
-          <NavLink to="/my-readings" className={({ isActive }) => (isActive ? "active-link" : "")}>
+            <>
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
+            Dashboard
+            </NavLink>
+
+            <NavLink
+              to="/my-readings"
+              className={({ isActive }) => (isActive ? "active-link" : "")}
+            >
             My Readings
-          </NavLink>
-        )}
+            </NavLink>
+            </>
+          )}
 
         {isAuthenticated ? (
           <>
