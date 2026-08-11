@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link, redirect } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 function Login() {
@@ -10,7 +10,9 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const redirectMessage = location.state?.message;
+  const redirectTo = location.state?.from || "/";
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -18,7 +20,7 @@ function Login() {
 
     try {
       await login(email, password);
-      navigate("/");
+      navigate(redirectTo);
     } catch (err) {
       const detail = err.response?.data?.detail;
       setError(detail || "Login failed. Please check your credentials.");
@@ -32,6 +34,21 @@ function Login() {
       <h1 className="page-title">Login</h1>
 
       <div className="upload-card" style={{ maxWidth: "400px", margin: "0 auto" }}>
+        {redirectMessage && (
+          <div
+            style={{
+              background: "#fff4e5",
+              border: "1px solid #f0c36d",
+              color: "#7a5200",
+              borderRadius: "6px",
+              padding: "10px 14px",
+              marginBottom: "15px",
+              fontSize: "14px",
+            }}
+          >
+            {redirectMessage}
+          </div>
+        )}
         <form onSubmit={handleSubmit}>
           <label>Email</label>
           <input
@@ -74,7 +91,8 @@ function Login() {
         </form>
 
         <p style={{ marginTop: "15px" }}>
-          Don't have an account? <Link to="/signup">Sign up</Link>
+          Don't have an account?{" "}
+          <Link to="/signup" state={location.state}>Sign up</Link>
         </p>
         
         <p style={{ marginTop: "10px" }}>
