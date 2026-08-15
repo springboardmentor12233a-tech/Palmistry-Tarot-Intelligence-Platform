@@ -213,8 +213,9 @@ def create_drawn_card(
             else None
         ),
         image=(
-            str(image_value)
+            f"/static/tarot_cards/{str(image_value).strip()}"
             if image_value is not None
+            and str(image_value).strip()
             else None
         ),
     )

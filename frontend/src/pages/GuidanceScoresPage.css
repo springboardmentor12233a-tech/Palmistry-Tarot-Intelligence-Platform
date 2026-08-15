@@ -1,0 +1,494 @@
+/* =========================================================
+   GUIDANCE SCORES PAGE
+   ========================================================= */
+
+.guidance-page {
+  width: 100%;
+  padding-bottom: 60px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.guidance-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.guidance-header h1 {
+  margin: 7px 0 8px;
+  font-size: 2rem;
+}
+
+.guidance-eyebrow {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+.guidance-description {
+  max-width: 700px;
+  margin: 0;
+  line-height: 1.6;
+  opacity: 0.7;
+}
+
+.guidance-reading-link,
+.guidance-history-link {
+  display: inline-block;
+  padding: 11px 16px;
+  border-radius: 11px;
+  text-decoration: none;
+  color: inherit;
+  font-weight: 700;
+  background: rgba(150, 100, 220, 0.17);
+  border: 1px solid rgba(180, 130, 255, 0.16);
+}
+
+.guidance-reading-link:hover,
+.guidance-history-link:hover {
+  background: rgba(150, 100, 220, 0.28);
+}
+
+
+/* =========================================================
+   NOTICE
+   ========================================================= */
+
+.guidance-notice {
+  padding: 17px 19px;
+  margin-bottom: 30px;
+  border-radius: 15px;
+  background: rgba(150, 100, 220, 0.08);
+  border: 1px solid rgba(180, 130, 255, 0.15);
+}
+
+.guidance-notice strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.guidance-notice p {
+  margin: 0;
+  line-height: 1.55;
+  opacity: 0.67;
+}
+
+
+/* =========================================================
+   MAIN LAYOUT
+   ========================================================= */
+
+.guidance-layout {
+  display: grid;
+  grid-template-columns:
+    310px
+    minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.guidance-sidebar {
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow: hidden;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.guidance-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 17px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.guidance-sidebar-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.guidance-sidebar-header span {
+  min-width: 30px;
+  padding: 5px 8px;
+  text-align: center;
+  border-radius: 999px;
+  background: rgba(150, 100, 220, 0.16);
+}
+
+.guidance-session-list {
+  padding: 9px;
+  max-height: calc(100vh - 115px);
+  overflow-y: auto;
+}
+
+.guidance-session-button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 9px;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid transparent;
+}
+
+.guidance-session-button:hover {
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.guidance-session-selected {
+  background: rgba(150, 100, 220, 0.13);
+  border-color: rgba(180, 130, 255, 0.29);
+}
+
+.guidance-session-id {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  opacity: 0.5;
+}
+
+.guidance-session-button strong {
+  display: block;
+  line-height: 1.35;
+}
+
+.guidance-session-button p {
+  margin: 7px 0;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  opacity: 0.62;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.guidance-session-button small {
+  display: block;
+  margin-top: 8px;
+  opacity: 0.45;
+}
+
+.guidance-session-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.guidance-session-meta span {
+  padding: 4px 7px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.guidance-content {
+  min-width: 0;
+}
+
+.guidance-session-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+.guidance-session-header h2 {
+  margin: 5px 0 0;
+}
+
+.guidance-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 28px;
+  font-size: 0.82rem;
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.guidance-section {
+  margin-bottom: 31px;
+}
+
+.guidance-section > h2 {
+  margin: 5px 0 15px;
+  font-size: 1.3rem;
+}
+
+
+/* =========================================================
+   STANDARD CARD
+   ========================================================= */
+
+.guidance-card {
+  padding: 20px;
+  margin-bottom: 15px;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.guidance-card h3 {
+  margin: 0 0 11px;
+  font-size: 1.02rem;
+  color: #dfbaff;
+}
+
+.guidance-card-content {
+  line-height: 1.65;
+}
+
+.guidance-card-content p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.guidance-muted {
+  opacity: 0.58;
+}
+
+
+/* =========================================================
+   OVERALL SCORE
+   ========================================================= */
+
+.guidance-overall-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  padding: 26px;
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(150, 100, 220, 0.18),
+      rgba(255, 255, 255, 0.035)
+    );
+
+  border:
+    1px solid
+    rgba(180, 130, 255, 0.18);
+}
+
+.guidance-overall-label {
+  margin: 0 0 8px;
+  opacity: 0.62;
+}
+
+.guidance-overall-number {
+  display: block;
+  font-size: 2.8rem;
+  line-height: 1;
+}
+
+.guidance-overall-number span {
+  font-size: 1rem;
+  opacity: 0.5;
+}
+
+.guidance-score-label {
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-weight: 800;
+  background: rgba(150, 100, 220, 0.18);
+}
+
+
+/* =========================================================
+   SCORE CARDS
+   ========================================================= */
+
+.guidance-score-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  gap: 15px;
+}
+
+.guidance-score-card {
+  padding: 20px;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.guidance-score-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.guidance-score-card h3 {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.guidance-score-card strong {
+  white-space: nowrap;
+  font-size: 0.88rem;
+  color: #dfbaff;
+}
+
+.guidance-progress-track {
+  width: 100%;
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.guidance-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background:
+    linear-gradient(
+      90deg,
+      #b97ce7,
+      #7543bd
+    );
+
+  transition:
+    width 0.3s ease;
+}
+
+
+/* =========================================================
+   ERROR / EMPTY
+   ========================================================= */
+
+.guidance-error {
+  padding: 15px 17px;
+  margin-bottom: 22px;
+  border-radius: 13px;
+  background: rgba(170, 50, 70, 0.13);
+  border: 1px solid rgba(220, 80, 100, 0.28);
+}
+
+.guidance-error p {
+  margin: 5px 0 0;
+}
+
+.guidance-empty {
+  padding: 40px 22px;
+  text-align: center;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.guidance-empty h3 {
+  margin-top: 0;
+}
+
+.guidance-empty p {
+  opacity: 0.62;
+}
+
+.guidance-empty a {
+  display: inline-block;
+  margin-top: 7px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 700;
+  background: rgba(150, 100, 220, 0.18);
+}
+
+
+/* =========================================================
+   DISCLAIMER
+   ========================================================= */
+
+.guidance-disclaimer {
+  padding: 15px 17px;
+  border-radius: 13px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  opacity: 0.58;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .guidance-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .guidance-sidebar {
+    position: static;
+    max-height: none;
+  }
+
+  .guidance-session-list {
+    max-height: 400px;
+  }
+
+}
+
+
+@media (max-width: 700px) {
+
+  .guidance-header,
+  .guidance-session-header,
+  .guidance-overall-card {
+    flex-direction: column;
+  }
+
+  .guidance-score-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .guidance-reading-link,
+  .guidance-history-link {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+}

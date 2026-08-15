@@ -15,6 +15,20 @@ export const API_BASE_URL = (
 
 
 // ============================================================
+// AUTHENTICATION
+// ============================================================
+
+const AUTH_TOKEN_KEY =
+  "palmistry_tarot_access_token";
+
+
+function getAuthToken() {
+  return localStorage.getItem(
+    AUTH_TOKEN_KEY
+  );
+}
+
+// ============================================================
 // URL HELPERS
 // ============================================================
 
@@ -145,15 +159,26 @@ async function requestJson(
 ) {
   let response;
 
+  const token =
+    getAuthToken();
   try {
     response = await fetch(
       buildBackendUrl(endpoint),
       {
         method,
         headers: {
-          Accept: "application/json",
-          ...headers,
-        },
+  Accept:
+    "application/json",
+
+  ...(token
+    ? {
+        Authorization:
+          `Bearer ${token}`,
+      }
+    : {}),
+
+  ...headers,
+},
         body,
       }
     );
@@ -690,5 +715,18 @@ export async function downloadReadingHistoryCsv(
   await downloadResponseFile(
     response,
     "reading_history.csv"
+  );
+}
+
+// ============================================================
+// READING FOLLOW-UP CHAT
+// ============================================================
+
+export async function sendFollowUpChat(
+  chatData
+) {
+  return postJson(
+    "/api/chat/follow-up",
+    chatData
   );
 }

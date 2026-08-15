@@ -1,0 +1,480 @@
+/* =========================================================
+   PALM ANALYSIS PAGE
+   ========================================================= */
+
+.palm-module-page {
+  width: 100%;
+  padding-bottom: 60px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.palm-module-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+
+.palm-module-header h1 {
+  margin: 7px 0 8px;
+  font-size: 2rem;
+}
+
+
+.palm-module-eyebrow {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+
+.palm-module-description {
+  max-width: 700px;
+  margin: 0;
+  line-height: 1.6;
+  opacity: 0.7;
+}
+
+
+.palm-module-reading-link,
+.palm-module-history-link {
+  display: inline-block;
+  padding: 11px 16px;
+  border-radius: 11px;
+  text-decoration: none;
+  color: inherit;
+  font-weight: 700;
+  background: rgba(150, 100, 220, 0.17);
+  border: 1px solid rgba(180, 130, 255, 0.16);
+}
+
+
+.palm-module-reading-link:hover,
+.palm-module-history-link:hover {
+  background: rgba(150, 100, 220, 0.28);
+}
+
+
+/* =========================================================
+   SUPPORT NOTICE
+   ========================================================= */
+
+.palm-module-support-notice {
+  padding: 17px 19px;
+  margin-bottom: 30px;
+  border-radius: 15px;
+  background: rgba(150, 100, 220, 0.08);
+  border: 1px solid rgba(180, 130, 255, 0.15);
+}
+
+
+.palm-module-support-notice strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+
+.palm-module-support-notice p {
+  margin: 0;
+  line-height: 1.55;
+  opacity: 0.67;
+}
+
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.palm-module-section {
+  margin-bottom: 36px;
+}
+
+
+.palm-module-section-heading {
+  margin-bottom: 17px;
+}
+
+
+.palm-module-section-heading h2 {
+  margin: 5px 0 4px;
+  font-size: 1.35rem;
+}
+
+
+.palm-module-section-heading > p:last-child {
+  margin: 7px 0 0;
+  opacity: 0.62;
+}
+
+
+/* =========================================================
+   UPLOAD
+   ========================================================= */
+
+.palm-module-upload-layout {
+  display: grid;
+  grid-template-columns:
+    minmax(300px, 0.8fr)
+    minmax(320px, 1.2fr);
+  gap: 18px;
+}
+
+
+.palm-module-upload-card,
+.palm-module-preview-card {
+  padding: 22px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.palm-module-file-label {
+  display: block;
+  margin-bottom: 9px;
+  font-weight: 700;
+}
+
+
+.palm-module-upload-card input[type="file"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border-radius: 11px;
+  background: #211b2a;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+.palm-module-help {
+  margin: 9px 0 18px;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  opacity: 0.58;
+}
+
+
+.palm-module-analyze-button {
+  width: 100%;
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 11px;
+  background:
+    linear-gradient(
+      135deg,
+      #b26be2,
+      #7340bf
+    );
+  color: #ffffff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+
+.palm-module-analyze-button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+
+.palm-module-preview-card h3 {
+  margin-top: 0;
+}
+
+
+.palm-module-preview-image {
+  display: block;
+  width: 100%;
+  max-height: 480px;
+  object-fit: contain;
+  border-radius: 13px;
+  background: rgba(0, 0, 0, 0.14);
+}
+
+
+.palm-module-preview-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  border-radius: 13px;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  opacity: 0.52;
+}
+
+
+/* =========================================================
+   RESULTS
+   ========================================================= */
+
+.palm-module-result-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+  gap: 15px;
+}
+
+
+.palm-module-result-card {
+  padding: 20px;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.palm-module-result-label {
+  margin: 0 0 10px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  opacity: 0.54;
+}
+
+
+.palm-module-result-card h3 {
+  margin: 0 0 9px;
+  font-size: 1.2rem;
+}
+
+
+.palm-module-result-description {
+  margin: 0;
+  line-height: 1.55;
+  opacity: 0.66;
+}
+
+
+/* =========================================================
+   OUTPUT IMAGES
+   ========================================================= */
+
+.palm-module-image-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+  gap: 16px;
+}
+
+
+.palm-module-image-card {
+  min-width: 0;
+  padding: 18px;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.palm-module-image-card h3 {
+  margin-top: 0;
+}
+
+
+.palm-module-image-card img {
+  width: 100%;
+  max-height: 440px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.14);
+}
+
+
+/* =========================================================
+   HISTORY
+   ========================================================= */
+
+.palm-module-history-layout {
+  display: grid;
+  grid-template-columns:
+    300px
+    minmax(0, 1fr);
+  gap: 17px;
+}
+
+
+.palm-module-session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  max-height: 520px;
+  overflow-y: auto;
+}
+
+
+.palm-module-session-button {
+  width: 100%;
+  padding: 14px;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+.palm-module-session-button:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+
+.palm-module-session-selected {
+  background: rgba(150, 100, 220, 0.14);
+  border-color: rgba(180, 130, 255, 0.32);
+}
+
+
+.palm-module-session-button strong,
+.palm-module-session-button span,
+.palm-module-session-button small {
+  display: block;
+}
+
+
+.palm-module-session-button span {
+  margin-top: 6px;
+  opacity: 0.67;
+}
+
+
+.palm-module-session-button small {
+  margin-top: 7px;
+  opacity: 0.47;
+}
+
+
+.palm-module-saved-detail {
+  padding: 21px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.palm-module-saved-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 17px;
+  margin-bottom: 15px;
+}
+
+
+.palm-module-saved-header h3 {
+  margin: 5px 0 0;
+}
+
+
+.palm-module-saved-question {
+  margin: 0 0 19px;
+  padding: 14px;
+  border-radius: 11px;
+  line-height: 1.55;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+
+.palm-module-history-empty {
+  padding: 35px 20px;
+  text-align: center;
+  border-radius: 16px;
+  opacity: 0.62;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.palm-module-error {
+  padding: 14px 16px;
+  margin-top: 16px;
+  border-radius: 12px;
+  background: rgba(170, 50, 70, 0.13);
+  border: 1px solid rgba(220, 80, 100, 0.28);
+}
+
+
+.palm-module-error p {
+  margin: 5px 0 0;
+}
+
+
+/* =========================================================
+   DISCLAIMER
+   ========================================================= */
+
+.palm-module-disclaimer {
+  padding: 15px 17px;
+  border-radius: 13px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  opacity: 0.58;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .palm-module-upload-layout,
+  .palm-module-history-layout {
+    grid-template-columns: 1fr;
+  }
+
+
+  .palm-module-image-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+
+@media (max-width: 750px) {
+
+  .palm-module-header,
+  .palm-module-saved-header {
+    flex-direction: column;
+  }
+
+
+  .palm-module-result-grid,
+  .palm-module-image-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .palm-module-reading-link,
+  .palm-module-history-link {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+}

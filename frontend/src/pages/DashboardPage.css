@@ -1,0 +1,609 @@
+/* =========================================================
+   USER DASHBOARD
+   ========================================================= */
+
+.user-dashboard-page {
+  width: 100%;
+  padding-bottom: 60px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.user-dashboard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 26px;
+}
+
+
+.user-dashboard-eyebrow {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+
+.user-dashboard-header h1 {
+  margin: 7px 0 9px;
+  font-size: 2rem;
+}
+
+
+.user-dashboard-header-description {
+  max-width: 680px;
+  margin: 0;
+  line-height: 1.6;
+  opacity: 0.7;
+}
+
+
+.user-dashboard-refresh {
+  padding: 12px 18px;
+  border: 1px solid rgba(180, 130, 255, 0.25);
+  border-radius: 12px;
+  background: rgba(150, 100, 220, 0.16);
+  color: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+
+.user-dashboard-refresh:hover {
+  background: rgba(150, 100, 220, 0.28);
+}
+
+
+/* =========================================================
+   USER CARD
+   ========================================================= */
+
+.user-dashboard-user-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 22px;
+  margin-bottom: 30px;
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(150, 100, 220, 0.13),
+      rgba(255, 255, 255, 0.025)
+    );
+  border: 1px solid rgba(180, 130, 255, 0.14);
+}
+
+
+.user-dashboard-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 64px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: rgba(150, 100, 220, 0.24);
+  border: 1px solid rgba(190, 145, 255, 0.3);
+}
+
+
+.user-dashboard-user-details {
+  min-width: 0;
+  flex: 1;
+}
+
+
+.user-dashboard-user-details h2 {
+  margin: 0 0 5px;
+}
+
+
+.user-dashboard-user-details > p {
+  margin: 0;
+  opacity: 0.65;
+  overflow-wrap: anywhere;
+}
+
+
+.user-dashboard-user-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+
+.user-dashboard-user-badges span {
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+
+.profile-complete-badge {
+  color: #a5e6b7;
+}
+
+
+.profile-incomplete-badge {
+  color: #ffca8a;
+}
+
+
+.user-dashboard-profile-action a {
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 11px;
+  text-decoration: none;
+  color: inherit;
+  font-weight: 700;
+  background: rgba(150, 100, 220, 0.18);
+}
+
+
+.user-dashboard-profile-action a:hover {
+  background: rgba(150, 100, 220, 0.3);
+}
+
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.user-dashboard-section {
+  margin-bottom: 34px;
+}
+
+
+.user-dashboard-section-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 17px;
+}
+
+
+.user-dashboard-section-heading h2 {
+  margin: 5px 0 0;
+  font-size: 1.35rem;
+}
+
+
+.user-dashboard-view-link {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+
+.user-dashboard-view-link:hover {
+  opacity: 1;
+}
+
+
+/* =========================================================
+   METRICS
+   ========================================================= */
+
+.user-dashboard-metric-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+  gap: 15px;
+}
+
+
+.user-dashboard-metric {
+  min-height: 145px;
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.user-dashboard-metric-label {
+  margin: 0 0 15px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+
+.user-dashboard-metric-value {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 1.75rem;
+  line-height: 1.1;
+}
+
+
+.user-dashboard-metric-description {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  opacity: 0.58;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.user-dashboard-action-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+  gap: 15px;
+}
+
+
+.user-dashboard-action-card {
+  display: block;
+  padding: 20px;
+  border-radius: 18px;
+  text-decoration: none;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+
+
+.user-dashboard-action-card:hover {
+  transform: translateY(-2px);
+  background: rgba(150, 100, 220, 0.09);
+  border-color: rgba(180, 130, 255, 0.22);
+}
+
+
+.user-dashboard-action-card > span {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #c38bef;
+}
+
+
+.user-dashboard-action-card h3 {
+  margin: 0 0 8px;
+}
+
+
+.user-dashboard-action-card p {
+  margin: 0;
+  line-height: 1.5;
+  opacity: 0.64;
+}
+
+
+/* =========================================================
+   CHARTS
+   ========================================================= */
+
+.user-dashboard-chart-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  gap: 17px;
+}
+
+
+.user-dashboard-chart-card {
+  min-width: 0;
+  padding: 21px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.user-dashboard-chart-card h3 {
+  margin: 0 0 5px;
+}
+
+
+.user-dashboard-card-note {
+  margin: 0 0 14px;
+  line-height: 1.45;
+  font-size: 0.84rem;
+  opacity: 0.57;
+}
+
+
+.user-dashboard-chart {
+  width: 100%;
+  min-height: 300px;
+}
+
+
+.user-dashboard-chart-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  padding: 25px;
+  text-align: center;
+  line-height: 1.5;
+  opacity: 0.58;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.user-dashboard-table-card {
+  overflow: hidden;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.user-dashboard-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+
+.user-dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+.user-dashboard-table th,
+.user-dashboard-table td {
+  padding: 14px 15px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom:
+    1px solid
+    rgba(255, 255, 255, 0.055);
+}
+
+
+.user-dashboard-table th {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+
+.user-dashboard-table td {
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+
+.user-dashboard-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+
+.user-dashboard-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+
+.user-dashboard-palm-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   NO READINGS
+   ========================================================= */
+
+.user-dashboard-no-readings {
+  padding: 40px 25px;
+  text-align: center;
+}
+
+
+.user-dashboard-no-readings h3 {
+  margin-top: 0;
+}
+
+
+.user-dashboard-no-readings p {
+  opacity: 0.65;
+}
+
+
+.user-dashboard-no-readings a {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 11px 17px;
+  border-radius: 11px;
+  text-decoration: none;
+  color: inherit;
+  font-weight: 700;
+  background: rgba(150, 100, 220, 0.22);
+}
+
+
+/* =========================================================
+   DISCLAIMER
+   ========================================================= */
+
+.user-dashboard-disclaimer {
+  margin-top: 30px;
+  padding: 15px 17px;
+  border-radius: 13px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  opacity: 0.6;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.user-dashboard-loading,
+.user-dashboard-error {
+  padding: 45px 25px;
+  text-align: center;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.065);
+}
+
+
+.user-dashboard-loading p,
+.user-dashboard-error p {
+  opacity: 0.65;
+}
+
+
+.user-dashboard-error button {
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(150, 100, 220, 0.25);
+  color: inherit;
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   RECHARTS DARK THEME IMPROVEMENTS
+   ========================================================= */
+
+.user-dashboard-page .recharts-cartesian-grid line {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+
+
+.user-dashboard-page .recharts-text {
+  fill: rgba(255, 255, 255, 0.68);
+}
+
+
+.user-dashboard-page .recharts-default-tooltip {
+  background: #211b2a !important;
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.12)
+    !important;
+  border-radius: 10px;
+}
+
+
+.user-dashboard-page .recharts-tooltip-label,
+.user-dashboard-page .recharts-tooltip-item {
+  color: #ffffff !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1150px) {
+
+  .user-dashboard-metric-grid,
+  .user-dashboard-action-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+
+@media (max-width: 850px) {
+
+  .user-dashboard-chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .user-dashboard-header {
+    flex-direction: column;
+  }
+
+
+  .user-dashboard-user-card {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+
+  .user-dashboard-profile-action {
+    width: 100%;
+  }
+
+
+  .user-dashboard-profile-action a {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .user-dashboard-metric-grid,
+  .user-dashboard-action-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .user-dashboard-section-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+
+  .user-dashboard-header h1 {
+    font-size: 1.7rem;
+  }
+
+
+  .user-dashboard-refresh {
+    width: 100%;
+  }
+
+}

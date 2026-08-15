@@ -1,0 +1,352 @@
+/* =========================================================
+   NOTIFICATIONS PAGE
+   ========================================================= */
+
+.notifications-page {
+  width: 100%;
+  padding-bottom: 60px;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.notifications-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.notifications-header h1 {
+  margin: 7px 0 8px;
+  font-size: 2rem;
+}
+
+.notifications-eyebrow {
+  margin: 0;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+.notifications-description {
+  max-width: 700px;
+  margin: 0;
+  line-height: 1.6;
+  opacity: 0.7;
+}
+
+.notifications-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.notifications-unread-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  padding: 10px 14px;
+  border-radius: 13px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  background: rgba(150, 100, 220, 0.14);
+  border: 1px solid rgba(180, 130, 255, 0.2);
+}
+
+.notifications-unread-badge span {
+  margin-top: 2px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  opacity: 0.6;
+}
+
+.notifications-mark-all {
+  padding: 11px 16px;
+  border: 0;
+  border-radius: 11px;
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+  background:
+    linear-gradient(
+      135deg,
+      #b97ce7,
+      #7543bd
+    );
+}
+
+.notifications-mark-all:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   NOTICE
+   ========================================================= */
+
+.notifications-notice {
+  padding: 17px 19px;
+  margin-bottom: 25px;
+  border-radius: 15px;
+  background: rgba(150, 100, 220, 0.08);
+  border: 1px solid rgba(180, 130, 255, 0.15);
+}
+
+.notifications-notice strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.notifications-notice p {
+  margin: 0;
+  line-height: 1.55;
+  opacity: 0.67;
+}
+
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.notifications-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.notifications-tabs {
+  display: flex;
+  gap: 7px;
+}
+
+.notifications-tab,
+.notifications-refresh {
+  padding: 9px 15px;
+  border-radius: 10px;
+  color: inherit;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.notifications-tab-active {
+  font-weight: 800;
+  background: rgba(150, 100, 220, 0.18);
+  border-color: rgba(180, 130, 255, 0.3);
+}
+
+.notifications-refresh:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   LIST
+   ========================================================= */
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.notification-card {
+  padding: 20px;
+  border-radius: 17px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.notification-card-unread {
+  background:
+    linear-gradient(
+      135deg,
+      rgba(150, 100, 220, 0.12),
+      rgba(255, 255, 255, 0.035)
+    );
+
+  border-color:
+    rgba(180, 130, 255, 0.22);
+}
+
+.notification-card-read {
+  background: rgba(255, 255, 255, 0.025);
+  opacity: 0.78;
+}
+
+.notification-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.notification-card-top h3 {
+  margin: 7px 0 0;
+}
+
+.notification-card-top small {
+  white-space: nowrap;
+  opacity: 0.48;
+}
+
+.notification-type-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notification-type {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.58;
+}
+
+.notification-new-badge {
+  padding: 3px 7px;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  background: rgba(185, 124, 231, 0.2);
+}
+
+.notification-message {
+  margin: 15px 0;
+  max-width: 850px;
+  line-height: 1.6;
+  opacity: 0.72;
+}
+
+.notification-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.notification-actions button,
+.notification-history-link {
+  padding: 9px 13px;
+  border-radius: 9px;
+  font-size: 0.82rem;
+  font-weight: 750;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  background: rgba(150, 100, 220, 0.13);
+  border: 1px solid rgba(180, 130, 255, 0.16);
+}
+
+.notification-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.notification-read-info {
+  margin-top: 13px;
+  font-size: 0.72rem;
+  opacity: 0.42;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.notifications-error,
+.notifications-success {
+  padding: 15px 17px;
+  margin-bottom: 20px;
+  border-radius: 13px;
+}
+
+.notifications-error {
+  background: rgba(170, 50, 70, 0.13);
+  border: 1px solid rgba(220, 80, 100, 0.28);
+}
+
+.notifications-success {
+  background: rgba(60, 160, 100, 0.11);
+  border: 1px solid rgba(90, 200, 130, 0.2);
+}
+
+.notifications-error p {
+  margin: 5px 0 0;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.notifications-empty {
+  padding: 45px 25px;
+  text-align: center;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.notifications-empty h3 {
+  margin-top: 0;
+}
+
+.notifications-empty p {
+  opacity: 0.62;
+}
+
+.notifications-empty a {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  background: rgba(150, 100, 220, 0.18);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .notifications-header {
+    flex-direction: column;
+  }
+
+  .notifications-header-actions {
+    width: 100%;
+  }
+
+  .notifications-mark-all {
+    flex: 1;
+  }
+
+  .notifications-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .notification-card-top {
+    flex-direction: column;
+  }
+
+  .notification-card-top small {
+    white-space: normal;
+  }
+
+}

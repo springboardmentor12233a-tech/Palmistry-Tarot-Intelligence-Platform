@@ -2,6 +2,7 @@ import io
 
 from fastapi import (
     APIRouter,
+    Depends,
     HTTPException,
     Query,
 )
@@ -10,8 +11,16 @@ from fastapi.responses import (
     StreamingResponse,
 )
 
+from app.models.database_models import (
+    User,
+)
+
 from app.models.report_schemas import (
     ReadingPdfRequest,
+)
+
+from app.services.auth_service import (
+    get_current_user,
 )
 
 from app.services.report_service import (
@@ -27,22 +36,36 @@ router = APIRouter(
 )
 
 
+# ============================================================
+# READING PDF
+# ============================================================
+
 @router.post(
     "/reading-pdf",
 )
 def download_reading_pdf(
     request: ReadingPdfRequest,
 ):
+    """
+    Generate a PDF from the supplied complete
+    reading request and response.
+    """
+
     try:
+
         pdf_buffer, filename = (
             build_reading_pdf(
                 request
             )
         )
 
+
         return StreamingResponse(
             pdf_buffer,
-            media_type="application/pdf",
+
+            media_type=
+                "application/pdf",
+
             headers={
                 "Content-Disposition": (
                     f'attachment; filename="{filename}"'
@@ -50,9 +73,12 @@ def download_reading_pdf(
             },
         )
 
+
     except Exception as error:
+
         raise HTTPException(
             status_code=500,
+
             detail=(
                 "The PDF reading report "
                 "could not be generated."
@@ -60,14 +86,31 @@ def download_reading_pdf(
         ) from error
 
 
+# ============================================================
+# CURRENT USER ANALYTICS CSV
+# ============================================================
+
 @router.get(
     "/analytics-summary.csv",
 )
-def download_analytics_summary_csv():
+def download_analytics_summary_csv(
+    current_user: User = Depends(
+        get_current_user
+    ),
+):
+    """
+    Export analytics belonging only
+    to the authenticated user.
+    """
+
     try:
+
         csv_content = (
-            build_analytics_summary_csv()
+            build_analytics_summary_csv(
+                user_id=current_user.id
+            )
         )
+
 
         csv_buffer = io.BytesIO(
             csv_content.encode(
@@ -75,25 +118,36 @@ def download_analytics_summary_csv():
             )
         )
 
+
         return StreamingResponse(
             csv_buffer,
-            media_type="text/csv",
+
+            media_type=
+                "text/csv",
+
             headers={
                 "Content-Disposition": (
                     "attachment; "
-                    'filename="analytics_summary.csv"'
+                    'filename="my_analytics_summary.csv"'
                 )
             },
         )
 
+
     except Exception as error:
+
         raise HTTPException(
             status_code=500,
+
             detail=(
                 "Analytics CSV export failed."
             ),
         ) from error
 
+
+# ============================================================
+# CURRENT USER READING HISTORY CSV
+# ============================================================
 
 @router.get(
     "/reading-history.csv",
@@ -104,13 +158,25 @@ def download_reading_history_csv(
         ge=1,
         le=100,
     ),
+
+    current_user: User = Depends(
+        get_current_user
+    ),
 ):
+    """
+    Export reading history belonging
+    only to the authenticated user.
+    """
+
     try:
+
         csv_content = (
             build_reading_history_csv(
-                limit=limit
+                limit=limit,
+                user_id=current_user.id,
             )
         )
+
 
         csv_buffer = io.BytesIO(
             csv_content.encode(
@@ -118,21 +184,29 @@ def download_reading_history_csv(
             )
         )
 
+
         return StreamingResponse(
             csv_buffer,
-            media_type="text/csv",
+
+            media_type=
+                "text/csv",
+
             headers={
                 "Content-Disposition": (
                     "attachment; "
-                    'filename="reading_history.csv"'
+                    'filename="my_reading_history.csv"'
                 )
             },
         )
 
+
     except Exception as error:
+
         raise HTTPException(
             status_code=500,
+
             detail=(
-                "Reading history CSV export failed."
+                "Reading history CSV "
+                "export failed."
             ),
         ) from error

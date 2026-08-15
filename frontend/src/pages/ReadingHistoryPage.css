@@ -1,0 +1,485 @@
+/* =========================================================
+   READING HISTORY PAGE
+   ========================================================= */
+
+.history-page {
+  width: 100%;
+  padding-bottom: 60px;
+}
+
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+
+.history-header h1 {
+  margin: 4px 0 8px;
+  font-size: 2rem;
+}
+
+
+.history-header p {
+  margin: 0;
+  opacity: 0.75;
+}
+
+
+.history-eyebrow {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+
+.history-refresh-button {
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 18px;
+  cursor: pointer;
+  font-weight: 700;
+  background: rgba(150, 100, 220, 0.22);
+  color: inherit;
+}
+
+
+.history-refresh-button:hover {
+  background: rgba(150, 100, 220, 0.34);
+}
+
+
+.history-refresh-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+
+/* =========================================================
+   LAYOUT
+   ========================================================= */
+
+.history-layout {
+  display: grid;
+  grid-template-columns: 330px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+
+.history-sidebar {
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow: hidden;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.history-sidebar-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.history-sidebar-title h3 {
+  margin: 0;
+}
+
+
+.history-sidebar-title span {
+  min-width: 32px;
+  padding: 5px 9px;
+  text-align: center;
+  border-radius: 999px;
+  background: rgba(150, 100, 220, 0.2);
+}
+
+
+.history-session-list {
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 10px;
+}
+
+
+.history-session-item {
+  display: block;
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 10px;
+  text-align: left;
+  border-radius: 14px;
+  border: 1px solid transparent;
+  background: rgba(255, 255, 255, 0.035);
+  color: inherit;
+  cursor: pointer;
+}
+
+
+.history-session-item:hover {
+  background: rgba(255, 255, 255, 0.065);
+}
+
+
+.history-session-active {
+  border-color: rgba(180, 120, 255, 0.5);
+  background: rgba(150, 100, 220, 0.16);
+}
+
+
+.history-session-item strong {
+  display: block;
+  margin: 9px 0;
+  line-height: 1.35;
+}
+
+
+.history-session-item p {
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  opacity: 0.72;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+.history-session-item small {
+  opacity: 0.55;
+}
+
+
+.history-session-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.75rem;
+}
+
+
+.history-session-number {
+  font-weight: 800;
+}
+
+
+.history-message-count {
+  opacity: 0.65;
+}
+
+
+.history-session-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+
+.history-session-meta span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+
+/* =========================================================
+   DETAIL
+   ========================================================= */
+
+.history-detail {
+  min-width: 0;
+}
+
+
+.history-reading-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 12px;
+}
+
+
+.history-reading-header h2 {
+  margin: 7px 0 0;
+}
+
+
+.history-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+
+.history-badges span {
+  padding: 7px 11px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  background: rgba(150, 100, 220, 0.18);
+}
+
+
+.history-date-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-bottom: 28px;
+  font-size: 0.82rem;
+  opacity: 0.58;
+}
+
+
+/* =========================================================
+   SECTIONS
+   ========================================================= */
+
+.history-section {
+  margin: 0 0 32px;
+}
+
+
+.history-section > h3 {
+  margin: 0 0 16px;
+  font-size: 1.3rem;
+}
+
+
+.history-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+
+.history-info-card {
+  padding: 20px;
+  margin-bottom: 16px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+.history-grid .history-info-card {
+  margin-bottom: 0;
+}
+
+
+.history-info-card h4 {
+  margin: 0 0 12px;
+  font-size: 1.05rem;
+}
+
+
+.history-card-content {
+  line-height: 1.65;
+}
+
+
+.history-card-content p {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+
+.history-muted {
+  opacity: 0.65;
+}
+
+
+.history-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+
+.history-list li {
+  margin-bottom: 8px;
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   TAROT
+   ========================================================= */
+
+.history-tarot-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
+  gap: 16px;
+}
+
+
+.history-tarot-card {
+  padding: 20px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+.history-tarot-card > span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.65;
+}
+
+
+.history-tarot-card h4 {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+}
+
+
+.history-tarot-card p {
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   SCORES
+   ========================================================= */
+
+.history-score-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    4,
+    minmax(0, 1fr)
+  );
+  gap: 14px;
+}
+
+
+.history-score {
+  font-size: 1.5rem;
+}
+
+
+/* =========================================================
+   OTHER
+   ========================================================= */
+
+.history-disclaimer {
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  font-size: 0.82rem;
+  opacity: 0.65;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+
+.history-error {
+  padding: 18px;
+  margin-bottom: 24px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 100, 120, 0.35);
+  background: rgba(150, 40, 60, 0.16);
+}
+
+
+.history-error p {
+  margin-bottom: 0;
+}
+
+
+.history-empty {
+  padding: 45px 24px;
+  text-align: center;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .history-layout {
+    grid-template-columns: 280px minmax(0, 1fr);
+  }
+
+
+  .history-score-grid {
+    grid-template-columns: repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  }
+}
+
+
+@media (max-width: 850px) {
+
+  .history-layout {
+    grid-template-columns: 1fr;
+  }
+
+
+  .history-sidebar {
+    position: static;
+    max-height: none;
+  }
+
+
+  .history-session-list {
+    max-height: 420px;
+  }
+
+
+  .history-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .history-header,
+  .history-reading-header {
+    flex-direction: column;
+  }
+
+
+  .history-badges {
+    justify-content: flex-start;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .history-score-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .history-header h1 {
+    font-size: 1.65rem;
+  }
+}

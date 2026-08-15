@@ -50,7 +50,7 @@ class Settings:
             "8000",
         )
     )
-    
+
     APP_NAME = os.getenv(
         "APP_NAME",
         "Palmistry & Tarot Intelligence Platform",
@@ -107,6 +107,46 @@ class Settings:
         ).split(",")
         if host.strip()
     ]
+    # =====================================================
+    # DATABASE
+    # =====================================================
+
+    LOCAL_DATABASE_PATH = (
+        BASE_DIR
+        / "app"
+        / "data"
+        / "platform.db"
+    )
+
+    DATABASE_URL = os.getenv(
+        "DATABASE_URL",
+        (
+            "sqlite:///"
+            + LOCAL_DATABASE_PATH.as_posix()
+        ),
+    )
+
+
+    # =====================================================
+    # AUTHENTICATION / JWT
+    # =====================================================
+
+    JWT_SECRET_KEY = os.getenv(
+        "JWT_SECRET_KEY",
+        "",
+    )
+
+    JWT_ALGORITHM = os.getenv(
+        "JWT_ALGORITHM",
+        "HS256",
+    )
+
+    ACCESS_TOKEN_EXPIRE_MINUTES = int(
+        os.getenv(
+            "ACCESS_TOKEN_EXPIRE_MINUTES",
+            "60",
+        )
+    )
 
     @property
     def is_production(self):

@@ -1,0 +1,306 @@
+/* =========================================================
+   SPIRITUAL CONSULTANT DASHBOARD
+   ========================================================= */
+
+.consultant-page {
+  width: 100%;
+  padding-bottom: 60px;
+}
+
+
+/* HEADER */
+
+.consultant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.consultant-header h1 {
+  margin: 6px 0 8px;
+  font-size: 2rem;
+}
+
+.consultant-eyebrow {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.58;
+}
+
+.consultant-description {
+  max-width: 720px;
+  margin: 0;
+  line-height: 1.6;
+  opacity: 0.68;
+}
+
+.consultant-role-badge {
+  padding: 10px 15px;
+  border-radius: 999px;
+  font-weight: 800;
+  white-space: nowrap;
+  background: rgba(150, 100, 220, 0.17);
+  border: 1px solid rgba(180, 130, 255, 0.2);
+}
+
+
+/* NOTICE */
+
+.consultant-notice {
+  padding: 17px 19px;
+  margin-bottom: 30px;
+  border-radius: 15px;
+  background: rgba(150, 100, 220, 0.08);
+  border: 1px solid rgba(180, 130, 255, 0.15);
+}
+
+.consultant-notice strong {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.consultant-notice p {
+  margin: 0;
+  line-height: 1.55;
+  opacity: 0.67;
+}
+
+
+/* SECTION */
+
+.consultant-section {
+  margin-bottom: 34px;
+}
+
+.consultant-section > h2 {
+  margin: 5px 0 16px;
+  font-size: 1.3rem;
+}
+
+
+/* METRICS */
+
+.consultant-metrics {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+  gap: 14px;
+}
+
+.consultant-metric {
+  padding: 20px;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.consultant-metric span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  opacity: 0.58;
+}
+
+.consultant-metric strong {
+  display: block;
+  font-size: 1.9rem;
+}
+
+.consultant-metric small {
+  opacity: 0.5;
+}
+
+
+/* GRID */
+
+.consultant-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+  gap: 15px;
+}
+
+
+/* PANEL */
+
+.consultant-panel {
+  padding: 20px;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.038);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.consultant-panel h3 {
+  margin: 0 0 18px;
+}
+
+
+/* BARS */
+
+.consultant-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.consultant-bar-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 6px;
+  font-size: 0.82rem;
+}
+
+.consultant-bar-label strong {
+  color: #dfbaff;
+}
+
+.consultant-bar-track {
+  height: 9px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.consultant-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      90deg,
+      #b97ce7,
+      #7543bd
+    );
+}
+
+
+/* TABLE */
+
+.consultant-table-wrapper {
+  overflow-x: auto;
+  border-radius: 17px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.consultant-table {
+  width: 100%;
+  min-width: 950px;
+  border-collapse: collapse;
+}
+
+.consultant-table th,
+.consultant-table td {
+  padding: 13px 14px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.consultant-table th {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.55;
+}
+
+.consultant-table td {
+  font-size: 0.83rem;
+}
+
+.consultant-table tbody tr:hover {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.consultant-palm-result {
+  line-height: 1.55;
+  min-width: 150px;
+}
+
+.consultant-card-names {
+  min-width: 220px;
+  line-height: 1.45;
+}
+
+
+/* STATUS */
+
+.consultant-error {
+  padding: 16px 18px;
+  margin-bottom: 25px;
+  border-radius: 13px;
+  background: rgba(170, 50, 70, 0.13);
+  border: 1px solid rgba(220, 80, 100, 0.28);
+}
+
+.consultant-error p {
+  margin: 5px 0 0;
+}
+
+.consultant-empty {
+  padding: 38px 20px;
+  text-align: center;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.consultant-muted {
+  opacity: 0.55;
+}
+
+.consultant-disclaimer {
+  padding: 15px 17px;
+  border-radius: 13px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  opacity: 0.58;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+
+  .consultant-metrics {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+
+@media (max-width: 800px) {
+
+  .consultant-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .consultant-header {
+    flex-direction: column;
+  }
+
+  .consultant-metrics {
+    grid-template-columns: 1fr;
+  }
+
+}
