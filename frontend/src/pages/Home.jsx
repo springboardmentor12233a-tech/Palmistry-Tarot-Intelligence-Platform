@@ -1,7 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import hero from "../assets/hero.png";
+import { useAuth } from "../context/AuthContext";
 
 function Home() {
+  const { user } = useAuth();
+
+  if (user?.role === "admin") {
+    return (
+      <Navigate
+        to="/admin"
+        replace
+      />
+    );
+  }
+
   return (
     <div className="home">
 

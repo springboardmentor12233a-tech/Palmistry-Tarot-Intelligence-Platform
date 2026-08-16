@@ -1,5 +1,6 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import ThemeToggle from "./ThemeToggle";
 
 function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
@@ -21,6 +22,15 @@ function Navbar() {
             ========================= */}
         {!isAuthenticated && (
           <>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? "active-link" : ""
+              }
+            >
+              Home
+            </NavLink>
+
             <NavLink
               to="/login"
               className={({ isActive }) =>
@@ -153,6 +163,8 @@ function Navbar() {
             </button>
           </>
         )}
+
+        <ThemeToggle />
 
       </div>
     </nav>

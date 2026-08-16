@@ -1,7 +1,6 @@
 /* LOADING */
 .loading-container{text-align:center;margin:60px}
-.loader{width:60px;height:60px;border:6px solid #ddd;border-top:6px solid #2563eb;border-radius:50%;animation:spin 1s linear infinite;margin:auto}
-@keyframes spin{to{transform:rotate(360deg)}}
+.loader{width:60px;height:60px;border:6px solid rgba(255,255,255,.12);border-top:6px solid var(--accent-purple);border-right:6px solid var(--accent-gold);border-radius:50%;animation:spinGlow 1s linear infinite;margin:auto;box-shadow:0 0 20px rgba(139,92,246,.35)}
 /* FOOTER */
-.footer{margin-top:80px;background:#fff;padding:35px;text-align:center;box-shadow:0 -4px 12px rgba(0,0,0,.05)}
-.footer p{color:#666;margin-top:10px}
+.footer{margin-top:80px;background:var(--surface-bg);backdrop-filter:blur(var(--surface-blur));border-top:1px solid var(--glass-border);padding:35px;text-align:center;box-shadow:0 -4px 24px rgba(0,0,0,.3);transition:background .5s ease,border-color .5s ease}
+.footer p{color:var(--text-secondary);margin-top:10px}

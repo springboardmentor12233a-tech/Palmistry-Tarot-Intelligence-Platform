@@ -1,0 +1,81 @@
+/* =========================================================
+   SHARED KEYFRAME ANIMATIONS
+   Used across global.css, dashboard.css, admin-dashboard.css,
+   profile.css, my-readings.css, loading-footer.css
+========================================================= */
+
+@keyframes twinkle {
+    0% { opacity: 0.35; }
+    50% { opacity: 0.75; }
+    100% { opacity: 0.35; }
+}
+
+@keyframes driftStars {
+    from { background-position: 0 0; }
+    to { background-position: -1000px 500px; }
+}
+
+@keyframes nebulaDrift {
+    0% { transform: translate3d(0, 0, 0) scale(1); }
+    50% { transform: translate3d(20px, -15px, 0) scale(1.05); }
+    100% { transform: translate3d(-15px, 10px, 0) scale(1); }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(24px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes floatY {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-14px); }
+}
+
+@keyframes shimmerText {
+    to { background-position: 200% center; }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 6px rgba(139, 92, 246, 0.5); }
+    50% { box-shadow: 0 0 18px rgba(240, 200, 105, 0.85); }
+}
+
+@keyframes spinGlow {
+    to { transform: rotate(360deg); }
+}
+
+/* Utility classes available to any component */
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease both;
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease both;
+}
+
+.float {
+    animation: floatY 4s ease-in-out infinite;
+}
