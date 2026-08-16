@@ -1,100 +1,126 @@
-﻿# Backend secrets and generated files
+﻿# ============================================================
+# ENVIRONMENT VARIABLES / SECRETS
+# ============================================================
+
+.env
+.env.local
+.env.*.local
+
 backend/.env
-backend/venv/
-venv/
+backend/.env.local
+
+frontend/.env
+frontend/.env.local
+
+# Keep example environment files
+!backend/.env.example
+!frontend/.env.example
+
+
+# ============================================================
+# PYTHON
+# ============================================================
+
 __pycache__/
 **/__pycache__/
-*.pyc
 
-# Frontend generated files
-frontend/node_modules/
-frontend/dist/
+*.pyc
+*.pyo
+*.py[cod]
+
+.pytest_cache/
+
+venv/
+backend/venv/
+backend/.venv/
+backend/palm_venv/
+
+
+# ============================================================
+# NODE / FRONTEND
+# ============================================================
+
 node_modules/
 dist/
 
-# Editor and system files
-.vscode/
-Thumbs.db
-.DS_Store
-
-# Environment variables
-backend/.env
-frontend/.env
-.env
-
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-backend/venv/
-backend/.venv/
-.pytest_cache/
-
-# Node
 frontend/node_modules/
 frontend/dist/
 
-# Uploaded and generated files
+
+# ============================================================
+# DATABASES
+# ============================================================
+
+*.db
+*.db-shm
+*.db-wal
+
+*.sqlite
+*.sqlite3
+
+backend/app/data/platform.db
+backend/app/data/analytics.db
+backend/app/data/analytics_legacy_backup.db
+
+
+# ============================================================
+# LOGS
+# ============================================================
+
+*.log
+
+
+# ============================================================
+# EDITORS / OPERATING SYSTEM
+# ============================================================
+
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db
+
+
+# ============================================================
+# GENERATED BACKEND FILES
+# ============================================================
+
 backend/uploads/*
 backend/generated/*
+
 !backend/uploads/.gitkeep
 !backend/generated/.gitkeep
 !backend/generated/palm/.gitkeep
 !backend/generated/reports/.gitkeep
 
-# Database
-*.db
-*.sqlite
-*.sqlite3
 
-# IDE and operating system
-.vscode/
-.idea/
-.DS_Store
-Thumbs.db
+# ============================================================
+# PALM API GENERATED RESULTS
+# ============================================================
 
-# Logs
-*.log
+backend/app/static/palm_results/*
 
-# Separate palm-model environment
-backend/palm_venv/
+!backend/app/static/palm_results/.gitkeep
 
-# Palm model generated inputs and results
+
+# ============================================================
+# EXTERNAL PALMISTRY MODEL
+# ============================================================
+
 backend/external/palmistry/code/input/*
 backend/external/palmistry/code/results/*
+
 !backend/external/palmistry/code/input/.gitkeep
 !backend/external/palmistry/code/results/.gitkeep
 
-# Generated palm API results
-backend/app/static/palm_results/*
-
-# Keep the directory structure
-!backend/app/static/palm_results/.gitkeep
-
-# External palm-model temporary files
 backend/external/palmistry/code/input/api_*
 backend/external/palmistry/code/results/api_*.json
 
-# Palm model checkpoints
+
+# ============================================================
+# PALM MODEL CHECKPOINTS
+# ============================================================
+
 backend/external/palmistry/code/checkpoint/*.pth
 backend/external/palmistry/code/checkpoint/*.pt
 backend/external/palmistry/code/checkpoint/*.ckpt
-
-# Palm generated outputs
-backend/external/palmistry/code/results/*
-!backend/external/palmistry/code/results/.gitkeep
-
-# Temporary uploaded API images
-backend/external/palmistry/code/input/api_*
-
-# Generated static palm results
-backend/app/static/palm_results/*
-!backend/app/static/palm_results/.gitkeep
-
-# Palm virtual environment
-backend/palm_venv/
-
-# Local analytics database
-backend/app/data/analytics.db
-backend/app/data/analytics.db-shm
-backend/app/data/analytics.db-wal
