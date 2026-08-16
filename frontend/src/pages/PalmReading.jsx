@@ -89,23 +89,44 @@ function PalmReading() {
 
         {/* Preview */}
 
-        <div className="preview-card">
+        
+      <div className="preview-card">
 
-          <h2>Preview</h2>
+      <h2>Preview</h2>
 
-          {preview ? (
-            <img
-              src={preview}
-              alt="Preview"
-              className="preview-image"
-            />
-          ) : (
-            <div className="empty-box">
-              No image selected
-            </div>
-          )}
+      {preview ? (
 
-        </div>
+      <div className="preview-image-container">
+
+      <img
+        src={preview}
+        alt="Palm Preview"
+        className="preview-image"
+      />
+
+      {loading && (
+        <>
+          <div className="scanning-overlay"></div>
+
+          <div className="scan-line"></div>
+
+          <div className="scanning-text">
+            🔍 Scanning Palm...
+          </div>
+        </>
+      )}
+
+      </div>
+
+      ) : (
+
+      <div className="empty-box">
+       No image selected
+      </div>
+
+       )}
+
+      </div>
 
       </div>
 

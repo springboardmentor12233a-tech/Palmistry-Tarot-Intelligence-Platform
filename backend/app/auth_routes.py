@@ -34,22 +34,21 @@ async def login(credentials: UserLogin):
         "email": credentials.email
     })
 
-    # Email is not registered
-    if not user_doc:
-        raise HTTPException(
-            status_code=404,
-            detail="Email is not registered. Please sign up first."
-        )
+    # Generic message either way, so a caller can't use this endpoint
+    # to check whether a given email is registered.
+    invalid_credentials = HTTPException(
+        status_code=401,
+        detail="Incorrect email or password. Please try again."
+    )
 
-    # Email exists, but password is incorrect
+    if not user_doc:
+        raise invalid_credentials
+
     if not verify_password(
         credentials.password,
         user_doc["hashed_password"]
     ):
-        raise HTTPException(
-            status_code=401,
-            detail="Incorrect password. Please try again."
-        )
+        raise invalid_credentials
 
     role = user_doc.get("role", "user")
 

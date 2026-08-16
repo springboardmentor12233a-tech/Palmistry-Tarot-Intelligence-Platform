@@ -52,6 +52,14 @@ function PalmResult({ result }) {
 
   if (!result) return null;
 
+  if (!result.success) {
+    return (
+      <div className="result-card">
+        <p>{result.error || "Something went wrong. Please try again."}</p>
+      </div>
+    );
+  }
+
 
   return (
 

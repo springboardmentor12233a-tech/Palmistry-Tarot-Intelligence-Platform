@@ -60,9 +60,10 @@ async def analyze_palm_endpoint(
 ):
     request_id = str(uuid.uuid4())
 
+    safe_filename = os.path.basename(file.filename)
     upload_path = os.path.join(
         UPLOADS_DIR,
-        f"{request_id}_{file.filename}"
+        f"{request_id}_{safe_filename}"
     )
 
     with open(upload_path, "wb") as f:
@@ -159,7 +160,8 @@ async def combined_reading_endpoint(
 ):
     request_id = str(uuid.uuid4())
 
-    upload_path = os.path.join(UPLOADS_DIR, f"{request_id}_{file.filename}")
+    safe_filename = os.path.basename(file.filename)
+    upload_path = os.path.join(UPLOADS_DIR, f"{request_id}_{safe_filename}")
     with open(upload_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
 

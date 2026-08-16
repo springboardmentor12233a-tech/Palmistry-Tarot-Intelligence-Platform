@@ -74,12 +74,14 @@ Rules:
 - Keep the tone positive and personalized.
 """
 
-    response = _groq_client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[{"role": "user", "content": prompt}],
-    )
-
-    return response.choices[0].message.content
+    try:
+        response = _groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return "We couldn't generate your reading right now. Please try again in a moment."
 def generate_tarot_llm_reading(spread):
     cards_description = []
     for card in spread:
@@ -148,12 +150,14 @@ Rules:
 - Do not claim guaranteed outcomes.
 - Keep the tone positive and meaningful.
 """
-    response = _groq_client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[{"role": "user", "content": prompt}],
-    )
-
-    return response.choices[0].message.content
+    try:
+        response = _groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return "We couldn't generate your reading right now. Please try again in a moment."
 def generate_combined_llm_reading(palm_reading, tarot_reading):
     prompt = f"""You are an AI spiritual guidance assistant.
 
@@ -199,9 +203,11 @@ Rules:
 - Do not make guaranteed predictions.
 - Keep the tone warm and professional.
 """
-    response = _groq_client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[{"role": "user", "content": prompt}],
-    )
-
-    return response.choices[0].message.content
+    try:
+        response = _groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        return "We couldn't generate your reading right now. Please try again in a moment."
