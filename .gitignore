@@ -1,0 +1,40 @@
+# Python / Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Testing & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.hypothesis/
+
+# Environment / Secrets
+.env
+.env.local
+*.pem
+*.key
+
+# Data & Output Artifacts
+output/
+annotated_images/
+landmark_coords.csv
+palm_features*.csv
+palm_clustered.csv
+palm_cluster_summary.csv
+tarot_interaction.csv
+Palmistry_AI_Report.pdf
+*.task
+*.pth
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

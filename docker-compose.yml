@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: palmtarot_api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./output:/app/output
+    networks:
+      - palmtarot_net
+    restart: unless-stopped
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    container_name: palmtarot_dashboard
+    ports:
+      - "8501:8501"
+    env_file:
+      - .env
+    volumes:
+      - ./output:/app/output
+    depends_on:
+      - api
+    networks:
+      - palmtarot_net
+    restart: unless-stopped
+
+networks:
+  palmtarot_net:
+    driver: bridge
