@@ -13,6 +13,19 @@ from pydantic import BaseModel
 from ultralytics import YOLO
 from groq import Groq
 from dotenv import load_dotenv
+from passlib.context import CryptContext
+import jwt
+from datetime import datetime, timedelta
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+import random
+from fastapi import HTTPException
+from pydantic import BaseModel
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+SECRET_KEY = "mystical-oracle-super-secret-key" 
+ALGORITHM = "HS256"
 
 # --- 1. IMPORT DATABASE ---
 from database import MysticalDB
@@ -96,15 +109,79 @@ print("Tarot Dataset Loaded successfully!")
 # ==========================================
 # 2. DATA MODELS
 # ==========================================
+import random
+
+# ==========================================
+# 2. DATA MODELS
+# ==========================================
 class ChatRequest(BaseModel):
     message: str
     history: list
-    session_id: str = None  # Added optionally so the DB knows which session to save to
+    session_id: str = None  
 
 class TarotRequest(BaseModel):
     user_name: str
     user_question: str
-    session_id: str = None  # NEW: allows us to add cards to an existing chat!
+    session_id: str = None  
+
+# --- NEW OTP DATA MODELS ---
+class OTPRequest(BaseModel):
+    contact: str  # Can be email or phone
+
+class VerifyRequest(BaseModel):
+    contact: str
+    otp: str
+
+# ==========================================
+# OTP AUTHENTICATION ENDPOINTS
+# ==========================================
+# Temporary in-memory store for our simulated OTPs
+otp_storage = {}
+
+@app.post("/api/request-otp")
+async def request_otp(req: OTPRequest):
+    # 1. Generate a random 6-digit code
+    otp = str(random.randint(100000, 999999))
+    
+    # 2. Store it temporarily (expires if server restarts)
+    otp_storage[req.contact] = otp
+    
+    # 3. Simulate sending an email/SMS by printing to your terminal
+    print("\n" + "="*30)
+    print(f"🔔 MOCK OTP ALERT")
+    print(f"Sending to: {req.contact}")
+    print(f"Your Code is: {otp}")
+    print("="*30 + "\n")
+    
+    return {"message": "OTP sent successfully."}
+
+@app.post("/api/verify-otp")
+async def verify_otp(req: VerifyRequest):
+    # 1. Check if the OTP matches what we stored
+    stored_otp = otp_storage.get(req.contact)
+    
+    if not stored_otp or stored_otp != req.otp:
+        raise HTTPException(status_code=401, detail="Invalid or expired OTP.")
+        
+    # 2. Clear the OTP so it can't be used again
+    del otp_storage[req.contact]
+    
+    # 3. Check if user exists in DB, if not, create them silently
+    user = db.get_user_by_username(req.contact)
+    if not user:
+        # We pass a dummy password since we rely on OTPs now
+        db.create_user(req.contact, "OTP_AUTH", "seeker")
+        user = db.get_user_by_username(req.contact)
+
+    # 4. Generate Login Token
+    token_data = {
+        "sub": user[1],
+        "role": user[3],
+        "exp": datetime.utcnow() + timedelta(days=7) 
+    }
+    token = jwt.encode(token_data, SECRET_KEY, algorithm=ALGORITHM)
+    
+    return {"access_token": token, "role": user[3], "username": user[1]}
 # ==========================================
 # 3. PALMISTRY ENDPOINTS
 # ==========================================
@@ -247,25 +324,57 @@ async def draw_tarot(req: TarotRequest):
 @app.post("/api/chat")
 async def chat(req: ChatRequest):
     try:
-        # 1. Save user message to DB if session_id exists
         if req.session_id:
             db.save_message(req.session_id, "user", req.message)
 
-        # 2. Check if frontend already appended the user message to history
-        user_msg_obj = {"role": "user", "content": req.message}
-        if not req.history or req.history[-1] != user_msg_obj:
-            req.history.append(user_msg_obj)
-        
-        # 3. Get response from Groq
+        req.history.append({"role": "user", "content": req.message})
         answer = get_groq_response(req.history, max_tokens=600)
-        
-        # 4. Append assistant response
         req.history.append({"role": "assistant", "content": answer})
         
-        # 5. Save assistant response to DB
         if req.session_id:
             db.save_message(req.session_id, "assistant", answer)
             
         return {"reply": answer, "history": req.history}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# ==========================================
+# OTP AUTHENTICATION ENDPOINTS
+# ==========================================
+otp_storage = {}
+
+@app.post("/api/request-otp")
+async def request_otp(req: OTPRequest):
+    otp = str(random.randint(100000, 999999))
+    otp_storage[req.contact] = otp
+    
+    print("\n" + "="*30)
+    print(f"🔔 MOCK OTP ALERT")
+    print(f"Sending to: {req.contact}")
+    print(f"Your Code is: {otp}")
+    print("="*30 + "\n")
+    
+    return {"message": "OTP sent successfully."}
+
+@app.post("/api/verify-otp")
+async def verify_otp(req: VerifyRequest):
+    stored_otp = otp_storage.get(req.contact)
+    
+    if not stored_otp or stored_otp != req.otp:
+        raise HTTPException(status_code=401, detail="Invalid or expired OTP.")
+        
+    del otp_storage[req.contact]
+    
+    user = db.get_user_by_username(req.contact)
+    if not user:
+        db.create_user(req.contact, "OTP_AUTH", "seeker")
+        user = db.get_user_by_username(req.contact)
+
+    token_data = {
+        "sub": user[1],
+        "role": user[3],
+        "exp": datetime.utcnow() + timedelta(days=7) 
+    }
+    token = jwt.encode(token_data, SECRET_KEY, algorithm=ALGORITHM)
+    
+    return {"access_token": token, "role": user[3], "username": user[1]}
