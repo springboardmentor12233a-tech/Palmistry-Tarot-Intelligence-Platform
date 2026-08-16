@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useLocation, Link, redirect } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { Eye, EyeOff } from "lucide-react";
 function Login() {
@@ -19,8 +19,14 @@ function Login() {
     setLoading(true);
 
     try {
-      await login(email, password);
+    const loggedInUser = await login(email, password);
+
+    if (loggedInUser.role === "admin") {
+      navigate("/admin");
+    } 
+    else {
       navigate(redirectTo);
+    }
     } catch (err) {
       const detail = err.response?.data?.detail;
       setError(detail || "Login failed. Please check your credentials.");
@@ -83,8 +89,21 @@ function Login() {
             </span>
           </div>
 
-          {error && <p style={{ color: "red" }}>{error}</p>}
-
+          {error && (
+            <div
+            style={{
+            background: "#fff0f0",
+            border: "1px solid #f0b8b8",
+            color: "#c62828",
+            borderRadius: "6px",
+            padding: "10px 14px",
+            marginBottom: "15px",
+            fontSize: "14px",
+          }}
+            >
+          {error}
+          </div>
+          )}
           <button type="submit" className="primary-btn" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>

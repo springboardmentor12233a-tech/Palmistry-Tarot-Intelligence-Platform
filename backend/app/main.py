@@ -23,6 +23,7 @@ from app.pdf_export import (
 )
 
 from app.auth_routes import router as auth_router
+from app.admin_routes import router as admin_router
 from app.auth import get_current_user
 from app.database import save_reading, get_user_readings, get_reading_stats, users_collection
 
@@ -42,7 +43,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(auth_router, prefix="/auth", tags=["auth"])
-
+app.include_router(admin_router)
 # Serve annotated images so the frontend can display them directly
 app.mount("/results", StaticFiles(directory=RESULTS_DIR), name="results")
 app.mount("/card-images", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "data", "tarot", "cards")), name="card-images")
@@ -222,6 +223,7 @@ async def combined_reading_endpoint(
 class CurrentUserResponse(BaseModel):
     name: str | None = None
     email: str
+    role: str
     created_at: datetime | None = None
 
 @app.get("/auth/me", response_model=CurrentUserResponse)
@@ -235,12 +237,14 @@ async def read_current_user(
     if not user_doc:
         return {
             "email": current_user_email,
+            "role": "user",
             "created_at": None
         }
 
     return {
         "name": user_doc.get("name"),
         "email": user_doc.get("email"),
+        "role": user_doc.get("role", "user"),
         "created_at": user_doc.get("created_at")
     }
 

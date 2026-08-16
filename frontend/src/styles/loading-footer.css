@@ -1,0 +1,7 @@
+/* LOADING */
+.loading-container{text-align:center;margin:60px}
+.loader{width:60px;height:60px;border:6px solid #ddd;border-top:6px solid #2563eb;border-radius:50%;animation:spin 1s linear infinite;margin:auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* FOOTER */
+.footer{margin-top:80px;background:#fff;padding:35px;text-align:center;box-shadow:0 -4px 12px rgba(0,0,0,.05)}
+.footer p{color:#666;margin-top:10px}

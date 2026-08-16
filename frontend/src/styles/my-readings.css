@@ -1,0 +1,17 @@
+/* MY READINGS PAGE */
+.my-readings-page{min-height:calc(100vh - 80px);background:#f4f7fb;padding:30px 28px 60px}
+.my-readings-container{max-width:1400px;margin:0 auto}.my-readings-heading{font-size:36px;font-weight:700;color:#171717;margin:0 0 20px}
+.my-readings-list{display:flex;flex-direction:column;gap:22px}
+.my-reading-card{background:#fff;padding:30px 32px;border-radius:20px;box-shadow:0 8px 25px rgba(0,0,0,.07);transition:transform .2s ease,box-shadow .2s ease}
+.my-reading-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,.1)}
+.my-reading-header{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+.my-reading-header h2{font-size:25px;font-weight:700;color:#111827;margin:0 0 5px}.my-reading-date{color:#64748b;font-size:14px;margin:0}
+.my-reading-badge{background:#eff6ff;color:#2563eb;padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;text-transform:capitalize;white-space:nowrap}
+.my-reading-content{margin-top:20px}.my-reading-content p{color:#334155;font-size:16px;line-height:1.65;margin:0}
+.my-reading-actions{margin-top:22px}
+.my-reading-pdf-btn{display:inline-flex;align-items:center;gap:8px;background:#2563eb;color:#fff;text-decoration:none;padding:12px 20px;border-radius:9px;font-size:16px;font-weight:500;transition:background .2s ease,transform .2s ease}
+.my-reading-pdf-btn:hover{background:#1d4ed8;transform:translateY(-2px)}
+.my-readings-empty{background:#fff;border-radius:20px;padding:60px 30px;text-align:center;box-shadow:0 8px 25px rgba(0,0,0,.06)}
+.my-readings-empty-icon{font-size:50px;margin-bottom:15px}.my-readings-empty h2{color:#111827;margin-bottom:10px}.my-readings-empty p{color:#64748b}
+.my-readings-error{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;padding:15px 20px;border-radius:10px;margin-bottom:20px}
+@media(max-width:768px){.my-readings-page{padding:25px 18px 50px}.my-readings-heading{font-size:30px}.my-reading-card{padding:25px}.my-reading-header{flex-direction:column}.my-reading-badge{align-self:flex-start}}

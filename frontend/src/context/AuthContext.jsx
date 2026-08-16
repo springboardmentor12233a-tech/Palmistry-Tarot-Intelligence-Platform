@@ -27,6 +27,7 @@ export function AuthProvider({ children }) {
     const newUser = {
       name: meResponse.data.name,
       email: meResponse.data.email,
+      role: meResponse.data.role,
       created_at: meResponse.data.created_at,
     };
 
@@ -47,16 +48,18 @@ export function AuthProvider({ children }) {
     const meResponse = await api.get("/auth/me");
 
     const loggedInUser = {
-      name: meResponse.data.name,
-      email: meResponse.data.email,
-      created_at: meResponse.data.created_at,
+    name: meResponse.data.name,
+    email: meResponse.data.email,
+    role: response.data.role,
+    created_at: meResponse.data.created_at,
     };
 
     localStorage.setItem("user", JSON.stringify(loggedInUser));
     setUser(loggedInUser);
+
+    return loggedInUser;
   };
 
-  // Update user information after profile changes
   const updateUser = (updatedUser) => {
     const mergedUser = {
       ...user,
@@ -72,6 +75,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("user");
     setUser(null);
   };
+  
 
   return (
     <AuthContext.Provider

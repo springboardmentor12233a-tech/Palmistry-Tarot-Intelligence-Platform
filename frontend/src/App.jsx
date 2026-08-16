@@ -17,6 +17,9 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 
 import Dashboard from "./pages/Dashboard";
+
+import AdminRoute from "./components/AdminRoute";
+import AdminDashboard from "./pages/AdminDashboard";
 import "./App.css";
 
 function App() {
@@ -40,6 +43,14 @@ function App() {
                <Dashboard />
             </ProtectedRoute>
             }
+          />
+          <Route
+          path="/admin"
+          element={
+          <AdminRoute>
+            <AdminDashboard />
+          </AdminRoute>
+          }
           />
           <Route
             path="/palm-reading"

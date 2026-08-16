@@ -19,23 +19,51 @@ async def signup(user: UserSignup):
         "name": user.name,
         "email": user.email,
         "hashed_password": hash_password(user.password),
+        "role": "user",
         "created_at": datetime.now(timezone.utc)
     }
     await users_collection.insert_one(user_doc)
 
-    token = create_access_token({"sub": user.email})
-    return TokenResponse(access_token=token, name=user.name, email=user.email)
+    token = create_access_token({"sub": user.email, "role": "user"})
+    return TokenResponse(access_token=token, name=user.name, email=user.email, role="user")
 
 
 @router.post("/login", response_model=TokenResponse)
 async def login(credentials: UserLogin):
-    user_doc = await users_collection.find_one({"email": credentials.email})
-    if not user_doc or not verify_password(credentials.password, user_doc["hashed_password"]):
-        raise HTTPException(status_code=401, detail="Incorrect email or password.")
+    user_doc = await users_collection.find_one({
+        "email": credentials.email
+    })
 
-    token = create_access_token({"sub": user_doc["email"]})
-    return TokenResponse(access_token=token, name=user_doc["name"], email=user_doc["email"])
+    # Email is not registered
+    if not user_doc:
+        raise HTTPException(
+            status_code=404,
+            detail="Email is not registered. Please sign up first."
+        )
 
+    # Email exists, but password is incorrect
+    if not verify_password(
+        credentials.password,
+        user_doc["hashed_password"]
+    ):
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect password. Please try again."
+        )
+
+    role = user_doc.get("role", "user")
+
+    token = create_access_token({
+        "sub": user_doc["email"],
+        "role": role
+    })
+
+    return TokenResponse(
+        access_token=token,
+        name=user_doc["name"],
+        email=user_doc["email"],
+        role=role
+    )
 
 class UpdateProfileRequest(BaseModel):
     name: str

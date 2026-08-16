@@ -1,0 +1,7 @@
+@media(max-width:900px){
+.hero{flex-direction:column-reverse;text-align:center;gap:40px}
+.hero-content h1{font-size:42px}.hero-content p{font-size:18px}
+.hero-buttons{justify-content:center}.hero-image img{width:300px}
+.upload-layout{flex-direction:column}.navbar{flex-direction:column;gap:20px}
+.nav-links{flex-wrap:wrap;justify-content:center}.page-title{font-size:34px}.features h2{font-size:34px}
+}
