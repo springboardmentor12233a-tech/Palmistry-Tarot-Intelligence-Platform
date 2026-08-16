@@ -48,84 +48,517 @@ const saveToArchive = (username, type, sessionId, history) => {
   localStorage.setItem(key, JSON.stringify(archive));
 };
 
+// --- COUNTRY CODES LIST ---
+// --- COMPLETE GLOBAL COUNTRY CODES ---
+const COUNTRY_CODES = [
+  { code: '+93', country: 'Afghanistan', flag: '🇦🇫' }, { code: '+355', country: 'Albania', flag: '🇦🇱' },
+  { code: '+213', country: 'Algeria', flag: '🇩🇿' }, { code: '+376', country: 'Andorra', flag: '🇦🇩' },
+  { code: '+244', country: 'Angola', flag: '🇦🇴' }, { code: '+54', country: 'Argentina', flag: '🇦🇷' },
+  { code: '+374', country: 'Armenia', flag: '🇦🇲' }, { code: '+61', country: 'Australia', flag: '🇦🇺' },
+  { code: '+43', country: 'Austria', flag: '🇦🇹' }, { code: '+994', country: 'Azerbaijan', flag: '🇦🇿' },
+  { code: '+973', country: 'Bahrain', flag: '🇧🇭' }, { code: '+880', country: 'Bangladesh', flag: '🇧🇩' },
+  { code: '+375', country: 'Belarus', flag: '🇧🇾' }, { code: '+32', country: 'Belgium', flag: '🇧🇪' },
+  { code: '+501', country: 'Belize', flag: '🇧🇿' }, { code: '+229', country: 'Benin', flag: '🇧🇯' },
+  { code: '+975', country: 'Bhutan', flag: '🇧🇹' }, { code: '+591', country: 'Bolivia', flag: '🇧🇴' },
+  { code: '+387', country: 'Bosnia & Herzegovina', flag: '🇧🇦' }, { code: '+267', country: 'Botswana', flag: '🇧🇼' },
+  { code: '+55', country: 'Brazil', flag: '🇧🇷' }, { code: '+673', country: 'Brunei', flag: '🇧🇳' },
+  { code: '+359', country: 'Bulgaria', flag: '🇧🇬' }, { code: '+226', country: 'Burkina Faso', flag: '🇧🇫' },
+  { code: '+257', country: 'Burundi', flag: '🇧🇮' }, { code: '+855', country: 'Cambodia', flag: '🇰🇭' },
+  { code: '+237', country: 'Cameroon', flag: '🇨🇲' }, { code: '+1', country: 'Canada / USA', flag: '🇨🇦/🇺🇸' },
+  { code: '+238', country: 'Cape Verde', flag: '🇨🇻' }, { code: '+236', country: 'Central African Rep', flag: '🇨🇫' },
+  { code: '+235', country: 'Chad', flag: '🇹🇩' }, { code: '+56', country: 'Chile', flag: '🇨🇱' },
+  { code: '+86', country: 'China', flag: '🇨🇳' }, { code: '+57', country: 'Colombia', flag: '🇨🇴' },
+  { code: '+269', country: 'Comoros', flag: '🇰🇲' }, { code: '+242', country: 'Congo', flag: '🇨🇬' },
+  { code: '+506', country: 'Costa Rica', flag: '🇨🇷' }, { code: '+385', country: 'Croatia', flag: '🇭🇷' },
+  { code: '+53', country: 'Cuba', flag: '🇨🇺' }, { code: '+357', country: 'Cyprus', flag: '🇨🇾' },
+  { code: '+420', country: 'Czech Republic', flag: '🇨🇿' }, { code: '+45', country: 'Denmark', flag: '🇩🇰' },
+  { code: '+253', country: 'Djibouti', flag: '🇩🇯' }, { code: '+1', country: 'Dominican Republic', flag: '🇩🇴' },
+  { code: '+593', country: 'Ecuador', flag: '🇪🇨' }, { code: '+20', country: 'Egypt', flag: '🇪🇬' },
+  { code: '+503', country: 'El Salvador', flag: '🇸🇻' }, { code: '+240', country: 'Equatorial Guinea', flag: '🇬🇶' },
+  { code: '+291', country: 'Eritrea', flag: '🇪🇷' }, { code: '+372', country: 'Estonia', flag: '🇪🇪' },
+  { code: '+251', country: 'Ethiopia', flag: '🇪🇹' }, { code: '+679', country: 'Fiji', flag: '🇫🇯' },
+  { code: '+358', country: 'Finland', flag: '🇫🇮' }, { code: '+33', country: 'France', flag: '🇫🇷' },
+  { code: '+241', country: 'Gabon', flag: '🇬🇦' }, { code: '+220', country: 'Gambia', flag: '🇬🇲' },
+  { code: '+995', country: 'Georgia', flag: '🇬🇪' }, { code: '+49', country: 'Germany', flag: '🇩🇪' },
+  { code: '+233', country: 'Ghana', flag: '🇬🇭' }, { code: '+30', country: 'Greece', flag: '🇬🇷' },
+  { code: '+502', country: 'Guatemala', flag: '🇬🇹' }, { code: '+224', country: 'Guinea', flag: '🇬🇳' },
+  { code: '+592', country: 'Guyana', flag: '🇬🇾' }, { code: '+509', country: 'Haiti', flag: '🇭🇹' },
+  { code: '+504', country: 'Honduras', flag: '🇭🇳' }, { code: '+852', country: 'Hong Kong', flag: '🇭🇰' },
+  { code: '+36', country: 'Hungary', flag: '🇭🇺' }, { code: '+354', country: 'Iceland', flag: '🇮🇸' },
+  { code: '+91', country: 'India', flag: '🇮🇳' }, { code: '+62', country: 'Indonesia', flag: '🇮🇩' },
+  { code: '+98', country: 'Iran', flag: '🇮🇷' }, { code: '+964', country: 'Iraq', flag: '🇮🇶' },
+  { code: '+353', country: 'Ireland', flag: '🇮🇪' }, { code: '+972', country: 'Israel', flag: '🇮🇱' },
+  { code: '+39', country: 'Italy', flag: '🇮🇹' }, { code: '+225', country: 'Ivory Coast', flag: '🇨🇮' },
+  { code: '+1876', country: 'Jamaica', flag: '🇯🇲' }, { code: '+81', country: 'Japan', flag: '🇯🇵' },
+  { code: '+962', country: 'Jordan', flag: '🇯🇴' }, { code: '+7', country: 'Kazakhstan', flag: '🇰🇿' },
+  { code: '+254', country: 'Kenya', flag: '🇰🇪' }, { code: '+965', country: 'Kuwait', flag: '🇰🇼' },
+  { code: '+996', country: 'Kyrgyzstan', flag: '🇰🇬' }, { code: '+856', country: 'Laos', flag: '🇱🇦' },
+  { code: '+371', country: 'Latvia', flag: '🇱🇻' }, { code: '+961', country: 'Lebanon', flag: '🇱🇧' },
+  { code: '+218', country: 'Libya', flag: '🇱🇾' }, { code: '+423', country: 'Liechtenstein', flag: '🇱🇮' },
+  { code: '+370', country: 'Lithuania', flag: '🇱🇹' }, { code: '+352', country: 'Luxembourg', flag: '🇱🇺' },
+  { code: '+853', country: 'Macau', flag: '🇲🇴' }, { code: '+261', country: 'Madagascar', flag: '🇲🇬' },
+  { code: '+265', country: 'Malawi', flag: '🇲🇼' }, { code: '+60', country: 'Malaysia', flag: '🇲🇾' },
+  { code: '+960', country: 'Maldives', flag: '🇲🇻' }, { code: '+223', country: 'Mali', flag: '🇲🇱' },
+  { code: '+356', country: 'Malta', flag: '🇲🇹' }, { code: '+52', country: 'Mexico', flag: '🇲🇽' },
+  { code: '+373', country: 'Moldova', flag: '🇲🇩' }, { code: '+377', country: 'Monaco', flag: '🇲🇨' },
+  { code: '+976', country: 'Mongolia', flag: '🇲🇳' }, { code: '+382', country: 'Montenegro', flag: '🇲🇪' },
+  { code: '+212', country: 'Morocco', flag: '🇲🇦' }, { code: '+258', country: 'Mozambique', flag: '🇲🇿' },
+  { code: '+95', country: 'Myanmar', flag: '🇲🇲' }, { code: '+264', country: 'Namibia', flag: '🇳🇦' },
+  { code: '+977', country: 'Nepal', flag: '🇳🇵' }, { code: '+31', country: 'Netherlands', flag: '🇳🇱' },
+  { code: '+64', country: 'New Zealand', flag: '🇳🇿' }, { code: '+505', country: 'Nicaragua', flag: '🇳🇮' },
+  { code: '+234', country: 'Nigeria', flag: '🇳🇬' }, { code: '+850', country: 'North Korea', flag: '🇰🇵' },
+  { code: '+47', country: 'Norway', flag: '🇳🇴' }, { code: '+968', country: 'Oman', flag: '🇴🇲' },
+  { code: '+92', country: 'Pakistan', flag: '🇵🇰' }, { code: '+970', country: 'Palestine', flag: '🇵🇸' },
+  { code: '+507', country: 'Panama', flag: '🇵🇦' }, { code: '+595', country: 'Paraguay', flag: '🇵🇾' },
+  { code: '+51', country: 'Peru', flag: '🇵🇪' }, { code: '+63', country: 'Philippines', flag: '🇵🇭' },
+  { code: '+48', country: 'Poland', flag: '🇵🇱' }, { code: '+351', country: 'Portugal', flag: '🇵🇹' },
+  { code: '+974', country: 'Qatar', flag: '🇶🇦' }, { code: '+40', country: 'Romania', flag: '🇷🇴' },
+  { code: '+7', country: 'Russia', flag: '🇷🇺' }, { code: '+250', country: 'Rwanda', flag: '🇷🇼' },
+  { code: '+966', country: 'Saudi Arabia', flag: '🇸🇦' }, { code: '+221', country: 'Senegal', flag: '🇸🇳' },
+  { code: '+381', country: 'Serbia', flag: '🇷🇸' }, { code: '+65', country: 'Singapore', flag: '🇸🇬' },
+  { code: '+421', country: 'Slovakia', flag: '🇸🇰' }, { code: '+386', country: 'Slovenia', flag: '🇸🇮' },
+  { code: '+252', country: 'Somalia', flag: '🇸🇴' }, { code: '+27', country: 'South Africa', flag: '🇿🇦' },
+  { code: '+82', country: 'South Korea', flag: '🇰🇷' }, { code: '+34', country: 'Spain', flag: '🇪🇸' },
+  { code: '+94', country: 'Sri Lanka', flag: '🇱🇰' }, { code: '+249', country: 'Sudan', flag: '🇸🇩' },
+  { code: '+46', country: 'Sweden', flag: '🇸🇪' }, { code: '+41', country: 'Switzerland', flag: '🇨🇭' },
+  { code: '+963', country: 'Syria', flag: '🇸🇾' }, { code: '+886', country: 'Taiwan', flag: '🇹🇼' },
+  { code: '+992', country: 'Tajikistan', flag: '🇹🇯' }, { code: '+255', country: 'Tanzania', flag: '🇹🇿' },
+  { code: '+66', country: 'Thailand', flag: '🇹🇭' }, { code: '+228', country: 'Togo', flag: '🇹🇬' },
+  { code: '+216', country: 'Tunisia', flag: '🇹🇳' }, { code: '+90', country: 'Turkey', flag: '🇹🇷' },
+  { code: '+993', country: 'Turkmenistan', flag: '🇹🇲' }, { code: '+256', country: 'Uganda', flag: '🇺🇬' },
+  { code: '+380', country: 'Ukraine', flag: '🇺🇦' }, { code: '+971', country: 'United Arab Emirates', flag: '🇦🇪' },
+  { code: '+44', country: 'United Kingdom', flag: '🇬🇧' }, { code: '+598', country: 'Uruguay', flag: '🇺🇾' },
+  { code: '+998', country: 'Uzbekistan', flag: '🇺🇿' }, { code: '+58', country: 'Venezuela', flag: '🇻🇪' },
+  { code: '+84', country: 'Vietnam', flag: '🇻🇳' }, { code: '+967', country: 'Yemen', flag: '🇾🇪' },
+  { code: '+260', country: 'Zambia', flag: '🇿🇲' }, { code: '+263', country: 'Zimbabwe', flag: '🇿🇼' }
+];
+// Sort the countries alphabetically so the dropdown looks professional
+COUNTRY_CODES.sort((a, b) => a.country.localeCompare(b.country));
 // --- AUTHENTICATION COMPONENT ---
-const AuthScreen = ({ onLogin }) => {
-  const [contact, setContact] = useState('');
-  const [otp, setOtp] = useState('');
-  const [otpSent, setOtpSent] = useState(false);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+// --- AUTHENTICATION COMPONENT (UPDATED FOR ALERT OTP) ---
 
-  const handleRequestOTP = async (e) => {
-    e.preventDefault();
-    if (!contact) return setError("Please enter an email or phone number.");
-    setError('');
-    setLoading(true);
-    try {
-      const res = await fetch(`http://localhost:8001/api/request-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contact })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail);
-      setOtpSent(true); 
-    } catch (err) {
-      setError(err.message);
-    }
-    setLoading(false);
+const AuthScreen = ({ onLogin }) => {
+  // Modes: 'login', 'signup', 'forgot_request', 'forgot_verify'
+  const [authMode, setAuthMode] = useState('login');
+
+  // Form Fields
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  
+  // Contact details
+  const [contactType, setContactType] = useState('email'); // 'email' or 'phone'
+  const [email, setEmail] = useState('');
+  const [countryCode, setCountryCode] = useState('+91');
+  const [phoneNumber, setPhoneNumber] = useState('');
+
+  // Forgot password OTP states
+  const [resetIdentifier, setResetIdentifier] = useState(''); // username or email/phone
+  const [otpInput, setOtpInput] = useState('');
+  const [generatedOtp, setGeneratedOtp] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [targetUser, setTargetUser] = useState(null);
+
+  const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+
+  // Helper: Get users database from localStorage
+  const getUsersDB = () => JSON.parse(localStorage.getItem('oracle_registered_users')) || [];
+  const saveUsersDB = (users) => localStorage.setItem('oracle_registered_users', JSON.stringify(users));
+
+  // --- VALIDATION HELPERS ---
+  const isValidEmail = (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim());
+  
+  // Updated for international E.164 standards (7 to 15 digits)
+  const isValidPhone = (val, code) => {
+    const cleanDigits = val.replace(/\D/g, ''); // Strips out dashes/spaces
+    return cleanDigits.length >= 7 && cleanDigits.length <= 15;
   };
 
-  const handleVerifyOTP = async (e) => {
+  // --- HANDLE SIGNUP ---
+  const handleSignup = (e) => {
     e.preventDefault();
-    if (!otp) return setError("Please enter the 6-digit code.");
     setError('');
-    setLoading(true);
-    try {
-      const res = await fetch(`http://localhost:8001/api/verify-otp`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contact, otp })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail);
+    setSuccessMsg('');
 
-      localStorage.setItem("token", data.access_token);
-      localStorage.setItem("username", data.username);
-      localStorage.setItem("role", data.role);
-      onLogin(data);
-    } catch (err) {
-      setError(err.message);
+    if (!username.trim() || !password.trim()) {
+      return setError('Username and password are required.');
     }
-    setLoading(false);
+    if (password.length < 6) {
+      return setError('Password must be at least 6 characters long.');
+    }
+    if (password !== confirmPassword) {
+      return setError('Passwords do not match.');
+    }
+
+    let contactValue = '';
+    if (contactType === 'email') {
+      if (!isValidEmail(email)) {
+        return setError('Please enter a valid, authentic email address (e.g. name@domain.com).');
+      }
+      contactValue = email.trim().toLowerCase();
+    } else {
+      if (!isValidPhone(phoneNumber, countryCode)) {
+        return setError(`Please enter a valid ${countryCode} phone number.`);
+      }
+      contactValue = `${countryCode} ${phoneNumber.replace(/\D/g, '')}`;
+    }
+
+    const users = getUsersDB();
+    const existing = users.find(
+      u => u.username.toLowerCase() === username.trim().toLowerCase() || u.contact === contactValue
+    );
+    if (existing) {
+      return setError('A user with this username or contact info already exists.');
+    }
+
+    const newUser = {
+      username: username.trim(),
+      password: password,
+      contactType,
+      contact: contactValue,
+      role: 'Seeker',
+    };
+
+    users.push(newUser);
+    saveUsersDB(users);
+
+    setSuccessMsg('Account created successfully! Please sign in.');
+    setAuthMode('login');
+    setPassword('');
+    setConfirmPassword('');
+  };
+
+  // --- HANDLE LOGIN ---
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setError('');
+    setSuccessMsg('');
+
+    if (!username.trim() || !password.trim()) {
+      return setError('Please enter both username and password.');
+    }
+
+    const users = getUsersDB();
+    const found = users.find(
+      u => u.username.toLowerCase() === username.trim().toLowerCase() && u.password === password
+    );
+
+    if (!found) {
+      return setError('Invalid username or secret cipher.');
+    }
+
+    // Success! Log the user in
+    localStorage.setItem('token', 'simulated_token_' + Date.now());
+    localStorage.setItem('username', found.username);
+    localStorage.setItem('role', found.role || 'Seeker');
+    onLogin(found);
+  };
+
+  // --- HANDLE FORGOT PASSWORD: STEP 1 (TRIGGER OTP ALERT) ---
+  const handleRequestResetOTP = (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (!resetIdentifier.trim()) {
+      return setError('Please enter your username, registered email, or phone.');
+    }
+
+    const users = getUsersDB();
+    const found = users.find(
+      u => u.username.toLowerCase() === resetIdentifier.trim().toLowerCase() || 
+           u.contact.toLowerCase() === resetIdentifier.trim().toLowerCase()
+    );
+
+    if (!found) {
+      return setError('No mystical account found with that identifier.');
+    }
+
+    // Generate 6-digit OTP
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    setGeneratedOtp(code);
+    setTargetUser(found);
+    setAuthMode('forgot_verify');
+
+    // Pop up the OTP in an alert box
+    setTimeout(() => {
+      alert(
+        `✨ The Oracle has dispatched your verification code ✨\n\n` +
+        `Target Account: ${found.username}\n` +
+        `Security OTP: ${code}\n\n` +
+        `Enter this 6-digit code to reset your secret cipher.`
+      );
+    }, 400);
+  };
+
+  // --- HANDLE FORGOT PASSWORD: STEP 2 (VERIFY & UPDATE PASSWORD) ---
+  const handleVerifyAndReset = (e) => {
+    e.preventDefault();
+    setError('');
+
+    if (otpInput.trim() !== generatedOtp) {
+      return setError('The spirits reject this OTP. Please check the code.');
+    }
+    if (!newPassword.trim() || newPassword.length < 6) {
+      return setError('New password must be at least 6 characters long.');
+    }
+
+    const users = getUsersDB();
+    const updatedUsers = users.map(u => {
+      if (u.username === targetUser.username) {
+        return { ...u, password: newPassword };
+      }
+      return u;
+    });
+
+    saveUsersDB(updatedUsers);
+    setSuccessMsg('Your cipher has been reset successfully! Please log in.');
+    setAuthMode('login');
+    setOtpInput('');
+    setNewPassword('');
+    setResetIdentifier('');
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
-      <div style={{ ...cardStyle, width: '350px' }}>
-        <h2 style={{ marginTop: 0 }}>Enter the Portal</h2>
-        {!otpSent ? (
-          <form onSubmit={handleRequestOTP} style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '20px' }}>
-            <p style={{ fontSize: '14px', color: '#ccc', margin: 0 }}>Enter your Email or Phone Number to receive a secure code.</p>
-            <input placeholder="Email or Phone..." value={contact} onChange={e => setContact(e.target.value)} style={inputStyle} />
-            {error && <p style={{ color: '#ff6b6b', margin: 0, fontSize: '14px' }}>{error}</p>}
-            <button type="submit" disabled={loading} style={{...btnStyle, background: '#a855f7', width: '100%', margin: 0}}>
-              {loading ? "Summoning Code..." : "Send OTP"}
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '65vh' }}>
+      <div style={{ ...cardStyle, width: '380px', textAlign: 'left' }}>
+        
+        {/* TAB HEADERS: LOGIN / SIGNUP */}
+        {authMode !== 'forgot_request' && authMode !== 'forgot_verify' && (
+          <div style={{ display: 'flex', borderBottom: '1px solid rgba(168, 85, 247, 0.3)', marginBottom: '20px' }}>
+            <button
+              onClick={() => { setAuthMode('login'); setError(''); setSuccessMsg(''); }}
+              style={{
+                flex: 1,
+                background: 'none',
+                border: 'none',
+                padding: '10px',
+                color: authMode === 'login' ? '#d8b4fe' : '#777',
+                borderBottom: authMode === 'login' ? '2px solid #a855f7' : 'none',
+                fontWeight: 'bold',
+                cursor: 'pointer'
+              }}
+            >
+              Sign In
+            </button>
+            <button
+              onClick={() => { setAuthMode('signup'); setError(''); setSuccessMsg(''); }}
+              style={{
+                flex: 1,
+                background: 'none',
+                border: 'none',
+                padding: '10px',
+                color: authMode === 'signup' ? '#d8b4fe' : '#777',
+                borderBottom: authMode === 'signup' ? '2px solid #a855f7' : 'none',
+                fontWeight: 'bold',
+                cursor: 'pointer'
+              }}
+            >
+              New Seeker (Sign Up)
+            </button>
+          </div>
+        )}
+
+        {/* FEEDBACK MESSAGES */}
+        {error && <p style={{ color: '#ff6b6b', margin: '0 0 15px 0', fontSize: '13px' }}>⚠️ {error}</p>}
+        {successMsg && <p style={{ color: '#10b981', margin: '0 0 15px 0', fontSize: '13px' }}>✨ {successMsg}</p>}
+
+        {/* ================= VIEW 1: SIGN IN ================= */}
+        {authMode === 'login' && (
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <div>
+              <label style={{ fontSize: '12px', color: '#ccc' }}>Username</label>
+              <input
+                placeholder="Your Seeker name..."
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                style={inputStyle}
+              />
+            </div>
+            <div>
+              <label style={{ fontSize: '12px', color: '#ccc' }}>Secret Cipher (Password)</label>
+              <input
+                type="password"
+                placeholder="Enter password..."
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                style={inputStyle}
+              />
+            </div>
+
+            <div style={{ textAlign: 'right' }}>
+              <span
+                onClick={() => { setAuthMode('forgot_request'); setError(''); setSuccessMsg(''); }}
+                style={{ fontSize: '12px', color: '#d8b4fe', cursor: 'pointer', textDecoration: 'underline' }}
+              >
+                Forgot Password?
+              </span>
+            </div>
+
+            <button type="submit" style={{ ...btnStyle, background: '#a855f7', width: '100%', margin: '5px 0 0 0' }}>
+              Enter Portal
             </button>
           </form>
-        ) : (
-          <form onSubmit={handleVerifyOTP} style={{ display: 'flex', flexDirection: 'column', gap: '15px', marginTop: '20px' }}>
-            <p style={{ fontSize: '14px', color: '#ccc', margin: 0 }}>A code has been sent to your terminal. Enter it below.</p>
-            <input placeholder="6-Digit Code" value={otp} onChange={e => setOtp(e.target.value)} style={{ ...inputStyle, textAlign: 'center', letterSpacing: '5px', fontSize: '20px' }} maxLength="6" />
-            {error && <p style={{ color: '#ff6b6b', margin: 0, fontSize: '14px' }}>{error}</p>}
-            <button type="submit" disabled={loading} style={{...btnStyle, background: '#10b981', width: '100%', margin: 0}}>
-              {loading ? "Verifying..." : "Verify & Login"}
+        )}
+
+        {/* ================= VIEW 2: SIGN UP ================= */}
+        {authMode === 'signup' && (
+          <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div>
+              <label style={{ fontSize: '12px', color: '#ccc' }}>Choose Username</label>
+              <input
+                placeholder="Seeker name..."
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                style={inputStyle}
+              />
+            </div>
+
+            {/* CONTACT SELECTION: EMAIL OR PHONE */}
+            <div>
+              <label style={{ fontSize: '12px', color: '#ccc' }}>Authentication Method</label>
+              <select
+                value={contactType}
+                onChange={e => { setContactType(e.target.value); setError(''); }}
+                style={{ ...inputStyle, background: '#1e1b2e', color: 'white' }}
+              >
+                <option value="email">📧 Email Address</option>
+                <option value="phone">📱 Mobile Phone</option>
+              </select>
+            </div>
+
+            {/* IF EMAIL */}
+            {contactType === 'email' ? (
+              <div>
+                <label style={{ fontSize: '12px', color: '#ccc' }}>Email Address</label>
+                <input
+                  type="email"
+                  placeholder="e.g. mystic@oracle.com"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  style={inputStyle}
+                />
+              </div>
+            ) : (
+              /* IF PHONE: COUNTRY CODE + NUMBER */
+              <div>
+                <label style={{ fontSize: '12px', color: '#ccc' }}>Phone Number</label>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <select
+                    value={countryCode}
+                    onChange={e => setCountryCode(e.target.value)}
+                    style={{ ...inputStyle, width: '130px', background: '#1e1b2e', color: 'white', padding: '10px 5px' }}
+                  >
+                    {COUNTRY_CODES.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.flag} {c.code} ({c.country})
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="tel"
+                    placeholder="Mobile number..."
+                    value={phoneNumber}
+                    onChange={e => setPhoneNumber(e.target.value)}
+                    style={{ ...inputStyle, flexGrow: 1 }}
+                  />
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label style={{ fontSize: '12px', color: '#ccc' }}>Create Password</label>
+              <input
+                type="password"
+                placeholder="Min 6 characters..."
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                style={inputStyle}
+              />
+            </div>
+
+            <div>
+              <label style={{ fontSize: '12px', color: '#ccc' }}>Confirm Password</label>
+              <input
+                type="password"
+                placeholder="Re-enter password..."
+                value={confirmPassword}
+                onChange={e => setConfirmPassword(e.target.value)}
+                style={inputStyle}
+              />
+            </div>
+
+            <button type="submit" style={{ ...btnStyle, background: '#10b981', width: '100%', margin: '10px 0 0 0' }}>
+              Create Account
             </button>
-            <p onClick={() => { setOtpSent(false); setOtp(''); setError(''); }} style={{ cursor: 'pointer', color: '#d8b4fe', fontSize: '12px', marginTop: '10px', textDecoration: 'underline' }}>
-              ← Use a different contact
+          </form>
+        )}
+
+        {/* ================= VIEW 3: FORGOT PASSWORD (REQUEST OTP) ================= */}
+        {authMode === 'forgot_request' && (
+          <form onSubmit={handleRequestResetOTP} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <h3 style={{ margin: 0, color: '#d8b4fe' }}>🔮 Recover Your Cipher</h3>
+            <p style={{ fontSize: '13px', color: '#ccc', margin: 0 }}>
+              Enter your username, registered email, or full phone number with country code.
+            </p>
+
+            <input
+              placeholder="Username / Email / Phone..."
+              value={resetIdentifier}
+              onChange={e => setResetIdentifier(e.target.value)}
+              style={inputStyle}
+            />
+
+            <button type="submit" style={{ ...btnStyle, background: '#a855f7', width: '100%', margin: 0 }}>
+              Summon OTP
+            </button>
+
+            <p
+              onClick={() => { setAuthMode('login'); setError(''); }}
+              style={{ cursor: 'pointer', color: '#d8b4fe', fontSize: '12px', textAlign: 'center', margin: 0, textDecoration: 'underline' }}
+            >
+              ← Back to Sign In
             </p>
           </form>
         )}
+
+        {/* ================= VIEW 4: FORGOT PASSWORD (VERIFY OTP & NEW PASSWORD) ================= */}
+        {authMode === 'forgot_verify' && (
+          <form onSubmit={handleVerifyAndReset} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+            <h3 style={{ margin: 0, color: '#10b981' }}>🔑 Set New Cipher</h3>
+            <p style={{ fontSize: '13px', color: '#ccc', margin: 0 }}>
+              An OTP has been revealed via popup. Enter it below to unlock your account.
+            </p>
+
+            <input
+              placeholder="6-Digit OTP"
+              value={otpInput}
+              onChange={e => setOtpInput(e.target.value)}
+              maxLength="6"
+              style={{ ...inputStyle, textAlign: 'center', letterSpacing: '5px', fontSize: '18px' }}
+            />
+
+            <input
+              type="password"
+              placeholder="Enter New Password (min 6 chars)..."
+              value={newPassword}
+              onChange={e => setNewPassword(e.target.value)}
+              style={inputStyle}
+            />
+
+            <button type="submit" style={{ ...btnStyle, background: '#10b981', width: '100%', margin: 0 }}>
+              Confirm New Password
+            </button>
+
+            <p
+              onClick={() => { setAuthMode('forgot_request'); setError(''); }}
+              style={{ cursor: 'pointer', color: '#d8b4fe', fontSize: '12px', textAlign: 'center', margin: 0, textDecoration: 'underline' }}
+            >
+              ← Request a new code
+            </p>
+          </form>
+        )}
+
       </div>
     </div>
   );
@@ -188,6 +621,7 @@ const Palmistry = ({ goBack, user }) => {
     setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("user_name", user.username);
     try {
       const res = await fetch("http://localhost:8001/api/palm/analyze", { method: "POST", body: formData });
       const data = await res.json();
