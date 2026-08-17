@@ -17,6 +17,18 @@ ENV PALM_PYTHON_EXECUTABLE=/opt/palm-venv/bin/python
 
 
 # ========================================================
+# LOW-MEMORY CPU SETTINGS
+# ========================================================
+
+ENV OMP_NUM_THREADS=1
+ENV MKL_NUM_THREADS=1
+ENV OPENBLAS_NUM_THREADS=1
+ENV NUMEXPR_NUM_THREADS=1
+ENV VECLIB_MAXIMUM_THREADS=1
+ENV MALLOC_ARENA_MAX=2
+
+
+# ========================================================
 # WORKING DIRECTORY
 # ========================================================
 
@@ -48,6 +60,7 @@ RUN apt-get update && \
 
 RUN python -m venv ${BACKEND_VENV}
 
+
 RUN ${BACKEND_VENV}/bin/pip install \
     --upgrade \
     pip \
@@ -69,6 +82,7 @@ RUN ${BACKEND_VENV}/bin/pip install \
 # ========================================================
 
 RUN python -m venv ${PALM_VENV}
+
 
 RUN ${PALM_VENV}/bin/pip install \
     --upgrade \
@@ -111,5 +125,6 @@ RUN mkdir -p \
 RUN chmod +x /app/start.sh
 
 EXPOSE 8000
+
 
 CMD ["/app/start.sh"]
