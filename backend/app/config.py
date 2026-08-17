@@ -4,24 +4,48 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = (
+    Path(__file__)
+    .resolve()
+    .parent
+    .parent
+)
 
-ENV_FILE = BASE_DIR / ".env"
+ENV_FILE = (
+    BASE_DIR
+    / ".env"
+)
 
-load_dotenv(ENV_FILE)
+load_dotenv(
+    ENV_FILE
+)
 
 
 class Settings:
+
+    # =====================================================
+    # PALM MODEL
+    # =====================================================
+
     PALM_PYTHON_EXECUTABLE = os.getenv(
         "PALM_PYTHON_EXECUTABLE",
-        r"A:\PalmistryPalmVenv\Scripts\python.exe",
+        (
+            r"A:\PalmistryPalmVenv"
+            r"\Scripts\python.exe"
+        ),
     )
+
     PALM_RESULT_RETENTION_HOURS = int(
         os.getenv(
             "PALM_RESULT_RETENTION_HOURS",
             "24",
         )
     )
+
+
+    # =====================================================
+    # IMAGE VALIDATION
+    # =====================================================
 
     MIN_IMAGE_WIDTH = int(
         os.getenv(
@@ -51,9 +75,24 @@ class Settings:
         )
     )
 
+    MAX_UPLOAD_MB = int(
+        os.getenv(
+            "MAX_UPLOAD_MB",
+            "10",
+        )
+    )
+
+
+    # =====================================================
+    # APPLICATION
+    # =====================================================
+
     APP_NAME = os.getenv(
         "APP_NAME",
-        "Palmistry & Tarot Intelligence Platform",
+        (
+            "Palmistry & Tarot "
+            "Intelligence Platform"
+        ),
     )
 
     APP_VERSION = os.getenv(
@@ -66,22 +105,23 @@ class Settings:
         "development",
     ).lower()
 
-    DEBUG = os.getenv(
-        "DEBUG",
-        "true",
-    ).lower() == "true"
+    DEBUG = (
+        os.getenv(
+            "DEBUG",
+            "true",
+        ).lower()
+        == "true"
+    )
 
     LOG_LEVEL = os.getenv(
         "LOG_LEVEL",
         "INFO",
     ).upper()
 
-    MAX_UPLOAD_MB = int(
-        os.getenv(
-            "MAX_UPLOAD_MB",
-            "10",
-        )
-    )
+
+    # =====================================================
+    # FRONTEND / CORS
+    # =====================================================
 
     FRONTEND_URLS = [
         origin.strip()
@@ -95,6 +135,11 @@ class Settings:
         if origin.strip()
     ]
 
+
+    # =====================================================
+    # HOST SECURITY
+    # =====================================================
+
     ALLOWED_HOSTS = [
         host.strip()
         for host in os.getenv(
@@ -107,6 +152,8 @@ class Settings:
         ).split(",")
         if host.strip()
     ]
+
+
     # =====================================================
     # DATABASE
     # =====================================================
@@ -148,8 +195,26 @@ class Settings:
         )
     )
 
+
+    # =====================================================
+    # GOOGLE IDENTITY
+    # =====================================================
+
+    GOOGLE_CLIENT_ID = os.getenv(
+        "GOOGLE_CLIENT_ID",
+        "",
+    )
+
+
+    # =====================================================
+    # ENVIRONMENT HELPERS
+    # =====================================================
+
     @property
-    def is_production(self):
+    def is_production(
+        self,
+    ) -> bool:
+
         return (
             self.APP_ENV
             == "production"

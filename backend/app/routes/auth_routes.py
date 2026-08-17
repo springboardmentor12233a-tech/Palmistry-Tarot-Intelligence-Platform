@@ -9,9 +9,13 @@ from fastapi.security import (
     OAuth2PasswordRequestForm,
 )
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import (
+    Session,
+)
 
-from app.config import settings
+from app.config import (
+    settings,
+)
 
 from app.core.database import (
     get_db,
@@ -22,6 +26,7 @@ from app.core.security import (
 )
 
 from app.models.auth_schemas import (
+    GoogleLoginRequest,
     LoginRequest,
     ProfileUpdate,
     TokenResponse,
@@ -34,6 +39,7 @@ from app.models.database_models import (
 )
 
 from app.services.auth_service import (
+    authenticate_google_user,
     authenticate_user,
     create_user,
     get_current_user,
@@ -47,41 +53,66 @@ router = APIRouter(
 )
 
 
+# ============================================================
+# TOKEN RESPONSE
+# ============================================================
+
 def build_token_response(
     user: User,
 ) -> TokenResponse:
-    token = create_access_token(
-        user_id=user.id,
-        role=user.role,
+
+    token = (
+        create_access_token(
+            user_id=user.id,
+            role=user.role,
+        )
     )
+
 
     return TokenResponse(
         access_token=token,
+
         token_type="bearer",
+
         expires_in=(
             settings
             .ACCESS_TOKEN_EXPIRE_MINUTES
             * 60
         ),
-        user=UserResponse.model_validate(
-            user
+
+        user=(
+            UserResponse
+            .model_validate(
+                user
+            )
         ),
     )
 
 
+# ============================================================
+# REGISTER
+# ============================================================
+
 @router.post(
     "/register",
-    response_model=TokenResponse,
+
+    response_model=(
+        TokenResponse
+    ),
+
     status_code=(
-        status.HTTP_201_CREATED
+        status
+        .HTTP_201_CREATED
     ),
 )
 def register(
     request: UserRegister,
+
     database: Session = Depends(
         get_db
     ),
 ):
+
     user = create_user(
         database,
         request,
@@ -92,40 +123,86 @@ def register(
     )
 
 
+# ============================================================
+# PASSWORD LOGIN
+# ============================================================
+
 @router.post(
     "/login",
     response_model=TokenResponse,
 )
 def login(
     request: LoginRequest,
+
     database: Session = Depends(
         get_db
     ),
 ):
+
     user = authenticate_user(
         database,
-        str(request.email),
+        str(
+            request.email
+        ),
         request.password,
     )
 
+
     if not user:
+
         raise HTTPException(
             status_code=(
                 status
                 .HTTP_401_UNAUTHORIZED
             ),
             detail=(
-                "Incorrect email or password."
+                "Incorrect email "
+                "or password."
             ),
             headers={
-                "WWW-Authenticate": "Bearer",
+                "WWW-Authenticate":
+                    "Bearer",
             },
         )
+
 
     return build_token_response(
         user
     )
 
+
+# ============================================================
+# GOOGLE LOGIN
+# ============================================================
+
+@router.post(
+    "/google",
+    response_model=TokenResponse,
+)
+def google_login(
+    request: GoogleLoginRequest,
+
+    database: Session = Depends(
+        get_db
+    ),
+):
+
+    user = (
+        authenticate_google_user(
+            database,
+            request.credential,
+        )
+    )
+
+
+    return build_token_response(
+        user
+    )
+
+
+# ============================================================
+# OAUTH2 PASSWORD TOKEN
+# ============================================================
 
 @router.post(
     "/token",
@@ -140,11 +217,13 @@ def oauth2_token(
         get_db
     ),
 ):
-    """
-    OAuth2-compatible password token endpoint.
 
-    The OAuth2 'username' field is treated as
-    the user's email address.
+    """
+    OAuth2-compatible password-token
+    endpoint.
+
+    The OAuth2 username field is treated
+    as the user's email address.
     """
 
     user = authenticate_user(
@@ -153,24 +232,33 @@ def oauth2_token(
         form_data.password,
     )
 
+
     if not user:
+
         raise HTTPException(
             status_code=(
                 status
                 .HTTP_401_UNAUTHORIZED
             ),
             detail=(
-                "Incorrect email or password."
+                "Incorrect email "
+                "or password."
             ),
             headers={
-                "WWW-Authenticate": "Bearer",
+                "WWW-Authenticate":
+                    "Bearer",
             },
         )
+
 
     return build_token_response(
         user
     )
 
+
+# ============================================================
+# CURRENT USER
+# ============================================================
 
 @router.get(
     "/me",
@@ -181,8 +269,13 @@ def read_current_user(
         get_current_user
     ),
 ):
+
     return current_user
 
+
+# ============================================================
+# PROFILE UPDATE
+# ============================================================
 
 @router.patch(
     "/profile",
@@ -199,6 +292,7 @@ def update_profile(
         get_db
     ),
 ):
+
     return update_user_profile(
         database,
         current_user,

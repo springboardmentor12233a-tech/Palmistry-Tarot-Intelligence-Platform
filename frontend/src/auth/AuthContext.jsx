@@ -13,6 +13,7 @@ import {
   getStoredToken,
   getStoredUser,
   loginUser,
+  loginWithGoogleCredential,
   registerUser,
   storeAuthSession,
 } from "../services/authApi";
@@ -32,12 +33,14 @@ export function AuthProvider({
     getStoredUser()
   );
 
+
   const [
     token,
     setToken,
   ] = useState(
     getStoredToken()
   );
+
 
   const [
     isAuthLoading,
@@ -49,6 +52,36 @@ export function AuthProvider({
   );
 
 
+  // =========================================================
+  // SESSION STORAGE
+  // =========================================================
+
+  const applyAuthResponse =
+    useCallback(
+      (response) => {
+        storeAuthSession(
+          response.access_token,
+          response.user
+        );
+
+        setToken(
+          response.access_token
+        );
+
+        setUser(
+          response.user
+        );
+
+        return response.user;
+      },
+      []
+    );
+
+
+  // =========================================================
+  // LOGOUT
+  // =========================================================
+
   const logout =
     useCallback(() => {
       clearAuthSession();
@@ -56,14 +89,29 @@ export function AuthProvider({
       setToken(null);
 
       setUser(null);
+
+
+      if (
+        window.google
+          ?.accounts
+          ?.id
+      ) {
+        window.google.accounts.id
+          .disableAutoSelect();
+      }
     }, []);
 
+
+  // =========================================================
+  // REFRESH SESSION
+  // =========================================================
 
   const refreshUser =
     useCallback(
       async () => {
         const storedToken =
           getStoredToken();
+
 
         if (!storedToken) {
           setIsAuthLoading(
@@ -73,13 +121,16 @@ export function AuthProvider({
           return null;
         }
 
+
         try {
           const currentUser =
             await getCurrentUser();
 
+
           setUser(
             currentUser
           );
+
 
           localStorage.setItem(
             "palmistry_tarot_user",
@@ -88,7 +139,9 @@ export function AuthProvider({
             )
           );
 
+
           return currentUser;
+
         } catch (error) {
           console.error(
             "Session validation failed:",
@@ -98,6 +151,7 @@ export function AuthProvider({
           logout();
 
           return null;
+
         } finally {
           setIsAuthLoading(
             false
@@ -113,6 +167,10 @@ export function AuthProvider({
   }, [refreshUser]);
 
 
+  // =========================================================
+  // PASSWORD LOGIN
+  // =========================================================
+
   const login =
     useCallback(
       async (
@@ -125,24 +183,43 @@ export function AuthProvider({
             password
           );
 
-        storeAuthSession(
-          response.access_token,
-          response.user
+        return applyAuthResponse(
+          response
         );
-
-        setToken(
-          response.access_token
-        );
-
-        setUser(
-          response.user
-        );
-
-        return response.user;
       },
-      []
+      [
+        applyAuthResponse,
+      ]
     );
 
+
+  // =========================================================
+  // GOOGLE LOGIN
+  // =========================================================
+
+  const loginWithGoogle =
+    useCallback(
+      async (
+        credential
+      ) => {
+        const response =
+          await loginWithGoogleCredential(
+            credential
+          );
+
+        return applyAuthResponse(
+          response
+        );
+      },
+      [
+        applyAuthResponse,
+      ]
+    );
+
+
+  // =========================================================
+  // REGISTER
+  // =========================================================
 
   const register =
     useCallback(
@@ -154,24 +231,19 @@ export function AuthProvider({
             registrationData
           );
 
-        storeAuthSession(
-          response.access_token,
-          response.user
+        return applyAuthResponse(
+          response
         );
-
-        setToken(
-          response.access_token
-        );
-
-        setUser(
-          response.user
-        );
-
-        return response.user;
       },
-      []
+      [
+        applyAuthResponse,
+      ]
     );
 
+
+  // =========================================================
+  // CONTEXT
+  // =========================================================
 
   const value =
     useMemo(
@@ -188,8 +260,13 @@ export function AuthProvider({
         isAuthLoading,
 
         login,
+
+        loginWithGoogle,
+
         register,
+
         logout,
+
         refreshUser,
       }),
       [
@@ -197,6 +274,7 @@ export function AuthProvider({
         token,
         isAuthLoading,
         login,
+        loginWithGoogle,
         register,
         logout,
         refreshUser,
@@ -220,11 +298,13 @@ export function useAuth() {
       AuthContext
     );
 
+
   if (!context) {
     throw new Error(
       "useAuth must be used inside AuthProvider."
     );
   }
+
 
   return context;
 }

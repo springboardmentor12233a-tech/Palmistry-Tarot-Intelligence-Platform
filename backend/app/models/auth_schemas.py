@@ -17,7 +17,14 @@ UserRole = Literal[
 ]
 
 
-class UserRegister(BaseModel):
+# ============================================================
+# REGISTRATION
+# ============================================================
+
+class UserRegister(
+    BaseModel
+):
+
     model_config = ConfigDict(
         extra="forbid"
     )
@@ -49,13 +56,22 @@ class UserRegister(BaseModel):
         max_length=1500,
     )
 
-    reading_preference: str | None = Field(
+    reading_preference: (
+        str | None
+    ) = Field(
         default=None,
         max_length=80,
     )
 
 
-class LoginRequest(BaseModel):
+# ============================================================
+# PASSWORD LOGIN
+# ============================================================
+
+class LoginRequest(
+    BaseModel
+):
+
     model_config = ConfigDict(
         extra="forbid"
     )
@@ -68,7 +84,32 @@ class LoginRequest(BaseModel):
     )
 
 
-class ProfileUpdate(BaseModel):
+# ============================================================
+# GOOGLE LOGIN
+# ============================================================
+
+class GoogleLoginRequest(
+    BaseModel
+):
+
+    model_config = ConfigDict(
+        extra="forbid"
+    )
+
+    credential: str = Field(
+        min_length=20,
+        max_length=10000,
+    )
+
+
+# ============================================================
+# PROFILE
+# ============================================================
+
+class ProfileUpdate(
+    BaseModel
+):
+
     model_config = ConfigDict(
         extra="forbid"
     )
@@ -94,13 +135,22 @@ class ProfileUpdate(BaseModel):
         max_length=1500,
     )
 
-    reading_preference: str | None = Field(
+    reading_preference: (
+        str | None
+    ) = Field(
         default=None,
         max_length=80,
     )
 
 
-class RoleUpdateRequest(BaseModel):
+# ============================================================
+# ADMIN REQUESTS
+# ============================================================
+
+class RoleUpdateRequest(
+    BaseModel
+):
+
     model_config = ConfigDict(
         extra="forbid"
     )
@@ -108,7 +158,10 @@ class RoleUpdateRequest(BaseModel):
     role: UserRole
 
 
-class UserStatusUpdate(BaseModel):
+class UserStatusUpdate(
+    BaseModel
+):
+
     model_config = ConfigDict(
         extra="forbid"
     )
@@ -116,7 +169,14 @@ class UserStatusUpdate(BaseModel):
     is_active: bool
 
 
-class UserResponse(BaseModel):
+# ============================================================
+# USER RESPONSE
+# ============================================================
+
+class UserResponse(
+    BaseModel
+):
+
     model_config = ConfigDict(
         from_attributes=True
     )
@@ -136,20 +196,42 @@ class UserResponse(BaseModel):
     updated_at: datetime
 
 
-class TokenResponse(BaseModel):
+# ============================================================
+# TOKEN RESPONSE
+# ============================================================
+
+class TokenResponse(
+    BaseModel
+):
+
     access_token: str
-    token_type: str = "bearer"
+
+    token_type: str = (
+        "bearer"
+    )
+
     expires_in: int
+
     user: UserResponse
 
 
-class AdminOverviewResponse(BaseModel):
+# ============================================================
+# ADMIN RESPONSES
+# ============================================================
+
+class AdminOverviewResponse(
+    BaseModel
+):
+
     total_users: int
     active_users: int
     inactive_users: int
     roles: dict[str, int]
 
 
-class MessageResponse(BaseModel):
+class MessageResponse(
+    BaseModel
+):
+
     status: str
     message: str

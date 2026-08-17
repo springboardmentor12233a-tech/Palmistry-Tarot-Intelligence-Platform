@@ -12,12 +12,17 @@ import {
   useAuth,
 } from "../auth/AuthContext";
 
+import GoogleSignInButton
+  from "../components/auth/GoogleSignInButton";
+
 
 function RegisterPage() {
   const {
     register,
+    loginWithGoogle,
     isAuthenticated,
   } = useAuth();
+
 
   const navigate =
     useNavigate();
@@ -75,17 +80,20 @@ function RegisterPage() {
         value,
       } = event.target;
 
+
       setFormData(
         (previous) => ({
           ...previous,
-          [name]: value,
+
+          [name]:
+            value,
         })
       );
     };
 
 
   // =========================================================
-  // REGISTER
+  // PASSWORD REGISTRATION
   // =========================================================
 
   const handleSubmit =
@@ -96,14 +104,18 @@ function RegisterPage() {
 
       setIsLoading(true);
 
-      try {
 
+      try {
         await register({
           full_name:
-            formData.full_name.trim(),
+            formData
+              .full_name
+              .trim(),
 
           email:
-            formData.email.trim(),
+            formData
+              .email
+              .trim(),
 
           password:
             formData.password,
@@ -123,7 +135,6 @@ function RegisterPage() {
       } catch (
         registrationError
       ) {
-
         setError(
           registrationError
             ?.message ||
@@ -131,11 +142,47 @@ function RegisterPage() {
         );
 
       } finally {
-
         setIsLoading(
           false
         );
+      }
+    };
 
+
+  // =========================================================
+  // GOOGLE REGISTRATION / LOGIN
+  // =========================================================
+
+  const handleGoogleCredential =
+    async (credential) => {
+      setError("");
+
+      setIsLoading(true);
+
+
+      try {
+        await loginWithGoogle(
+          credential
+        );
+
+
+        navigate(
+          "/dashboard",
+          {
+            replace: true,
+          }
+        );
+
+      } catch (googleError) {
+        setError(
+          googleError?.message ||
+          "Google sign-in failed."
+        );
+
+      } finally {
+        setIsLoading(
+          false
+        );
       }
     };
 
@@ -168,6 +215,23 @@ function RegisterPage() {
         </p>
 
 
+        <GoogleSignInButton
+          onCredential={
+            handleGoogleCredential
+          }
+          disabled={
+            isLoading
+          }
+        />
+
+
+        <div className="auth-divider">
+          <span>
+            or
+          </span>
+        </div>
+
+
         <form
           onSubmit={
             handleSubmit
@@ -176,10 +240,6 @@ function RegisterPage() {
 
           <div className="form-grid">
 
-
-            {/* ============================================= */}
-            {/* FULL NAME */}
-            {/* ============================================= */}
 
             <div className="form-group">
 
@@ -208,10 +268,6 @@ function RegisterPage() {
             </div>
 
 
-            {/* ============================================= */}
-            {/* EMAIL */}
-            {/* ============================================= */}
-
             <div className="form-group">
 
               <label
@@ -237,10 +293,6 @@ function RegisterPage() {
             </div>
 
 
-            {/* ============================================= */}
-            {/* PASSWORD */}
-            {/* ============================================= */}
-
             <div className="form-group">
 
               <label
@@ -265,18 +317,12 @@ function RegisterPage() {
                 required
               />
 
-              <small
-                className="section-note"
-              >
+              <small className="section-note">
                 Minimum 8 characters.
               </small>
 
             </div>
 
-
-            {/* ============================================= */}
-            {/* AGE GROUP */}
-            {/* ============================================= */}
 
             <div className="form-group">
 
@@ -297,33 +343,23 @@ function RegisterPage() {
                 }
               >
 
-                <option
-                  value="Under 18"
-                >
+                <option value="Under 18">
                   Under 18
                 </option>
 
-                <option
-                  value="18-25"
-                >
+                <option value="18-25">
                   18-25
                 </option>
 
-                <option
-                  value="26-40"
-                >
+                <option value="26-40">
                   26-40
                 </option>
 
-                <option
-                  value="41-60"
-                >
+                <option value="41-60">
                   41-60
                 </option>
 
-                <option
-                  value="60+"
-                >
+                <option value="60+">
                   60+
                 </option>
 
@@ -334,12 +370,7 @@ function RegisterPage() {
           </div>
 
 
-          {/* ============================================= */}
-          {/* ERROR */}
-          {/* ============================================= */}
-
           {error && (
-
             <div
               className="error-message"
               role="alert"
@@ -354,13 +385,8 @@ function RegisterPage() {
               </p>
 
             </div>
-
           )}
 
-
-          {/* ============================================= */}
-          {/* CREATE ACCOUNT */}
-          {/* ============================================= */}
 
           <button
             className="generate-button"
@@ -369,24 +395,22 @@ function RegisterPage() {
               isLoading
             }
           >
-
-            {isLoading
-              ? "Creating Account..."
-              : "Create Account"}
-
+            {
+              isLoading
+                ? "Creating Account..."
+                : "Create Account"
+            }
           </button>
 
         </form>
 
 
         <p className="auth-switch">
-
           Already registered?{" "}
 
           <Link to="/login">
             Sign in
           </Link>
-
         </p>
 
       </section>

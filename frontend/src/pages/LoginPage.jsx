@@ -1,4 +1,5 @@
 import {
+  useCallback,
   useState,
 } from "react";
 
@@ -13,12 +14,17 @@ import {
   useAuth,
 } from "../auth/AuthContext";
 
+import GoogleSignInButton
+  from "../components/auth/GoogleSignInButton";
+
 
 function LoginPage() {
   const {
     login,
+    loginWithGoogle,
     isAuthenticated,
   } = useAuth();
+
 
   const navigate =
     useNavigate();
@@ -51,6 +57,26 @@ function LoginPage() {
   ] = useState(false);
 
 
+  // =========================================================
+  // DESTINATION
+  // =========================================================
+
+  const getDestination =
+    useCallback(
+      () => (
+        location.state?.from ||
+        "/dashboard"
+      ),
+      [
+        location.state,
+      ]
+    );
+
+
+  // =========================================================
+  // ALREADY AUTHENTICATED
+  // =========================================================
+
   if (isAuthenticated) {
     return (
       <Navigate
@@ -61,6 +87,10 @@ function LoginPage() {
   }
 
 
+  // =========================================================
+  // PASSWORD LOGIN
+  // =========================================================
+
   const handleSubmit =
     async (event) => {
       event.preventDefault();
@@ -69,33 +99,72 @@ function LoginPage() {
 
       setIsLoading(true);
 
+
       try {
         await login(
           email,
           password
         );
 
-        const destination =
-          location.state
-            ?.from ||
-          "/dashboard";
 
         navigate(
-          destination,
+          getDestination(),
           {
             replace: true,
           }
         );
+
       } catch (loginError) {
         setError(
           loginError?.message ||
           "Login failed."
         );
+
       } finally {
         setIsLoading(false);
       }
     };
 
+
+  // =========================================================
+  // GOOGLE LOGIN
+  // =========================================================
+
+  const handleGoogleCredential =
+    async (credential) => {
+      setError("");
+
+      setIsLoading(true);
+
+
+      try {
+        await loginWithGoogle(
+          credential
+        );
+
+
+        navigate(
+          getDestination(),
+          {
+            replace: true,
+          }
+        );
+
+      } catch (googleError) {
+        setError(
+          googleError?.message ||
+          "Google sign-in failed."
+        );
+
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+
+  // =========================================================
+  // UI
+  // =========================================================
 
   return (
     <main className="auth-page">
@@ -103,6 +172,7 @@ function LoginPage() {
       <section className="auth-card">
 
         <div className="auth-brand">
+
           <p className="eyebrow">
             SPIRITUAL INTELLIGENCE
           </p>
@@ -116,6 +186,24 @@ function LoginPage() {
             personalized palmistry
             and tarot dashboard.
           </p>
+
+        </div>
+
+
+        <GoogleSignInButton
+          onCredential={
+            handleGoogleCredential
+          }
+          disabled={
+            isLoading
+          }
+        />
+
+
+        <div className="auth-divider">
+          <span>
+            or
+          </span>
         </div>
 
 
@@ -127,7 +215,9 @@ function LoginPage() {
 
           <div className="form-group">
 
-            <label htmlFor="login-email">
+            <label
+              htmlFor="login-email"
+            >
               Email
             </label>
 
@@ -150,7 +240,9 @@ function LoginPage() {
 
           <div className="form-group">
 
-            <label htmlFor="login-password">
+            <label
+              htmlFor="login-password"
+            >
               Password
             </label>
 
@@ -188,9 +280,11 @@ function LoginPage() {
               isLoading
             }
           >
-            {isLoading
-              ? "Signing In..."
-              : "Sign In"}
+            {
+              isLoading
+                ? "Signing In..."
+                : "Sign In"
+            }
           </button>
 
         </form>
