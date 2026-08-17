@@ -28,11 +28,33 @@ function getAuthToken() {
   );
 }
 
+
+function getAuthHeaders(
+  additionalHeaders = {}
+) {
+  const token =
+    getAuthToken();
+
+  return {
+    ...(token
+      ? {
+          Authorization:
+            `Bearer ${token}`,
+        }
+      : {}),
+
+    ...additionalHeaders,
+  };
+}
+
+
 // ============================================================
 // URL HELPERS
 // ============================================================
 
-export function buildBackendUrl(path = "") {
+export function buildBackendUrl(
+  path = ""
+) {
   if (!path) {
     return "";
   }
@@ -46,11 +68,14 @@ export function buildBackendUrl(path = "") {
     return path;
   }
 
-  const normalizedPath = path.startsWith("/")
-    ? path
-    : `/${path}`;
+  const normalizedPath =
+    path.startsWith("/")
+      ? path
+      : `/${path}`;
 
-  return `${API_BASE_URL}${normalizedPath}`;
+  return (
+    `${API_BASE_URL}${normalizedPath}`
+  );
 }
 
 
@@ -60,58 +85,71 @@ export function buildBackendUrl(path = "") {
 
 function extractErrorMessage(
   responseData,
-  fallbackMessage = "The request could not be completed."
+  fallbackMessage =
+    "The request could not be completed."
 ) {
   if (!responseData) {
     return fallbackMessage;
   }
 
-  // New global backend error format
   if (
-    typeof responseData.message === "string" &&
+    typeof responseData.message ===
+      "string" &&
     responseData.message.trim()
   ) {
     return responseData.message;
   }
 
-  // Traditional FastAPI detail string
   if (
-    typeof responseData.detail === "string" &&
+    typeof responseData.detail ===
+      "string" &&
     responseData.detail.trim()
   ) {
     return responseData.detail;
   }
 
-  // FastAPI validation details
-  if (Array.isArray(responseData.detail)) {
+  if (
+    Array.isArray(
+      responseData.detail
+    )
+  ) {
     return responseData.detail
       .map((item) => {
-        const location = Array.isArray(item?.loc)
-          ? item.loc.join(" → ")
-          : "request";
+        const location =
+          Array.isArray(item?.loc)
+            ? item.loc.join(" → ")
+            : "request";
 
         const message =
           item?.msg ||
           "Invalid request data.";
 
-        return `${location}: ${message}`;
+        return (
+          `${location}: ${message}`
+        );
       })
       .join(" | ");
   }
 
-  // New validation handler format
-  if (Array.isArray(responseData.errors)) {
+  if (
+    Array.isArray(
+      responseData.errors
+    )
+  ) {
     return responseData.errors
       .map((item) => {
-        const location = Array.isArray(item?.loc)
-          ? item.loc.join(" → ")
-          : "request";
+        const location =
+          Array.isArray(item?.loc)
+            ? item.loc.join(" → ")
+            : "request";
 
         const message =
           item?.msg ||
           "Invalid request data.";
 
-        return `${location}: ${message}`;
+        return (
+          `${location}: ${message}`
+        );
       })
       .join(" | ");
   }
@@ -120,11 +158,19 @@ function extractErrorMessage(
 }
 
 
-async function readJsonResponse(response) {
+async function readJsonResponse(
+  response
+) {
   const contentType =
-    response.headers.get("content-type") || "";
+    response.headers.get(
+      "content-type"
+    ) || "";
 
-  if (!contentType.includes("application/json")) {
+  if (
+    !contentType.includes(
+      "application/json"
+    )
+  ) {
     return null;
   }
 
@@ -136,10 +182,12 @@ async function readJsonResponse(response) {
 }
 
 
-function createNetworkError(endpoint) {
+function createNetworkError(
+  endpoint
+) {
   return new Error(
     `Could not connect to the backend at ${API_BASE_URL}. ` +
-      `The service may be starting or temporarily unavailable. ` +
+      "The service may be starting or temporarily unavailable. " +
       `Request: ${endpoint}`
   );
 }
@@ -159,26 +207,22 @@ async function requestJson(
 ) {
   let response;
 
-  const token =
-    getAuthToken();
   try {
     response = await fetch(
-      buildBackendUrl(endpoint),
+      buildBackendUrl(
+        endpoint
+      ),
       {
         method,
-        headers: {
-  Accept:
-    "application/json",
 
-  ...(token
-    ? {
-        Authorization:
-          `Bearer ${token}`,
-      }
-    : {}),
+        headers:
+          getAuthHeaders({
+            Accept:
+              "application/json",
 
-  ...headers,
-},
+            ...headers,
+          }),
+
         body,
       }
     );
@@ -188,11 +232,15 @@ async function requestJson(
       error
     );
 
-    throw createNetworkError(endpoint);
+    throw createNetworkError(
+      endpoint
+    );
   }
 
   const responseData =
-    await readJsonResponse(response);
+    await readJsonResponse(
+      response
+    );
 
   if (!response.ok) {
     const fallback =
@@ -204,56 +252,90 @@ async function requestJson(
         fallback
       );
 
-    if (response.status === 400) {
+    if (
+      response.status === 401
+    ) {
+      throw new Error(
+        message ||
+          "Please sign in to continue."
+      );
+    }
+
+    if (
+      response.status === 403
+    ) {
+      throw new Error(
+        message ||
+          "You do not have permission to perform this action."
+      );
+    }
+
+    if (
+      response.status === 400
+    ) {
       throw new Error(
         message ||
           "The submitted request is invalid."
       );
     }
 
-    if (response.status === 413) {
+    if (
+      response.status === 413
+    ) {
       throw new Error(
         message ||
           "The uploaded file is too large."
       );
     }
 
-    if (response.status === 415) {
+    if (
+      response.status === 415
+    ) {
       throw new Error(
         message ||
           "The uploaded file type is not supported."
       );
     }
 
-    if (response.status === 422) {
+    if (
+      response.status === 422
+    ) {
       throw new Error(
         message ||
           "Some submitted information is invalid or incomplete."
       );
     }
 
-    if (response.status === 429) {
+    if (
+      response.status === 429
+    ) {
       throw new Error(
         message ||
           "The AI service usage limit has been reached. Please wait and try again."
       );
     }
 
-    if (response.status === 503) {
+    if (
+      response.status === 503
+    ) {
       throw new Error(
         message ||
           "The AI service is temporarily unavailable. Please try again shortly."
       );
     }
 
-    if (response.status >= 500) {
+    if (
+      response.status >= 500
+    ) {
       throw new Error(
         message ||
           "The backend could not complete the request."
       );
     }
 
-    throw new Error(message);
+    throw new Error(
+      message
+    );
   }
 
   if (!responseData) {
@@ -266,8 +348,12 @@ async function requestJson(
 }
 
 
-async function getJson(endpoint) {
-  return requestJson(endpoint);
+async function getJson(
+  endpoint
+) {
+  return requestJson(
+    endpoint
+  );
 }
 
 
@@ -278,14 +364,18 @@ async function postJson(
   return requestJson(
     endpoint,
     {
-      method: "POST",
+      method:
+        "POST",
 
       headers: {
         "Content-Type":
           "application/json",
       },
 
-      body: JSON.stringify(payload),
+      body:
+        JSON.stringify(
+          payload
+        ),
     }
   );
 }
@@ -314,7 +404,8 @@ export async function drawTarotCards(
 ) {
   if (
     !spread ||
-    typeof spread !== "string"
+    typeof spread !==
+      "string"
   ) {
     throw new Error(
       "Please select a valid tarot spread."
@@ -407,7 +498,9 @@ export async function checkBackendHealth() {
 
 
 export async function getApiInformation() {
-  return getJson("/");
+  return getJson(
+    "/"
+  );
 }
 
 
@@ -440,8 +533,14 @@ export async function analyzePalmImage(
         "/api/palm/analyze"
       ),
       {
-        method: "POST",
-        body: formData,
+        method:
+          "POST",
+
+        headers:
+          getAuthHeaders(),
+
+        body:
+          formData,
       }
     );
   } catch (error) {
@@ -456,7 +555,9 @@ export async function analyzePalmImage(
   }
 
   const responseData =
-    await readJsonResponse(response);
+    await readJsonResponse(
+      response
+    );
 
   if (!response.ok) {
     throw new Error(
@@ -560,11 +661,32 @@ async function downloadResponseFile(
         response
       );
 
-    throw new Error(
+    const message =
       extractErrorMessage(
         responseData,
         "File download failed."
-      )
+      );
+
+    if (
+      response.status === 401
+    ) {
+      throw new Error(
+        message ||
+          "Please sign in before downloading this file."
+      );
+    }
+
+    if (
+      response.status === 403
+    ) {
+      throw new Error(
+        message ||
+          "You do not have permission to download this file."
+      );
+    }
+
+    throw new Error(
+      message
     );
   }
 
@@ -572,7 +694,9 @@ async function downloadResponseFile(
     await response.blob();
 
   const fileUrl =
-    URL.createObjectURL(blob);
+    URL.createObjectURL(
+      blob
+    );
 
   const filename =
     getDownloadFilename(
@@ -581,10 +705,15 @@ async function downloadResponseFile(
     );
 
   const link =
-    document.createElement("a");
+    document.createElement(
+      "a"
+    );
 
-  link.href = fileUrl;
-  link.download = filename;
+  link.href =
+    fileUrl;
+
+  link.download =
+    filename;
 
   document.body.appendChild(
     link
@@ -616,20 +745,23 @@ export async function downloadReadingPdf(
         "/api/reports/reading-pdf"
       ),
       {
-        method: "POST",
+        method:
+          "POST",
 
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
+        headers:
+          getAuthHeaders({
+            "Content-Type":
+              "application/json",
+          }),
 
-        body: JSON.stringify({
-          reading_request:
-            readingRequest,
+        body:
+          JSON.stringify({
+            reading_request:
+              readingRequest,
 
-          reading_response:
-            readingResponse,
-        }),
+            reading_response:
+              readingResponse,
+          }),
       }
     );
   } catch (error) {
@@ -661,7 +793,17 @@ export async function downloadAnalyticsSummaryCsv() {
     response = await fetch(
       buildBackendUrl(
         "/api/reports/analytics-summary.csv"
-      )
+      ),
+      {
+        method:
+          "GET",
+
+        headers:
+          getAuthHeaders({
+            Accept:
+              "text/csv",
+          }),
+      }
     );
   } catch (error) {
     console.error(
@@ -676,7 +818,7 @@ export async function downloadAnalyticsSummaryCsv() {
 
   await downloadResponseFile(
     response,
-    "analytics_summary.csv"
+    "my_analytics_summary.csv"
   );
 }
 
@@ -689,7 +831,7 @@ export async function downloadReadingHistoryCsv(
       1,
       Math.min(
         Number(limit) || 100,
-        1000
+        100
       )
     );
 
@@ -699,7 +841,17 @@ export async function downloadReadingHistoryCsv(
     response = await fetch(
       buildBackendUrl(
         `/api/reports/reading-history.csv?limit=${safeLimit}`
-      )
+      ),
+      {
+        method:
+          "GET",
+
+        headers:
+          getAuthHeaders({
+            Accept:
+              "text/csv",
+          }),
+      }
     );
   } catch (error) {
     console.error(
@@ -714,9 +866,10 @@ export async function downloadReadingHistoryCsv(
 
   await downloadResponseFile(
     response,
-    "reading_history.csv"
+    "my_reading_history.csv"
   );
 }
+
 
 // ============================================================
 // READING FOLLOW-UP CHAT

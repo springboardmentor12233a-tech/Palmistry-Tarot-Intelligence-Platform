@@ -429,10 +429,10 @@ def test_complete_reading_with_incomplete_body(
 
 
 # ============================================================
-# PDF VALIDATION
+# PDF AUTHENTICATION / VALIDATION
 # ============================================================
 
-def test_pdf_report_without_body(
+def test_pdf_report_requires_authentication(
     client,
 ):
 
@@ -442,9 +442,33 @@ def test_pdf_report_without_body(
 
     assert (
         response.status_code
-        == 422
+        == 401
     )
 
+
+def test_pdf_report_without_body(
+    client,
+    authenticated_user,
+):
+
+    account = authenticated_user(
+        role="user"
+    )
+
+    response = client.post(
+        "/api/reports/reading-pdf",
+
+        headers=(
+            account[
+                "headers"
+            ]
+        ),
+    )
+
+    assert (
+        response.status_code
+        == 422
+    )
 
 # ============================================================
 # ANALYTICS LIMIT VALIDATION

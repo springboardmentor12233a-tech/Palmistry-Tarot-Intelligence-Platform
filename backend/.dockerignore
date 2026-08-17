@@ -1,37 +1,96 @@
-# Python caches
+# ============================================================
+# PYTHON CACHE / TEST CACHE
+# ============================================================
+
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# Local backend virtual environment
+
+# ============================================================
+# LOCAL PYTHON ENVIRONMENTS
+# ============================================================
+
 venv/
+.venv/
 
-# Secrets
+
+# ============================================================
+# ENVIRONMENT / SECRET FILES
+# ============================================================
+
 .env
+.env.*
+!.env.example
 
-# Git
+
+# ============================================================
+# GIT
+# ============================================================
+
 .git/
 .gitignore
 
-# IDE
+
+# ============================================================
+# IDE FILES
+# ============================================================
+
 .vscode/
 .idea/
 
-# Logs
+
+# ============================================================
+# LOGS
+# ============================================================
+
 *.log
 
-# Temporary uploads
+
+# ============================================================
+# LOCAL DATABASES
+# ============================================================
+
+*.db
+*.db-shm
+*.db-wal
+
+
+# ============================================================
+# TEST OUTPUT
+# ============================================================
+
+tests/test_platform.db
+coverage/
+htmlcov/
+.coverage
+
+
+# ============================================================
+# TEMPORARY PALM UPLOADS / GENERATED RESULTS
+# ============================================================
+
 app/data/palm_uploads/
-
-# Local analytics database
-app/data/analytics.db
-app/data/analytics.db-shm
-app/data/analytics.db-wal
-
-# Generated palm results
 app/static/palm_results/
 
+external/palmistry/code/input/
+external/palmistry/code/results/
+
+
+# ============================================================
+# IMPORTANT MODEL FILES
+# ============================================================
+#
 # Do NOT exclude:
-# external/palmistry
+#
+# external/palmistry/
+# external/palmistry/detect/checkpoints/
 # requirements-backend.txt
 # requirements-palm.txt
+# start.sh
+#
+# The palm model source code and checkpoint are required
+# inside the production Docker image.
+# ============================================================

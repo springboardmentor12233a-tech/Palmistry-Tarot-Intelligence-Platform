@@ -45,10 +45,17 @@ router = APIRouter(
 )
 def download_reading_pdf(
     request: ReadingPdfRequest,
+
+    current_user: User = Depends(
+        get_current_user
+    ),
 ):
     """
-    Generate a PDF from the supplied complete
-    reading request and response.
+    Generate a PDF reading report for an
+    authenticated platform user.
+
+    The report content is generated from the
+    supplied complete reading request/response.
     """
 
     try:
@@ -63,8 +70,9 @@ def download_reading_pdf(
         return StreamingResponse(
             pdf_buffer,
 
-            media_type=
-                "application/pdf",
+            media_type=(
+                "application/pdf"
+            ),
 
             headers={
                 "Content-Disposition": (
@@ -122,8 +130,9 @@ def download_analytics_summary_csv(
         return StreamingResponse(
             csv_buffer,
 
-            media_type=
-                "text/csv",
+            media_type=(
+                "text/csv"
+            ),
 
             headers={
                 "Content-Disposition": (
@@ -188,8 +197,9 @@ def download_reading_history_csv(
         return StreamingResponse(
             csv_buffer,
 
-            media_type=
-                "text/csv",
+            media_type=(
+                "text/csv"
+            ),
 
             headers={
                 "Content-Disposition": (
