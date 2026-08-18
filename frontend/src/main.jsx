@@ -17,6 +17,8 @@ import {
 import App from "./App.jsx";
 
 import "./index.css";
+import "./App.css";
+import "./theme.css";
 
 
 createRoot(
