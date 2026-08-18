@@ -1,0 +1,207 @@
+/* =========================================================
+   P&T INTELLIGENCE — COSMIC OBSERVATORY NAVBAR
+========================================================= */
+
+.dashboard-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  background: rgba(3, 7, 22, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(245, 196, 81, 0.20);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.28);
+}
+
+.dashboard-nav-container {
+  max-width: 1450px;
+  min-height: 74px;
+  margin: 0 auto;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.dashboard-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f8f5ed;
+  text-decoration: none;
+  font-family: "Manrope", sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.dashboard-logo-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: rgba(245, 196, 81, 0.09);
+  border: 1px solid rgba(245, 196, 81, 0.28);
+  color: #f5c451;
+  font-size: 21px;
+  box-shadow: 0 0 24px rgba(245, 196, 81, 0.08);
+}
+
+.dashboard-nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin-left: auto;
+  margin-right: 24px;
+}
+
+.dashboard-nav-links a {
+  position: relative;
+  padding: 27px 0 24px;
+  color: rgba(248, 245, 237, 0.60);
+  text-decoration: none;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  transition: color .22s ease;
+}
+
+.dashboard-nav-links a:hover,
+.dashboard-nav-links a.active {
+  color: #f5c451;
+}
+
+.dashboard-nav-links a.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 17px;
+  height: 2px;
+  border-radius: 10px;
+  background: #f5c451;
+  box-shadow: 0 0 12px rgba(245, 196, 81, .50);
+}
+
+.dashboard-user {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  white-space: nowrap;
+}
+
+.dashboard-user-profile {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: rgba(248, 245, 237, .78);
+  text-decoration: none;
+  font-family: "Manrope", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dashboard-user-profile:hover {
+  color: #f5c451;
+}
+
+.user-avatar {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(245,196,81,.20), transparent 65%),
+    #17113d;
+  border: 1px solid rgba(245,196,81,.30);
+  color: #f5c451;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* =========================================================
+   LOGOUT BUTTON
+========================================================= */
+
+.logout-link {
+  margin: 0;
+  padding: 0;
+
+  border: none;
+  outline: none;
+
+  background: transparent;
+
+  color: #f5c451;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.logout-link:hover {
+  color: #ffd978;
+
+  background: transparent;
+
+  transform: translateY(-1px);
+}
+
+
+.logout-link:focus,
+.logout-link:focus-visible {
+  outline: none;
+
+  background: transparent;
+  box-shadow: none;
+}
+
+
+.logout-link:active {
+  background: transparent;
+
+  transform: translateY(0);
+}
+
+.logout-link:hover {
+  color: #f5c451;
+}
+
+@media (max-width: 1050px) {
+  .dashboard-nav-container { padding: 0 22px; }
+  .dashboard-nav-links { gap: 18px; margin-right: 10px; }
+  .dashboard-nav-links a { font-size: 11px; }
+}
+
+@media (max-width: 850px) {
+  .dashboard-nav-links { display: none; }
+  .dashboard-user { margin-left: auto; }
+}
+
+@media (max-width: 550px) {
+  .dashboard-nav-container { min-height: 68px; padding: 0 16px; }
+  .dashboard-logo { font-size: 15px; }
+  .dashboard-logo span:last-child { display: none; }
+  .dashboard-logo-icon { width: 34px; height: 34px; font-size: 17px; }
+  .dashboard-user-profile > span:not(.user-avatar) { display: none; }
+  .logout-link { font-size: 11px; }
+}

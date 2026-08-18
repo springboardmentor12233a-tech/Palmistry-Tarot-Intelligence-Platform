@@ -1,0 +1,508 @@
+/* =========================================================
+   PREMIUM COSMIC NAVBAR
+========================================================= */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  width: 100%;
+
+  background: rgba(5, 7, 20, 0.78);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  border-bottom: 1px solid rgba(245, 196, 81, 0.12);
+
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================================================
+   NAVBAR CONTAINER
+========================================================= */
+
+.navbar-container {
+  max-width: 1320px;
+
+  min-height: 78px;
+
+  margin: 0 auto;
+
+  padding: 0 32px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 40px;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.navbar-logo {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+
+  text-decoration: none;
+
+  color: #fffdf6;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 17px;
+
+  font-weight: 800;
+
+  letter-spacing: -0.3px;
+
+  white-space: nowrap;
+
+  transition: color 0.25s ease;
+}
+
+
+.navbar-logo:hover {
+  color: #f5c451;
+}
+
+
+/* =========================================================
+   LOGO SYMBOL
+========================================================= */
+
+.logo-symbol {
+  width: 38px;
+
+  height: 38px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(245, 196, 81, 0.18),
+      rgba(245, 196, 81, 0.06)
+    );
+
+  border: 1px solid rgba(245, 196, 81, 0.28);
+
+  color: #f5c451;
+
+  font-size: 18px;
+
+  box-shadow:
+    0 0 20px rgba(245, 196, 81, 0.08);
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+
+.navbar-logo:hover .logo-symbol {
+  transform: rotate(8deg) scale(1.05);
+
+  box-shadow:
+    0 0 25px rgba(245, 196, 81, 0.18);
+}
+
+
+/* =========================================================
+   NAV LINKS
+========================================================= */
+
+.nav-links {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 34px;
+
+  margin-left: auto;
+
+  margin-right: auto;
+}
+
+
+.nav-links a {
+  position: relative;
+
+  padding: 29px 0;
+
+  color: rgba(248, 245, 237, 0.62);
+
+  text-decoration: none;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.2px;
+
+  transition:
+    color 0.25s ease,
+    text-shadow 0.25s ease;
+}
+
+
+/* Hover */
+
+.nav-links a:hover {
+  color: #f5c451;
+
+  text-shadow:
+    0 0 16px rgba(245, 196, 81, 0.25);
+}
+
+
+/* =========================================================
+   ACTIVE LINK
+========================================================= */
+
+.nav-links a.active {
+  color: #f5c451;
+}
+
+
+.nav-links a.active::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+
+  right: 0;
+
+  bottom: 20px;
+
+  height: 2px;
+
+  border-radius: 20px;
+
+  background: #f5c451;
+
+  box-shadow:
+    0 0 10px rgba(245, 196, 81, 0.65);
+}
+
+
+/* =========================================================
+   NAV ACTIONS
+========================================================= */
+
+.navbar-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+.login-link {
+  color: rgba(248, 245, 237, 0.72);
+
+  text-decoration: none;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  transition:
+    color 0.25s ease,
+    text-shadow 0.25s ease;
+}
+
+
+.login-link:hover {
+  color: #f5c451;
+
+  text-shadow:
+    0 0 15px rgba(245, 196, 81, 0.25);
+}
+
+
+/* =========================================================
+   GET STARTED BUTTON
+========================================================= */
+
+.nav-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 40px;
+
+  padding: 0 20px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8d66f,
+      #e0ad32
+    );
+
+  color: #17120b;
+
+  text-decoration: none;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.1px;
+
+  box-shadow:
+    0 8px 25px rgba(245, 196, 81, 0.15);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    filter 0.25s ease;
+}
+
+
+.nav-button:hover {
+  transform: translateY(-2px);
+
+  filter: brightness(1.05);
+
+  box-shadow:
+    0 12px 30px rgba(245, 196, 81, 0.28);
+}
+
+
+/* =========================================================
+   USER / DASHBOARD NAVBAR
+========================================================= */
+
+.user-navbar .navbar-container {
+  max-width: 1450px;
+}
+
+
+.user-nav-links {
+  gap: 25px;
+}
+
+
+.user-nav-links a {
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   USER ACTIONS
+========================================================= */
+
+.user-actions {
+  gap: 17px;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.user-profile-link {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  color: rgba(248, 245, 237, 0.72);
+
+  text-decoration: none;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  transition: color 0.25s ease;
+}
+
+
+.user-profile-link:hover,
+.user-profile-link.active {
+  color: #f5c451;
+}
+
+
+/* =========================================================
+   USER AVATAR
+========================================================= */
+
+.user-avatar {
+  width: 35px;
+
+  height: 35px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f5c451,
+      #c99324
+    );
+
+  color: #17120b;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 0 18px rgba(245, 196, 81, 0.12);
+}
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+.logout-link {
+  color: rgba(248, 245, 237, 0.50);
+
+  text-decoration: none;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  transition:
+    color 0.25s ease;
+}
+
+
+.logout-link:hover {
+  color: #f5c451;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 1050px) {
+
+  .navbar-container {
+    padding: 0 24px;
+  }
+
+  .nav-links {
+    gap: 22px;
+  }
+
+  .user-nav-links {
+    gap: 18px;
+  }
+
+}
+
+
+@media (max-width: 850px) {
+
+  .nav-links {
+    display: none;
+  }
+
+  .navbar-actions {
+    margin-left: auto;
+  }
+
+  .navbar-container {
+    padding: 0 20px;
+  }
+
+}
+
+
+@media (max-width: 550px) {
+
+  .navbar-container {
+    min-height: 68px;
+
+    padding: 0 16px;
+  }
+
+  .navbar-logo {
+    font-size: 15px;
+  }
+
+  .logo-symbol {
+    width: 34px;
+
+    height: 34px;
+
+    font-size: 16px;
+  }
+
+  .login-link {
+    display: none;
+  }
+
+  .nav-button {
+    min-height: 37px;
+
+    padding: 0 15px;
+
+    font-size: 10px;
+  }
+
+  .user-name {
+    display: none;
+  }
+
+  .logout-link {
+    display: none;
+  }
+
+}

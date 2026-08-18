@@ -1,0 +1,1149 @@
+/* =========================================================
+   HOME PAGE — PREMIUM COSMIC OBSERVATORY
+========================================================= */
+
+.home-page {
+  position: relative;
+  min-height: 100vh;
+  background: transparent;
+  color: #f8f5ed;
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero-section {
+  position: relative;
+  z-index: 5;
+
+  width: 100%;
+  max-width: 1280px;
+
+  min-height: calc(100vh - 76px);
+
+  margin: 0 auto;
+  padding: 70px 42px;
+
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+
+  align-items: center;
+
+  gap: 45px;
+}
+
+
+/* =========================================================
+   HERO CONTENT
+========================================================= */
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+}
+
+
+.hero-badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 8px 14px;
+
+  border: 1px solid rgba(245, 196, 81, 0.35);
+
+  border-radius: 30px;
+
+  background: rgba(245, 196, 81, 0.045);
+
+  color: #f5c451;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+
+  box-shadow:
+    inset 0 0 18px rgba(245, 196, 81, 0.025),
+    0 0 25px rgba(245, 196, 81, 0.04);
+}
+
+
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
+.hero-content h1 {
+  max-width: 720px;
+
+  margin: 26px 0 22px;
+
+  color: #fffdf6;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: clamp(64px, 7vw, 92px);
+
+  font-weight: 600;
+
+  line-height: 0.88;
+
+  letter-spacing: -2px;
+
+  text-shadow:
+    0 5px 30px rgba(0, 0, 0, 0.35);
+}
+
+
+.hero-content h1 span {
+  display: block;
+
+  color: #f5c451;
+
+  font-family: "Cormorant Garamond", serif;
+
+  text-shadow:
+    0 0 30px rgba(245, 196, 81, 0.18);
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.hero-description {
+  max-width: 590px;
+
+  margin: 20px 0 0;
+
+  color: rgba(248, 245, 237, 0.68);
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 15px;
+
+  font-weight: 400;
+
+  line-height: 1.8;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.hero-buttons {
+  display: flex;
+
+  align-items: center;
+
+  gap: 14px;
+
+  margin-top: 32px;
+}
+
+
+.primary-button,
+.secondary-button {
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 44px;
+
+  padding: 13px 21px;
+
+  border-radius: 10px;
+
+  text-decoration: none;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+.primary-button {
+  background:
+    linear-gradient(
+      135deg,
+      #f8d36b,
+      #dca72f
+    );
+
+  color: #17120b;
+
+  border: 1px solid rgba(255, 227, 154, 0.55);
+
+  box-shadow:
+    0 10px 30px rgba(245, 196, 81, 0.18);
+}
+
+
+.primary-button:hover {
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 14px 40px rgba(245, 196, 81, 0.32);
+}
+
+
+/* =========================================================
+   SECONDARY BUTTON
+========================================================= */
+
+.secondary-button {
+  background: rgba(255, 255, 255, 0.035);
+
+  color: #f8f5ed;
+
+  border: 1px solid rgba(248, 245, 237, 0.22);
+
+  backdrop-filter: blur(12px);
+}
+
+
+.secondary-button:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(245, 196, 81, 0.50);
+
+  background: rgba(245, 196, 81, 0.06);
+
+  color: #f5c451;
+}
+
+
+/* =========================================================
+   HERO NOTE
+========================================================= */
+
+.hero-note {
+  margin-top: 22px;
+
+  color: rgba(248, 245, 237, 0.38);
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   HERO VISUAL
+========================================================= */
+
+.hero-visual {
+  position: relative;
+
+  min-height: 500px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+
+/* =========================================================
+   CENTER TAROT CARD
+========================================================= */
+
+.center-symbol {
+  position: relative;
+
+  width: 205px;
+
+  height: 285px;
+
+  border-radius: 25px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle at 50% 35%,
+      rgba(245, 196, 81, 0.11),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      #251642,
+      #100c24
+    );
+
+  color: #f5c451;
+
+  font-size: 58px;
+
+  border: 1px solid rgba(245, 196, 81, 0.28);
+
+  box-shadow:
+    0 35px 80px rgba(0, 0, 0, 0.45),
+    0 0 45px rgba(245, 196, 81, 0.08);
+
+  transform: rotate(-5deg);
+
+  animation: centerCardFloat 5s ease-in-out infinite;
+}
+
+
+/* Inner gold frame */
+
+.center-symbol::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 12px;
+
+  border: 1px solid rgba(245, 196, 81, 0.22);
+
+  border-radius: 18px;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CENTER CARD ANIMATION
+========================================================= */
+
+@keyframes centerCardFloat {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-5deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(-4deg);
+  }
+}
+
+
+/* =========================================================
+   FLOATING CARDS
+========================================================= */
+
+.symbol-card {
+  position: absolute;
+
+  width: 132px;
+
+  height: 158px;
+
+  border-radius: 20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.99),
+      rgba(241, 235, 217, 0.96)
+    );
+
+  border: 1px solid rgba(245, 196, 81, 0.42);
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.38),
+    0 0 30px rgba(245, 196, 81, 0.07);
+
+  transition:
+    box-shadow 0.4s ease;
+}
+
+
+/* Gold inner border */
+
+.symbol-card::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 8px;
+
+  border: 1px solid rgba(180, 135, 40, 0.20);
+
+  border-radius: 15px;
+
+  pointer-events: none;
+}
+
+
+.symbol-card:hover {
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.45),
+    0 0 35px rgba(245, 196, 81, 0.14);
+}
+
+
+.symbol-card span {
+  position: relative;
+
+  z-index: 2;
+
+  font-size: 40px;
+}
+
+
+.symbol-card small {
+  position: relative;
+
+  z-index: 2;
+
+  color: #403622;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 0.4px;
+}
+
+
+/* =========================================================
+   PALM CARD
+========================================================= */
+
+.palm-symbol {
+  top: 30px;
+
+  left: 15px;
+
+  transform: rotate(-8deg);
+
+  animation: palmFloat 5s ease-in-out infinite;
+}
+
+
+@keyframes palmFloat {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(-8deg);
+  }
+
+  50% {
+    transform: translateY(-13px) rotate(-6deg);
+  }
+}
+
+
+/* =========================================================
+   TAROT CARD
+========================================================= */
+
+.tarot-symbol {
+  right: 10px;
+
+  bottom: 30px;
+
+  transform: rotate(8deg);
+
+  animation: tarotFloat 5.5s ease-in-out infinite;
+}
+
+
+@keyframes tarotFloat {
+
+  0%,
+  100% {
+    transform: translateY(0) rotate(8deg);
+  }
+
+  50% {
+    transform: translateY(-12px) rotate(10deg);
+  }
+}
+
+
+/* =========================================================
+   HOW IT WORKS
+========================================================= */
+
+.how-section,
+.features-section {
+  position: relative;
+
+  z-index: 5;
+
+  width: 100%;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  padding: 100px 28px;
+}
+
+
+.section-heading {
+  max-width: 680px;
+
+  margin-bottom: 50px;
+}
+
+
+.section-heading > span {
+  display: block;
+
+  color: #f5c451;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.7px;
+}
+
+
+.section-heading h2 {
+  margin: 15px 0;
+
+  color: #fffdf6;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: 52px;
+
+  font-weight: 600;
+
+  line-height: 1.05;
+
+  letter-spacing: -1px;
+}
+
+
+.section-heading h2 strong {
+  color: #f5c451;
+
+  font-weight: 600;
+
+  text-shadow:
+    0 0 25px rgba(245, 196, 81, 0.16);
+}
+
+
+.section-heading p {
+  color: rgba(248, 245, 237, 0.60);
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   STEPS
+========================================================= */
+
+.steps-container {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 20px;
+}
+
+
+.step-card {
+  position: relative;
+
+  padding: 30px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  border: 1px solid rgba(245, 196, 81, 0.14);
+
+  border-radius: 18px;
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.25);
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease;
+}
+
+
+.step-card:hover {
+  transform: translateY(-7px);
+
+  border-color: rgba(245, 196, 81, 0.38);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(245, 196, 81, 0.07),
+      rgba(255, 255, 255, 0.025)
+    );
+}
+
+
+.step-number {
+  color: rgba(248, 245, 237, 0.35);
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+
+.step-icon {
+  margin: 22px 0 14px;
+
+  font-size: 34px;
+}
+
+
+.step-card h3 {
+  margin: 0 0 10px;
+
+  color: #fffdf6;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+
+.step-card p {
+  margin: 0;
+
+  color: rgba(248, 245, 237, 0.55);
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features-section {
+  max-width: none;
+
+  padding-left: max(
+    28px,
+    calc((100% - 1200px) / 2)
+  );
+
+  padding-right: max(
+    28px,
+    calc((100% - 1200px) / 2)
+  );
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(245, 196, 81, 0.015),
+      rgba(245, 196, 81, 0.045)
+    );
+}
+
+
+.features-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 22px;
+}
+
+
+.feature-card {
+  padding: 35px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.055),
+      rgba(255, 255, 255, 0.018)
+    );
+
+  border: 1px solid rgba(245, 196, 81, 0.14);
+
+  border-radius: 18px;
+
+  backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.25);
+
+  transition:
+    transform 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease;
+}
+
+
+.feature-card:hover {
+  transform: translateY(-7px);
+
+  border-color: rgba(245, 196, 81, 0.38);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(245, 196, 81, 0.07),
+      rgba(255, 255, 255, 0.025)
+    );
+}
+
+
+/* =========================================================
+   FEATURE ICON
+========================================================= */
+
+.feature-icon {
+  width: 52px;
+
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 22px;
+
+  border-radius: 14px;
+
+  background:
+    rgba(245, 196, 81, 0.08);
+
+  border: 1px solid rgba(245, 196, 81, 0.20);
+
+  color: #f5c451;
+
+  box-shadow:
+    0 0 25px rgba(245, 196, 81, 0.05);
+
+  font-size: 25px;
+}
+
+
+.feature-card h3 {
+  margin: 0 0 12px;
+
+  color: #fffdf6;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 21px;
+
+  font-weight: 700;
+}
+
+
+.feature-card p {
+  min-height: 70px;
+
+  margin: 0;
+
+  color: rgba(248, 245, 237, 0.55);
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+.feature-card a {
+  display: inline-block;
+
+  margin-top: 18px;
+
+  color: #f5c451;
+
+  text-decoration: none;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  transition: color 0.25s ease;
+}
+
+
+.feature-card a:hover {
+  color: #ffe39a;
+}
+
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.cta-section {
+  position: relative;
+
+  z-index: 5;
+
+  padding: 110px 28px;
+
+  text-align: center;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(245, 196, 81, 0.08),
+      transparent 48%
+    );
+
+  color: white;
+}
+
+
+.cta-content {
+  max-width: 650px;
+
+  margin: 0 auto;
+}
+
+
+.cta-content > span {
+  color: #f5c451;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.7px;
+}
+
+
+.cta-content h2 {
+  margin: 18px 0;
+
+  color: #fffdf6;
+
+  font-family: "Cormorant Garamond", serif;
+
+  font-size: 58px;
+
+  font-weight: 600;
+
+  line-height: 1.05;
+
+  letter-spacing: -1px;
+}
+
+
+.cta-content p {
+  margin-bottom: 30px;
+
+  color: rgba(248, 245, 237, 0.58);
+
+  font-family: "Manrope", sans-serif;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   CTA BUTTON
+========================================================= */
+
+.cta-section .primary-button {
+  background:
+    linear-gradient(
+      135deg,
+      #f8d36b,
+      #dca72f
+    );
+
+  color: #17120b;
+
+  box-shadow:
+    0 10px 35px rgba(245, 196, 81, 0.20);
+}
+
+
+.cta-section .primary-button:hover {
+  box-shadow:
+    0 15px 45px rgba(245, 196, 81, 0.35);
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer {
+  position: relative;
+
+  z-index: 5;
+
+  padding: 55px 28px 25px;
+
+  background:
+    rgba(3, 4, 14, 0.92);
+
+  border-top:
+    1px solid rgba(245, 196, 81, 0.10);
+
+  color: white;
+
+  backdrop-filter: blur(14px);
+}
+
+
+.footer-content {
+  max-width: 1200px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 30px;
+}
+
+
+.footer-logo {
+  color: #fffdf6;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 18px;
+
+  font-weight: 800;
+}
+
+
+.footer-content p {
+  margin-top: 10px;
+
+  color: rgba(248, 245, 237, 0.45);
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 13px;
+}
+
+
+.footer-links {
+  display: flex;
+
+  gap: 25px;
+}
+
+
+.footer-links a {
+  color: rgba(248, 245, 237, 0.58);
+
+  text-decoration: none;
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 13px;
+
+  transition: color 0.25s ease;
+}
+
+
+.footer-links a:hover {
+  color: #f5c451;
+}
+
+
+.footer-bottom {
+  max-width: 1200px;
+
+  margin: 40px auto 0;
+
+  padding-top: 20px;
+
+  border-top:
+    1px solid rgba(245, 196, 81, 0.10);
+
+  color: rgba(248, 245, 237, 0.30);
+
+  font-family: "Manrope", sans-serif;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .hero-section {
+    grid-template-columns: 1fr;
+
+    min-height: auto;
+
+    padding-top: 80px;
+
+    padding-bottom: 80px;
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  .hero-note {
+    text-align: center;
+  }
+
+  .hero-visual {
+    min-height: 460px;
+  }
+
+  .steps-container,
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 650px) {
+
+  .hero-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .hero-content h1 {
+    font-size: 58px;
+
+    line-height: 0.9;
+
+    letter-spacing: -1px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+  }
+
+  .hero-visual {
+    min-height: 390px;
+
+    transform: scale(0.82);
+
+    margin-top: -20px;
+  }
+
+  .center-symbol {
+    width: 190px;
+    height: 265px;
+  }
+
+  .symbol-card {
+    width: 115px;
+    height: 140px;
+  }
+
+  .section-heading h2 {
+    font-size: 44px;
+  }
+
+  .cta-content h2 {
+    font-size: 48px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+  }
+}

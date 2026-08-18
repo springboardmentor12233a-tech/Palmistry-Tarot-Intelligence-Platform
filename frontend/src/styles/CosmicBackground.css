@@ -1,0 +1,90 @@
+.cosmic-background {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(
+      circle at 70% 35%,
+      rgba(70, 35, 140, 0.35),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 20% 50%,
+      rgba(20, 60, 120, 0.3),
+      transparent 40%
+    ),
+    linear-gradient(
+      135deg,
+      #020817 0%,
+      #061329 45%,
+      #10082b 100%
+    );
+}
+
+.cosmic-star-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.cosmic-nebula {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  pointer-events: none;
+}
+
+.cosmic-nebula-one {
+  width: 500px;
+  height: 350px;
+
+  left: -100px;
+  top: 20%;
+
+  background:
+    rgba(22, 77, 135, 0.28);
+}
+
+.cosmic-nebula-two {
+  width: 600px;
+  height: 420px;
+
+  right: -120px;
+  top: 15%;
+
+  background:
+    rgba(86, 46, 160, 0.30);
+}
+
+.cosmic-nebula-three {
+  width: 500px;
+  height: 300px;
+
+  left: 35%;
+  bottom: -100px;
+
+  background:
+    rgba(35, 64, 115, 0.18);
+}
+
+.cosmic-vignette {
+  position: absolute;
+
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      transparent 45%,
+      rgba(0, 0, 0, 0.28) 100%
+    );
+}

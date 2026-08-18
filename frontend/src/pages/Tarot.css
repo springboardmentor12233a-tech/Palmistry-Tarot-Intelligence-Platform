@@ -1,0 +1,241 @@
+/* =========================================================
+   TAROT — COSMIC OBSERVATORY
+========================================================= */
+
+.tarot-page { min-height:100vh; color:#f8f5ed; background:transparent; }
+.tarot-main { position:relative;z-index:5;max-width:1120px;margin:0 auto;padding:50px 25px 70px; }
+.tarot-header { max-width:760px;margin-bottom:42px; }
+.tarot-header .back-link { display:inline-block;margin-bottom:28px;color:#f5c451;text-decoration:none;font-size:12px;font-weight:800; }
+.tarot-header .back-link:hover { color:#ffe39a;transform:translateX(-3px); }
+.tarot-header h1 { margin:0;color:#f8f5ed;font-size:clamp(40px,5vw,58px);line-height:1.05;letter-spacing:-2px; }
+.tarot-header h1 span,.tarot-question-card h2 span,.tarot-preview h2 span { display:block;color:#f5c451; }
+.tarot-header p,.tarot-question-card>p,.tarot-preview>p { color:rgba(248,245,237,.64);font-size:13px;line-height:1.7; }
+
+.tarot-reading-section { display:grid;grid-template-columns:1.05fr .95fr;gap:25px;align-items:stretch;margin-bottom:35px; }
+
+.tarot-question-card,.tarot-preview {
+  padding:35px;border:1px solid rgba(245,196,81,.22);border-radius:24px;
+  color:#f8f5ed;box-shadow:0 20px 50px rgba(0,0,0,.28);
+}
+.tarot-question-card { background:linear-gradient(145deg,rgba(9,13,35,.96),rgba(7,17,38,.90)); }
+.tarot-preview { background:linear-gradient(145deg,rgba(15,12,45,.96),rgba(7,18,40,.90)); }
+.tarot-card-icon,.dataset-symbol {
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(245,196,81,.10);border:1px solid rgba(245,196,81,.22);color:#f5c451;
+}
+.tarot-card-icon { width:62px;height:62px;border-radius:17px;font-size:30px;margin-bottom:20px; }
+.card-label,.dashboard-eyebrow { color:#f5c451;font-size:10px;font-weight:900;letter-spacing:1.5px; }
+.tarot-question-card h2,.tarot-preview h2 { margin:0;color:#f8f5ed;font-size:27px;letter-spacing:-1px; }
+
+.tarot-question-card label { display:block;margin:17px 0 8px;color:#f8f5ed;font-size:12px;font-weight:800; }
+.tarot-question-card textarea,.tarot-question-card select {
+  width:100%;box-sizing:border-box;border:1px solid rgba(245,196,81,.23);border-radius:11px;
+  background:rgba(3,8,24,.80);color:#f8f5ed;font-family:inherit;font-size:13px;outline:none;transition:.2s;
+}
+.tarot-question-card textarea { min-height:105px;resize:vertical;padding:14px; }
+.tarot-question-card select { height:47px;padding:0 13px;cursor:pointer; }
+.tarot-question-card textarea::placeholder { color:rgba(248,245,237,.40); }
+.tarot-question-card textarea:focus,.tarot-question-card select:focus {
+  border-color:#f5c451;box-shadow:0 0 0 3px rgba(245,196,81,.10);background:rgba(3,8,24,.95);
+}
+
+.draw-button {
+  width:100%;margin-top:22px;padding:14px 20px;border:none;border-radius:11px;
+  background:linear-gradient(135deg,#f8d36b,#dca72f);color:#17120b;font-size:13px;font-weight:900;cursor:pointer;transition:.2s;
+}
+.draw-button:not(:disabled):hover { transform:translateY(-2px);background:linear-gradient(135deg,#ffe39a,#f5c451); }
+.draw-button:disabled { opacity:.45;cursor:not-allowed; }
+.tarot-note { text-align:center;margin-top:15px!important;color:rgba(248,245,237,.38)!important;font-size:10px!important; }
+
+.tarot-preview h2 { font-size:29px; }
+.tarot-preview>p { max-width:430px;margin:12px 0 28px; }
+
+.card-preview-row { display:flex;justify-content:center;align-items:center;gap:13px;min-height:235px; }
+.tarot-card-back {
+  width:100px;height:155px;display:flex;align-items:center;justify-content:center;border-radius:13px;
+  border:2px solid rgba(245,196,81,.45);
+  background:linear-gradient(145deg,#090d23,#1d1550);
+  box-shadow:0 15px 30px rgba(0,0,0,.38);transform:rotate(-4deg);transition:.25s;
+}
+.tarot-card-back:nth-child(2){transform:translateY(-12px)}
+.tarot-card-back:nth-child(3){transform:rotate(4deg)}
+.tarot-card-back:hover{transform:translateY(-8px) rotate(0deg)}
+.tarot-card-back span {
+  width:58px;height:92px;display:flex;align-items:center;justify-content:center;
+  border:1px solid rgba(245,196,81,.45);border-radius:8px;color:#f5c451;font-size:25px;
+}
+
+.reading-positions { display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:15px; }
+.reading-positions div { display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px;border-top:1px solid rgba(245,196,81,.16); }
+.reading-positions strong { color:#f5c451;font-size:10px; }
+.reading-positions span { color:rgba(248,245,237,.58);font-size:11px;font-weight:700; }
+
+.tarot-card-result {
+  width:180px;min-height:300px;padding:24px 18px;border-radius:18px;
+  background:linear-gradient(145deg,#090d23,#24175c);border:1px solid rgba(245,196,81,.28);
+  color:#f8f5ed;box-shadow:0 18px 35px rgba(0,0,0,.35);
+  display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:flex-start;transition:.3s;
+}
+.tarot-card-result:hover { transform:translateY(-8px); }
+.tarot-card-result .card-position { font-size:12px;letter-spacing:2px;color:#f5c451;opacity:.9;margin-bottom:20px; }
+.tarot-card-result h3 { font-size:21px;margin:10px 0;line-height:1.2;color:#f8f5ed; }
+.tarot-card-result strong { font-size:12px;text-transform:uppercase;letter-spacing:2px;margin-bottom:18px;color:#f5c451; }
+.tarot-card-result p { font-size:13px;line-height:1.6;color:rgba(248,245,237,.68);margin:0; }
+
+.tarot-dataset-info {
+  display:flex;align-items:center;gap:20px;padding:25px 28px;margin-bottom:35px;border-radius:18px;
+  border:1px solid rgba(245,196,81,.20);background:rgba(8,13,35,.78);box-shadow:0 15px 40px rgba(0,0,0,.20);
+}
+.dataset-symbol { flex-shrink:0;width:52px;height:52px;border-radius:14px;font-size:23px; }
+.tarot-dataset-info h2 { margin:0;color:#f8f5ed;font-size:18px; }
+.tarot-dataset-info p { max-width:750px;margin:7px 0 0;color:rgba(248,245,237,.55);font-size:12px;line-height:1.6; }
+
+.tarot-disclaimer { padding-top:20px;border-top:1px solid rgba(245,196,81,.14);text-align:center;color:rgba(248,245,237,.40);font-size:11px;line-height:1.6; }
+
+@media(max-width:850px){.tarot-reading-section{grid-template-columns:1fr}.tarot-preview{order:2}}
+@media(max-width:550px){
+  .tarot-main{padding:35px 18px 50px}.tarot-question-card,.tarot-preview{padding:25px}
+  .tarot-header h1{font-size:40px}.card-preview-row{gap:7px}
+  .tarot-card-back{width:82px;height:135px}.tarot-dataset-info{align-items:flex-start;flex-direction:column}
+  .tarot-card-result{width:145px;min-height:270px;padding:20px 14px}
+}
+
+/* =========================================================
+   ACTUAL TAROT CARD IMAGE
+========================================================= */
+
+.tarot-generated-row {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+
+.tarot-card-image {
+  width: 145px;
+  height: 220px;
+
+  object-fit: cover;
+
+  display: block;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(245,196,81,.35);
+
+  box-shadow:
+    0 15px 30px rgba(0,0,0,.45),
+    0 0 18px rgba(245,196,81,.08);
+
+  margin-bottom: 18px;
+
+  transition:
+    transform .3s ease,
+    box-shadow .3s ease;
+}
+
+
+.tarot-card-result:hover .tarot-card-image {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 20px 38px rgba(0,0,0,.55),
+    0 0 25px rgba(245,196,81,.14);
+}
+
+
+/* =========================================================
+   IMAGE PLACEHOLDER
+========================================================= */
+
+.tarot-image-placeholder {
+  width: 145px;
+  height: 220px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  border: 1px dashed rgba(245,196,81,.30);
+
+  background:
+    linear-gradient(
+      145deg,
+      #090d23,
+      #24175c
+    );
+
+  color: #f5c451;
+
+  font-size: 30px;
+
+  margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   CARD POSITION
+========================================================= */
+
+.tarot-card-position-label {
+  display: block;
+
+  margin-bottom: 12px;
+
+  color: #f5c451;
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   KEYWORDS
+========================================================= */
+
+.tarot-card-keywords {
+  margin: 0 0 14px;
+
+  color: rgba(248,245,237,.58);
+
+  font-size: 10px;
+
+  line-height: 1.5;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   MOBILE TAROT CARDS
+========================================================= */
+
+@media(max-width:550px) {
+
+  .tarot-generated-row {
+    gap: 10px;
+  }
+
+  .tarot-card-image,
+  .tarot-image-placeholder {
+    width: 105px;
+    height: 165px;
+  }
+
+  .tarot-card-result {
+    width: 125px;
+    min-height: 300px;
+    padding: 16px 10px;
+  }
+
+  .tarot-card-result h3 {
+    font-size: 17px;
+  }
+
+}

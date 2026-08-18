@@ -1,0 +1,575 @@
+/* =========================
+   DASHBOARD PAGE
+========================= */
+
+.dashboard-page {
+  min-height: 100vh;
+  background: transparent;
+  color: #f8f5ed;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.dashboard-main {
+  position: relative;
+  z-index: 5;
+
+  max-width: 1120px;
+  margin: 0 auto;
+
+  padding: 55px 25px 70px;
+
+  color: #f8f5ed;
+}
+
+
+/* =========================
+   WELCOME
+========================= */
+
+.dashboard-welcome {
+  position: relative;
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 40px;
+
+  color: #f8f5ed;
+}
+
+.dashboard-eyebrow {
+  display: block;
+
+  margin-bottom: 10px;
+
+  color: #f5c451 !important;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+}
+
+.dashboard-welcome h1 {
+  margin: 0;
+
+  color: #f8f5ed !important;
+
+  font-size: clamp(38px, 5vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -2px;
+}
+
+.dashboard-welcome h1 span {
+  color: #f5c451 !important;
+}
+
+.dashboard-welcome p {
+  margin-top: 15px;
+
+  color: rgba(248, 245, 237, 0.68) !important;
+
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.welcome-symbol {
+  width: 105px;
+  height: 105px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 28px;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      rgba(245, 196, 81, 0.22),
+      transparent 60%
+    ),
+    rgba(8, 13, 35, 0.88);
+
+  border: 1px solid rgba(245, 196, 81, 0.28);
+
+  color: #f5c451;
+
+  font-size: 42px;
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.35);
+
+  transform: rotate(5deg);
+}
+
+
+/* =========================
+   READING CARDS
+========================= */
+
+.reading-options {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 22px;
+
+  margin-bottom: 45px;
+}
+
+.reading-card {
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 32px;
+
+  min-height: 330px;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(245, 196, 81, 0.24);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(9, 13, 35, 0.94),
+      rgba(7, 17, 38, 0.88)
+    );
+
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.30);
+
+  backdrop-filter: blur(14px);
+
+  transition: 0.25s ease;
+}
+
+.reading-card:hover {
+  transform: translateY(-5px);
+
+  border-color: rgba(245, 196, 81, 0.42);
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.38);
+}
+
+.palm-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(9, 13, 35, 0.95),
+      rgba(7, 17, 38, 0.90)
+    );
+}
+
+.tarot-card {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(9, 13, 35, 0.95),
+      rgba(23, 17, 61, 0.90)
+    );
+}
+
+
+/* =========================
+   READING ICON
+========================= */
+
+.reading-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: rgba(245, 196, 81, 0.10);
+
+  border: 1px solid rgba(245, 196, 81, 0.25);
+
+  color: #f5c451;
+
+  font-size: 28px;
+
+  margin-bottom: 20px;
+}
+
+.tarot-icon {
+  background: rgba(245, 196, 81, 0.08);
+}
+
+
+/* =========================
+   CARD TEXT
+========================= */
+
+.card-label {
+  display: block;
+
+  margin-bottom: 9px;
+
+  color: #f5c451 !important;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+}
+
+.reading-card h2 {
+  max-width: 400px;
+
+  margin: 0;
+
+  color: #f8f5ed !important;
+
+  font-size: 28px;
+
+  line-height: 1.15;
+
+  letter-spacing: -1px;
+}
+
+.reading-card h2 span {
+  color: #f5c451 !important;
+}
+
+.reading-card p {
+  max-width: 480px;
+
+  margin: 14px 0 25px;
+
+  color: rgba(248, 245, 237, 0.66) !important;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================
+   READING COUNT
+========================= */
+
+.dashboard-reading-count {
+  margin: 18px 0;
+
+  color: #f5c451 !important;
+
+  font-weight: 700;
+
+  font-size: 15px;
+}
+
+
+/* =========================
+   GOLD BUTTON
+========================= */
+
+.reading-button {
+  display: inline-block;
+
+  padding: 12px 18px;
+
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8d36b,
+      #dca72f
+    );
+
+  border: 1px solid rgba(255, 227, 154, 0.45);
+
+  color: #17120b !important;
+
+  text-decoration: none;
+
+  font-size: 12px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 8px 25px rgba(245, 196, 81, 0.12);
+
+  transition: 0.2s ease;
+}
+
+.reading-button:hover {
+  background:
+    linear-gradient(
+      135deg,
+      #ffe39a,
+      #f5c451
+    );
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 12px 30px rgba(245, 196, 81, 0.20);
+}
+
+
+/* =========================
+   SECTIONS
+========================= */
+
+.latest-insight,
+.recent-section {
+  margin-bottom: 45px;
+}
+
+.section-heading {
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  margin-bottom: 17px;
+}
+
+.section-heading h2 {
+  margin: 0;
+
+  color: #f8f5ed !important;
+
+  font-size: 25px;
+
+  letter-spacing: -0.7px;
+}
+
+.insight-status,
+.history-count {
+  color: rgba(248, 245, 237, 0.52) !important;
+
+  font-size: 11px;
+
+  font-weight: 700;
+}
+
+
+/* =========================
+   INSIGHT
+========================= */
+
+.insight-placeholder {
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 28px;
+
+  border-radius: 18px;
+
+  border: 1px dashed rgba(245, 196, 81, 0.28);
+
+  background: rgba(9, 13, 35, 0.72);
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.22);
+}
+
+.insight-star {
+  flex-shrink: 0;
+
+  width: 54px;
+
+  height: 54px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 15px;
+
+  background: rgba(245, 196, 81, 0.12);
+
+  border: 1px solid rgba(245, 196, 81, 0.25);
+
+  color: #f5c451;
+
+  font-size: 24px;
+}
+
+.insight-placeholder h3 {
+  margin: 0 0 7px;
+
+  color: #f8f5ed !important;
+
+  font-size: 16px;
+}
+
+.insight-placeholder p {
+  margin: 0;
+
+  max-width: 700px;
+
+  color: rgba(248, 245, 237, 0.60) !important;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================
+   HISTORY
+========================= */
+
+.empty-history {
+  padding: 45px 20px;
+
+  text-align: center;
+
+  border: 1px solid rgba(245, 196, 81, 0.20);
+
+  border-radius: 18px;
+
+  background: rgba(9, 13, 35, 0.72);
+
+  backdrop-filter: blur(12px);
+
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.22);
+}
+
+.empty-icon {
+  font-size: 28px;
+
+  color: #f5c451;
+}
+
+.empty-history h3 {
+  margin: 12px 0 6px;
+
+  color: #f8f5ed !important;
+
+  font-size: 16px;
+}
+
+.empty-history p {
+  margin: 0;
+
+  color: rgba(248, 245, 237, 0.58) !important;
+
+  font-size: 13px;
+}
+
+
+/* =========================
+   DASHBOARD TEXT OVERRIDE
+========================= */
+
+.dashboard-main h1,
+.dashboard-main h2,
+.dashboard-main h3 {
+  color: #f8f5ed;
+}
+
+.dashboard-main p {
+  color: rgba(248, 245, 237, 0.68);
+}
+
+.dashboard-main .dashboard-eyebrow,
+.dashboard-main .card-label,
+.dashboard-main .dashboard-reading-count {
+  color: #f5c451 !important;
+}
+
+
+/* =========================
+   DISCLAIMER
+========================= */
+
+.dashboard-disclaimer {
+  padding: 18px;
+
+  text-align: center;
+
+  color: rgba(248, 245, 237, 0.42) !important;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+
+  border-top: 1px solid rgba(245, 196, 81, 0.16);
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 850px) {
+
+  .reading-options {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-welcome {
+    align-items: flex-start;
+  }
+
+  .welcome-symbol {
+    width: 75px;
+
+    height: 75px;
+
+    font-size: 30px;
+  }
+}
+
+
+@media (max-width: 550px) {
+
+  .dashboard-main {
+    padding: 35px 18px 50px;
+  }
+
+  .dashboard-user > span {
+    display: none;
+  }
+
+  .dashboard-welcome {
+    display: block;
+  }
+
+  .welcome-symbol {
+    display: none;
+  }
+
+  .dashboard-welcome h1 {
+    font-size: 40px;
+  }
+
+  .reading-card {
+    padding: 25px;
+
+    min-height: auto;
+  }
+
+  .insight-placeholder {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+}

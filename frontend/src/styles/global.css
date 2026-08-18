@@ -1,0 +1,222 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  font-family: "Manrope", sans-serif;
+
+  color: #f8f5ed;
+  background: #050817;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+
+  --cosmic-bg: #050817;
+  --cosmic-navy: #071126;
+  --cosmic-purple: #17113d;
+
+  --gold: #f5c451;
+  --gold-light: #ffe39a;
+  --gold-dark: #c99222;
+
+  --ivory: #f8f5ed;
+  --muted: rgba(248, 245, 237, 0.68);
+
+  --card-bg: rgba(9, 13, 35, 0.88);
+  --card-border: rgba(245, 196, 81, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+
+  background: #050817;
+
+  font-family: "Manrope", sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: "Manrope", sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 600;
+}
+
+p,
+span,
+a,
+button,
+input,
+textarea,
+select {
+  font-family: "Manrope", sans-serif;
+}
+
+/* =========================================================
+   ROOT APPLICATION
+========================================================= */
+
+#root {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* =========================================================
+   COSMIC APPLICATION SHELL
+========================================================= */
+
+.app-shell {
+  min-height: 100vh;
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(245, 196, 81, 0.06),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #050817 0%,
+      #071126 48%,
+      #120c2f 100%
+    );
+}
+
+/* =========================================================
+   COMMON PREMIUM BUTTONS
+========================================================= */
+
+.primary-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 14px 22px;
+
+  border-radius: 11px;
+
+  text-decoration: none;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f8d36b,
+      #dca72f
+    );
+
+  color: #17120b;
+
+  border: 1px solid rgba(255, 227, 154, 0.45);
+
+  box-shadow:
+    0 10px 30px rgba(245, 196, 81, 0.16);
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.primary-button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 35px rgba(245, 196, 81, 0.25);
+}
+
+.secondary-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 14px 22px;
+
+  border-radius: 11px;
+
+  text-decoration: none;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+
+  background:
+    rgba(255, 255, 255, 0.04);
+
+  border: 1px solid rgba(248, 245, 237, 0.25);
+
+  color: #f8f5ed;
+
+  backdrop-filter: blur(10px);
+
+  transition:
+    border-color 0.25s ease,
+    background 0.25s ease,
+    transform 0.25s ease,
+    color 0.25s ease;
+}
+
+.secondary-button:hover {
+  border-color: rgba(245, 196, 81, 0.5);
+
+  background:
+    rgba(245, 196, 81, 0.06);
+
+  color: #f5c451;
+
+  transform: translateY(-2px);
+}
+
+/* =========================================================
+   UTILITY
+========================================================= */
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  cursor: pointer;
+}
+
+::selection {
+  background: rgba(245, 196, 81, 0.25);
+  color: #fffdf6;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+  }
+}
