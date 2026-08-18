@@ -22,6 +22,7 @@ from email.mime.multipart import MIMEMultipart
 import random
 from fastapi import HTTPException
 from pydantic import BaseModel
+import re
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 SECRET_KEY = "mystical-oracle-super-secret-key" 
@@ -61,7 +62,7 @@ if not GROQ_API_KEYS:
     print("Warning: No Groq API keys found in .env file!")
 
 # --- HELPER: ROTATING GROQ CALL ---
-def get_groq_response(messages, model="llama-3.3-70b-versatile", temperature=0.7, max_tokens=800):
+def get_groq_response(messages, model="openai/gpt-oss-20b", temperature=0.7, max_tokens=800):
     """
     Tries each API key in the list. If one fails (rate limit/quota),
     it automatically falls back to the next key.
@@ -79,10 +80,10 @@ def get_groq_response(messages, model="llama-3.3-70b-versatile", temperature=0.7
             # 1. Get the raw string from the AI
             raw_text = completion.choices[0].message.content
             
-            # 2. Remove asterisks and hashtags
-            clean_text = raw_text.replace('*', '').replace('#', '')
+            # 2. Remove asterisks and hashtags, then strip extra whitespace
+            clean_text = raw_text.replace('*', '').replace('#', '').strip()
             
-            # 3. Return the cleaned string
+            # 3. Return the cleaned, monologue-free string
             return clean_text
             
         except Exception as e:
