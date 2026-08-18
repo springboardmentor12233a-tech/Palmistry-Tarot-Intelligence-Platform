@@ -1,0 +1,10 @@
+.idea
+.DS_Store
+*.zip
+*.tar.gz
+venv
+.env
+/data
+/results
+/data_failed
+__pycache__/
