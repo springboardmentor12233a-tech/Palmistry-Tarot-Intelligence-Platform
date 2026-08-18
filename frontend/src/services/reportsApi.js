@@ -24,7 +24,7 @@ function getAuthToken() {
 // ERROR HELPER
 // ============================================================
 
-async function getDownloadError(
+async function getResponseError(
   response,
   fallbackMessage
 ) {
@@ -57,7 +57,7 @@ async function getDownloadError(
 
   } catch {
 
-    // Ignore parsing failure.
+    // Ignore response parsing errors.
 
   }
 
@@ -82,7 +82,10 @@ async function downloadFile(
   if (!token) {
 
     throw new Error(
-      "Your login session is unavailable. Please log in again."
+      (
+        "Your login session is "
+        + "unavailable. Please log in again."
+      )
     );
 
   }
@@ -99,7 +102,8 @@ async function downloadFile(
           endpoint
         ),
         {
-          method: "GET",
+          method:
+            "GET",
 
           headers: {
             Authorization:
@@ -127,7 +131,7 @@ async function downloadFile(
   if (!response.ok) {
 
     throw new Error(
-      await getDownloadError(
+      await getResponseError(
         response,
         "The report could not be downloaded."
       )
@@ -206,6 +210,102 @@ async function downloadFile(
 
 
 // ============================================================
+// AUTHENTICATED POST
+// ============================================================
+
+async function postAuthenticated(
+  endpoint
+) {
+
+  const token =
+    getAuthToken();
+
+
+  if (!token) {
+
+    throw new Error(
+      (
+        "Your login session is "
+        + "unavailable. Please log in again."
+      )
+    );
+
+  }
+
+
+  let response;
+
+
+  try {
+
+    response =
+      await fetch(
+        buildBackendUrl(
+          endpoint
+        ),
+        {
+          method:
+            "POST",
+
+          headers: {
+            Accept:
+              "application/json",
+
+            Authorization:
+              `Bearer ${token}`,
+          },
+        }
+      );
+
+
+  } catch (error) {
+
+    console.error(
+      "REPORT EMAIL CONNECTION ERROR:",
+      error
+    );
+
+
+    throw new Error(
+      "Could not connect to the backend."
+    );
+
+  }
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      await getResponseError(
+        response,
+        (
+          "The reading could not "
+          + "be emailed."
+        )
+      )
+    );
+
+  }
+
+
+  try {
+
+    return await response.json();
+
+  } catch {
+
+    throw new Error(
+      (
+        "The backend returned an "
+        + "invalid email response."
+      )
+    );
+
+  }
+}
+
+
+// ============================================================
 // USER ANALYTICS CSV
 // ============================================================
 
@@ -244,7 +344,7 @@ export async function downloadMyReadingHistoryCsv(
 
 
 // ============================================================
-// SAVED READING PDF
+// SAVED READING PDF DOWNLOAD
 // ============================================================
 
 export async function downloadSavedReadingPdf(
@@ -313,5 +413,44 @@ export async function downloadSavedReadingPdf(
   return downloadReadingPdf(
     readingRequest,
     readingResponse
+  );
+}
+
+
+// ============================================================
+// SAVED READING PDF EMAIL
+// ============================================================
+
+export async function emailSavedReadingPdf(
+  sessionId
+) {
+
+  const safeSessionId =
+    Number(
+      sessionId
+    );
+
+
+  if (
+    !Number.isInteger(
+      safeSessionId
+    )
+    ||
+    safeSessionId <= 0
+  ) {
+
+    throw new Error(
+      "Please select a valid saved reading."
+    );
+
+  }
+
+
+  return postAuthenticated(
+    (
+      "/api/reports/reading/"
+      + `${safeSessionId}`
+      + "/email"
+    )
   );
 }

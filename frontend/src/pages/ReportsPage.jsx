@@ -1,3 +1,5 @@
+import "./ReportsPage.css";
+
 import {
   useEffect,
   useState,
@@ -16,13 +18,12 @@ import {
   downloadMyAnalyticsCsv,
   downloadMyReadingHistoryCsv,
   downloadSavedReadingPdf,
+  emailSavedReadingPdf,
 } from "../services/reportsApi";
-
-import "./ReportsPage.css";
 
 
 // ============================================================
-// HELPERS
+// DATE FORMATTER
 // ============================================================
 
 function formatDate(
@@ -30,12 +31,16 @@ function formatDate(
 ) {
 
   if (!value) {
-    return "Unknown";
+
+    return "Date unavailable";
+
   }
 
 
   const date =
-    new Date(value);
+    new Date(
+      value
+    );
 
 
   if (
@@ -44,12 +49,23 @@ function formatDate(
     )
   ) {
 
-    return String(value);
+    return String(
+      value
+    );
 
   }
 
 
-  return date.toLocaleString();
+  return date.toLocaleString(
+    undefined,
+    {
+      dateStyle:
+        "medium",
+
+      timeStyle:
+        "short",
+    }
+  );
 }
 
 
@@ -90,8 +106,8 @@ function ReportsPage() {
 
 
   const [
-    activeDownload,
-    setActiveDownload,
+    activeAction,
+    setActiveAction,
   ] = useState("");
 
 
@@ -117,7 +133,9 @@ function ReportsPage() {
     ) => {
 
       if (!sessionId) {
+
         return;
+
       }
 
 
@@ -134,6 +152,8 @@ function ReportsPage() {
 
 
       setError("");
+
+      setSuccessMessage("");
 
 
       try {
@@ -165,8 +185,11 @@ function ReportsPage() {
 
 
         setError(
-          sessionError?.message ||
-          "The selected reading could not be loaded."
+          (
+            sessionError?.message
+            ||
+            "The selected reading could not be loaded."
+          )
         );
 
 
@@ -219,7 +242,8 @@ function ReportsPage() {
 
 
           if (
-            readingSessions.length > 0
+            readingSessions.length
+            > 0
           ) {
 
             await openSession(
@@ -243,8 +267,11 @@ function ReportsPage() {
 
 
           setError(
-            loadError?.message ||
-            "Reports could not be loaded."
+            (
+              loadError?.message
+              ||
+              "Reports could not be loaded."
+            )
           );
 
 
@@ -277,10 +304,11 @@ function ReportsPage() {
         );
 
         return;
+
       }
 
 
-      setActiveDownload(
+      setActiveAction(
         "pdf"
       );
 
@@ -313,14 +341,89 @@ function ReportsPage() {
 
 
         setError(
-          downloadError?.message ||
-          "The PDF could not be downloaded."
+          (
+            downloadError?.message
+            ||
+            "The PDF could not be downloaded."
+          )
         );
 
 
       } finally {
 
-        setActiveDownload("");
+        setActiveAction("");
+
+      }
+    };
+
+
+  // ==========================================================
+  // EMAIL PDF
+  // ==========================================================
+
+  const handleEmailPdf =
+    async () => {
+
+      if (!selectedSession?.id) {
+
+        setError(
+          "Please select a saved reading."
+        );
+
+        return;
+
+      }
+
+
+      setActiveAction(
+        "email"
+      );
+
+
+      setError("");
+
+      setSuccessMessage("");
+
+
+      try {
+
+        const response =
+          await emailSavedReadingPdf(
+            selectedSession.id
+          );
+
+
+        setSuccessMessage(
+          (
+            response?.message
+            ||
+            "Your reading PDF has been emailed successfully."
+          )
+        );
+
+
+      } catch (
+        emailError
+      ) {
+
+        console.error(
+          "READING EMAIL ERROR:",
+          emailError
+        );
+
+
+        setError(
+          (
+            emailError?.message
+            ||
+            "The reading PDF could not be emailed."
+          )
+        );
+
+
+      } finally {
+
+        setActiveAction("");
 
       }
     };
@@ -333,7 +436,7 @@ function ReportsPage() {
   const handleDownloadAnalytics =
     async () => {
 
-      setActiveDownload(
+      setActiveAction(
         "analytics"
       );
 
@@ -364,14 +467,17 @@ function ReportsPage() {
 
 
         setError(
-          downloadError?.message ||
-          "Analytics CSV could not be downloaded."
+          (
+            downloadError?.message
+            ||
+            "Analytics CSV could not be downloaded."
+          )
         );
 
 
       } finally {
 
-        setActiveDownload("");
+        setActiveAction("");
 
       }
     };
@@ -384,7 +490,7 @@ function ReportsPage() {
   const handleDownloadHistory =
     async () => {
 
-      setActiveDownload(
+      setActiveAction(
         "history"
       );
 
@@ -417,14 +523,17 @@ function ReportsPage() {
 
 
         setError(
-          downloadError?.message ||
-          "Reading history CSV could not be downloaded."
+          (
+            downloadError?.message
+            ||
+            "Reading history CSV could not be downloaded."
+          )
         );
 
 
       } finally {
 
-        setActiveDownload("");
+        setActiveAction("");
 
       }
     };
@@ -436,6 +545,7 @@ function ReportsPage() {
 
   return (
     <div className="reports-page">
+
 
       {/* HEADER */}
 
@@ -455,10 +565,10 @@ function ReportsPage() {
 
           <p className="reports-description">
 
-            Download complete reading
-            reports and export your
-            personal reading analytics
-            and history.
+            Download or email complete
+            reading reports and export
+            your personal reading
+            analytics and history.
 
           </p>
 
@@ -486,10 +596,12 @@ function ReportsPage() {
 
         <p>
 
-          Analytics and reading-history
-          exports contain only data
-          belonging to your authenticated
-          account.
+          Reports and exports contain
+          only data belonging to your
+          authenticated account.
+          Reading PDFs can only be
+          emailed to your registered
+          account email address.
 
         </p>
 
@@ -567,13 +679,13 @@ function ReportsPage() {
               }
               disabled={
                 Boolean(
-                  activeDownload
+                  activeAction
                 )
               }
             >
 
               {
-                activeDownload ===
+                activeAction ===
                 "analytics"
                   ? "Downloading..."
                   : "Download Analytics CSV"
@@ -609,13 +721,13 @@ function ReportsPage() {
               }
               disabled={
                 Boolean(
-                  activeDownload
+                  activeAction
                 )
               }
             >
 
               {
-                activeDownload ===
+                activeAction ===
                 "history"
                   ? "Downloading..."
                   : "Download History CSV"
@@ -647,8 +759,9 @@ function ReportsPage() {
         <p className="reports-section-description">
 
           Select one of your saved reading
-          sessions and generate its complete
-          PDF report.
+          sessions. You can download the
+          complete PDF or send it directly
+          to your registered email address.
 
         </p>
 
@@ -675,7 +788,7 @@ function ReportsPage() {
                   <p>
 
                     Complete a Reading Studio
-                    session before downloading
+                    session before generating
                     a report.
 
                   </p>
@@ -691,6 +804,7 @@ function ReportsPage() {
               : (
 
                 <div className="reports-reading-layout">
+
 
                   {/* SESSION LIST */}
 
@@ -734,7 +848,8 @@ function ReportsPage() {
 
                             <strong>
                               {
-                                session.title ||
+                                session.title
+                                ||
                                 "Saved Reading"
                               }
                             </strong>
@@ -742,7 +857,8 @@ function ReportsPage() {
 
                             <p>
                               {
-                                session.original_question ||
+                                session.original_question
+                                ||
                                 "No question available."
                               }
                             </p>
@@ -790,7 +906,8 @@ function ReportsPage() {
 
                               <h3>
                                 {
-                                  selectedSession.title ||
+                                  selectedSession.title
+                                  ||
                                   "Saved Reading"
                                 }
                               </h3>
@@ -801,7 +918,8 @@ function ReportsPage() {
                                 <span>
                                   Category:{" "}
                                   {
-                                    selectedSession.category ||
+                                    selectedSession.category
+                                    ||
                                     "General"
                                   }
                                 </span>
@@ -810,7 +928,8 @@ function ReportsPage() {
                                 <span>
                                   Spread:{" "}
                                   {
-                                    selectedSession.spread ||
+                                    selectedSession.spread
+                                    ||
                                     "N/A"
                                   }
                                 </span>
@@ -837,7 +956,8 @@ function ReportsPage() {
                                 <p>
                                   {
                                     selectedSession
-                                      .original_question ||
+                                      .original_question
+                                    ||
                                     "Question unavailable."
                                   }
                                 </p>
@@ -867,19 +987,67 @@ function ReportsPage() {
                                 }
                                 disabled={
                                   Boolean(
-                                    activeDownload
+                                    activeAction
                                   )
                                 }
                               >
 
                                 {
-                                  activeDownload ===
+                                  activeAction ===
                                   "pdf"
                                     ? "Preparing PDF..."
                                     : "Download Complete Reading PDF"
                                 }
 
                               </button>
+
+
+                              <button
+                                type="button"
+                                className="reports-pdf-button"
+                                style={{
+                                  marginTop:
+                                    "12px",
+                                }}
+                                onClick={
+                                  handleEmailPdf
+                                }
+                                disabled={
+                                  Boolean(
+                                    activeAction
+                                  )
+                                }
+                              >
+
+                                {
+                                  activeAction ===
+                                  "email"
+                                    ? "Sending Email..."
+                                    : "Email Complete Reading PDF"
+                                }
+
+                              </button>
+
+
+                              <p
+                                style={{
+                                  marginTop:
+                                    "12px",
+
+                                  fontSize:
+                                    "0.88rem",
+
+                                  opacity:
+                                    "0.75",
+                                }}
+                              >
+
+                                The report will be
+                                sent only to your
+                                registered account
+                                email address.
+
+                              </p>
 
                             </>
 

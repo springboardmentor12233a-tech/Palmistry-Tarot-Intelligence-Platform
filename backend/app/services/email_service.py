@@ -1,3 +1,4 @@
+import base64
 import html
 import logging
 
@@ -40,6 +41,15 @@ def send_transactional_email(
     subject: str,
     html_content: str,
     text_content: str,
+    attachments: (
+        list[
+            tuple[
+                str,
+                bytes,
+            ]
+        ]
+        | None
+    ) = None,
 ) -> None:
 
     api_key = (
@@ -106,6 +116,41 @@ def send_transactional_email(
     }
 
 
+    # --------------------------------------------------------
+    # ATTACHMENTS
+    # --------------------------------------------------------
+
+    if attachments:
+
+        payload[
+            "attachment"
+        ] = [
+
+            {
+                "name":
+                    filename,
+
+                "content":
+                    (
+                        base64
+                        .b64encode(
+                            file_bytes
+                        )
+                        .decode(
+                            "ascii"
+                        )
+                    ),
+            }
+
+            for (
+                filename,
+                file_bytes,
+            )
+            in attachments
+
+        ]
+
+
     headers = {
         "accept":
             "application/json",
@@ -121,7 +166,7 @@ def send_transactional_email(
     try:
 
         with httpx.Client(
-            timeout=15.0
+            timeout=30.0
         ) as client:
 
             response = client.post(
@@ -279,4 +324,162 @@ def send_password_reset_email(
         text_content=(
             text_content
         ),
+    )
+
+
+# ============================================================
+# READING PDF EMAIL
+# ============================================================
+
+def send_reading_pdf_email(
+    *,
+    recipient_email: str,
+    recipient_name: str,
+    reading_title: str,
+    pdf_bytes: bytes,
+    filename: str,
+) -> None:
+
+    safe_name = html.escape(
+        recipient_name
+    )
+
+
+    safe_title = html.escape(
+        reading_title
+    )
+
+
+    subject = (
+        "Your Palmistry & Tarot Reading"
+    )
+
+
+    text_content = (
+        f"Hello {recipient_name},\n\n"
+        "Your personalized Palmistry & "
+        "Tarot reading is ready.\n\n"
+        f"Reading: {reading_title}\n\n"
+        "Your complete reading report is "
+        "attached to this email as a PDF.\n\n"
+        "This reading is intended for "
+        "entertainment, reflection and "
+        "personal-development purposes only."
+    )
+
+
+    html_content = f"""
+    <div
+        style="
+            max-width: 580px;
+            margin: 0 auto;
+            padding: 32px;
+            font-family: Arial, sans-serif;
+            line-height: 1.65;
+            color: #1f2937;
+        "
+    >
+
+        <p
+            style="
+                font-size: 12px;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: #7c3aed;
+                font-weight: 700;
+            "
+        >
+            Spiritual Intelligence
+        </p>
+
+
+        <h2>
+            Your Reading Is Ready
+        </h2>
+
+
+        <p>
+            Hello {safe_name},
+        </p>
+
+
+        <p>
+            Your personalized Palmistry
+            &amp; Tarot reading report has
+            been prepared successfully.
+        </p>
+
+
+        <div
+            style="
+                margin: 24px 0;
+                padding: 18px;
+                background: #f5f3ff;
+                border-radius: 10px;
+                border: 1px solid #ddd6fe;
+            "
+        >
+            <strong>
+                Reading
+            </strong>
+
+            <p
+                style="
+                    margin-bottom: 0;
+                "
+            >
+                {safe_title}
+            </p>
+        </div>
+
+
+        <p>
+            Your complete reading PDF is
+            attached to this email.
+        </p>
+
+
+        <p
+            style="
+                margin-top: 28px;
+                font-size: 13px;
+                color: #6b7280;
+            "
+        >
+            Palmistry and tarot
+            interpretations are provided
+            for entertainment, reflection
+            and personal-development
+            purposes only.
+        </p>
+
+    </div>
+    """
+
+
+    send_transactional_email(
+        recipient_email=(
+            recipient_email
+        ),
+
+        recipient_name=(
+            recipient_name
+        ),
+
+        subject=subject,
+
+        html_content=(
+            html_content
+        ),
+
+        text_content=(
+            text_content
+        ),
+
+        attachments=[
+            (
+                filename,
+                pdf_bytes,
+            )
+        ],
     )
