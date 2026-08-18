@@ -1,0 +1,259 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Palmistry & Tarot Intelligence Platform — design system.
+ * Dark-first premium occult aesthetic: deep navy, slate, muted gold,
+ * and neon divination accents (cyan / green / coral).
+ * All colors are oklch semantic tokens. Never hardcode colors in components.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+
+  --font-display: "Cinzel", ui-serif, Georgia, serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-heart-line: var(--heart-line);
+  --color-head-line: var(--head-line);
+  --color-life-line: var(--life-line);
+  --color-slate-ink: var(--slate-ink);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.875rem;
+
+  --background: oklch(0.17 0.038 262);
+  --foreground: oklch(0.95 0.012 250);
+  --card: oklch(0.235 0.048 262);
+  --card-foreground: oklch(0.95 0.012 250);
+  --popover: oklch(0.215 0.045 262);
+  --popover-foreground: oklch(0.95 0.012 250);
+
+  --primary: oklch(0.76 0.128 87);
+  --primary-foreground: oklch(0.18 0.04 262);
+  --secondary: oklch(0.3 0.035 260);
+  --secondary-foreground: oklch(0.95 0.012 250);
+  --muted: oklch(0.27 0.032 260);
+  --muted-foreground: oklch(0.72 0.024 258);
+  --accent: oklch(0.82 0.145 200);
+  --accent-foreground: oklch(0.18 0.04 262);
+  --destructive: oklch(0.62 0.2 25);
+  --destructive-foreground: oklch(0.97 0.01 250);
+
+  --border: oklch(0.36 0.035 260 / 65%);
+  --input: oklch(0.32 0.035 260 / 80%);
+  --ring: oklch(0.76 0.128 87 / 70%);
+
+  --gold: oklch(0.76 0.128 87);
+  --gold-soft: oklch(0.86 0.075 90);
+  --slate-ink: oklch(0.42 0.03 260);
+  --heart-line: oklch(0.82 0.145 200);
+  --head-line: oklch(0.85 0.215 145);
+  --life-line: oklch(0.72 0.19 25);
+
+  --chart-1: oklch(0.76 0.128 87);
+  --chart-2: oklch(0.82 0.145 200);
+  --chart-3: oklch(0.85 0.215 145);
+  --chart-4: oklch(0.72 0.19 25);
+  --chart-5: oklch(0.6 0.09 290);
+
+  --sidebar: oklch(0.2 0.042 262);
+  --sidebar-foreground: oklch(0.95 0.012 250);
+  --sidebar-primary: oklch(0.76 0.128 87);
+  --sidebar-primary-foreground: oklch(0.18 0.04 262);
+  --sidebar-accent: oklch(0.28 0.035 260);
+  --sidebar-accent-foreground: oklch(0.95 0.012 250);
+  --sidebar-border: oklch(0.36 0.035 260 / 60%);
+  --sidebar-ring: oklch(0.76 0.128 87 / 70%);
+
+  --gradient-nebula: radial-gradient(
+      120% 90% at 15% 0%,
+      color-mix(in oklab, var(--accent) 16%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      110% 80% at 90% 10%,
+      color-mix(in oklab, var(--gold) 14%, transparent),
+      transparent 62%
+    ),
+    linear-gradient(180deg, var(--background), oklch(0.13 0.03 262));
+  --gradient-gold: linear-gradient(135deg, var(--gold-soft), var(--gold) 45%, oklch(0.55 0.09 78));
+  --gradient-card: linear-gradient(
+    160deg,
+    color-mix(in oklab, var(--card) 92%, var(--accent) 8%),
+    var(--card) 70%
+  );
+  --shadow-elevated: 0 24px 60px -24px oklch(0.08 0.03 262 / 85%);
+  --shadow-gold: 0 0 0 1px color-mix(in oklab, var(--gold) 40%, transparent),
+    0 18px 50px -20px color-mix(in oklab, var(--gold) 45%, transparent);
+  --glow-cyan: 0 0 12px color-mix(in oklab, var(--heart-line) 70%, transparent);
+  --glow-green: 0 0 12px color-mix(in oklab, var(--head-line) 70%, transparent);
+  --glow-coral: 0 0 12px color-mix(in oklab, var(--life-line) 70%, transparent);
+  --transition-silk: 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    background-image: var(--gradient-nebula);
+    background-attachment: fixed;
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--gold) 35%, transparent);
+  }
+}
+
+@utility surface-panel {
+  background-image: var(--gradient-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-elevated);
+  backdrop-filter: blur(8px);
+}
+
+@utility text-gilded {
+  background-image: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility gold-rule {
+  height: 1px;
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    color-mix(in oklab, var(--gold) 70%, transparent),
+    transparent
+  );
+}
+
+@utility glow-heart {
+  filter: drop-shadow(var(--glow-cyan));
+}
+@utility glow-head {
+  filter: drop-shadow(var(--glow-green));
+}
+@utility glow-life {
+  filter: drop-shadow(var(--glow-coral));
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes orbit-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+@utility animate-rise {
+  animation: rise-in var(--transition-silk) both;
+}
+
+@utility animate-orbit {
+  animation: orbit-pulse 3.2s ease-in-out infinite;
+}
+
+@utility tarot-scene {
+  perspective: 1400px;
+}
+
+@utility tarot-flipper {
+  transform-style: preserve-3d;
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@utility tarot-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
