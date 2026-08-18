@@ -1,0 +1,18 @@
+.env
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+*.pdf
+data/
+venv/
+.venv/
+
+# Palmistry pipeline: keep the code, ignore generated/runtime files and the
+# large checkpoint (too big for git — see checkpoint/README.txt)
+palmistry-main/code/checkpoint/*.pth
+palmistry-main/code/input/*
+!palmistry-main/code/input/.gitkeep
+palmistry-main/code/results/*
+!palmistry-main/code/results/.gitkeep

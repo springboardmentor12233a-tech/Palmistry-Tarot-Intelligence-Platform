@@ -1,0 +1,23 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# opencv needs these system libs even in headless mode
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY services/ services/
+COPY api/ api/
+COPY data/ data/
+COPY palmistry-main/ palmistry-main/
+# NOTE: palmistry-main/code/checkpoint/checkpoint_aug_epoch70.pth must exist
+# before this COPY runs — it's git-ignored (too large to commit) so make
+# sure it's present locally, or swap this for a volume mount / download
+# step in your CI pipeline.
+
+EXPOSE 8000
+CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
