@@ -380,6 +380,29 @@ export async function updateProfile(
   );
 }
 
+// ============================================================
+// ACCOUNT DELETION
+// ============================================================
+
+export async function deleteCurrentAccount(
+  confirmation
+) {
+  return authRequest(
+    "/api/auth/account",
+    {
+      method:
+        "DELETE",
+
+      body: {
+        confirmation,
+      },
+
+      authenticated:
+        true,
+    }
+  );
+}
+
 
 // ============================================================
 // ADMIN — USER OVERVIEW
@@ -453,6 +476,26 @@ export async function updateUserStatus(
   );
 }
 
+
+export async function deleteAdminUser(
+  userId,
+  confirmation
+) {
+  return authRequest(
+    `/api/admin/users/${userId}`,
+    {
+      method:
+        "DELETE",
+
+      body: {
+        confirmation,
+      },
+
+      authenticated:
+        true,
+    }
+  );
+}
 
 // ============================================================
 // ADMIN — PLATFORM ANALYTICS

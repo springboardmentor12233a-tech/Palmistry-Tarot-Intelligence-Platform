@@ -26,6 +26,7 @@ from app.core.security import (
 )
 
 from app.models.auth_schemas import (
+    AccountDeleteRequest,
     GoogleLoginRequest,
     LoginRequest,
     MessageResponse,
@@ -42,6 +43,10 @@ from app.models.database_models import (
 from app.models.password_reset_schemas import (
     ForgotPasswordRequest,
     ResetPasswordRequest,
+)
+
+from app.services.account_deletion_service import (
+    delete_current_user_account,
 )
 
 from app.services.auth_service import (
@@ -357,4 +362,38 @@ def update_profile(
         database,
         current_user,
         request,
+    )
+
+
+# ============================================================
+# DELETE CURRENT ACCOUNT
+# ============================================================
+
+@router.delete(
+    "/account",
+    response_model=MessageResponse,
+)
+def delete_account(
+    request: AccountDeleteRequest,
+
+    current_user: User = Depends(
+        get_current_user
+    ),
+
+    database: Session = Depends(
+        get_db
+    ),
+):
+
+    message = (
+        delete_current_user_account(
+            database,
+            current_user,
+        )
+    )
+
+
+    return MessageResponse(
+        status="success",
+        message=message,
     )

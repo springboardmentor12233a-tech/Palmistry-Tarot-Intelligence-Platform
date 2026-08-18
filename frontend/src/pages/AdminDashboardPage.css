@@ -726,3 +726,422 @@
   }
 
 }
+
+/* =========================================================
+   ADMIN USER DELETE
+   ========================================================= */
+
+.admin-user-actions {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+}
+
+
+.admin-delete-button {
+  min-width:
+    72px;
+
+  padding:
+    8px
+    12px;
+
+  border:
+    1px solid
+    rgba(
+      235,
+      90,
+      110,
+      0.22
+    );
+
+  border-radius:
+    9px;
+
+  background:
+    rgba(
+      175,
+      50,
+      72,
+      0.22
+    );
+
+  color:
+    #ffb0bd;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+}
+
+
+.admin-delete-button:hover:not(:disabled) {
+  background:
+    rgba(
+      195,
+      58,
+      80,
+      0.42
+    );
+
+  color:
+    #ffffff;
+}
+
+
+.admin-delete-button:disabled {
+  cursor:
+    not-allowed;
+
+  opacity:
+    0.35;
+}
+
+
+/* =========================================================
+   DELETE DIALOG
+   ========================================================= */
+
+.admin-delete-backdrop {
+  position:
+    fixed;
+
+  inset:
+    0;
+
+  z-index:
+    1000;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  padding:
+    20px;
+
+  background:
+    rgba(
+      5,
+      4,
+      10,
+      0.75
+    );
+
+  backdrop-filter:
+    blur(
+      8px
+    );
+}
+
+
+.admin-delete-dialog {
+  width:
+    min(
+      500px,
+      100%
+    );
+
+  box-sizing:
+    border-box;
+
+  padding:
+    28px;
+
+  border:
+    1px solid
+    rgba(
+      235,
+      90,
+      110,
+      0.25
+    );
+
+  border-radius:
+    20px;
+
+  background:
+    #18111f;
+
+  box-shadow:
+    0
+    28px
+    70px
+    rgba(
+      0,
+      0,
+      0,
+      0.48
+    );
+}
+
+
+.admin-delete-eyebrow {
+  margin:
+    0
+    0
+    7px;
+
+  color:
+    #ff9eab;
+
+  font-size:
+    0.75rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.14em;
+}
+
+
+.admin-delete-dialog h2 {
+  margin:
+    0
+    0
+    10px;
+}
+
+
+.admin-delete-description {
+  margin:
+    0
+    0
+    18px;
+
+  line-height:
+    1.55;
+
+  opacity:
+    0.7;
+}
+
+
+.admin-delete-user-summary {
+  margin-bottom:
+    20px;
+
+  padding:
+    14px;
+
+  border-radius:
+    12px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.04
+    );
+}
+
+
+.admin-delete-user-summary strong,
+.admin-delete-user-summary span {
+  display:
+    block;
+}
+
+
+.admin-delete-user-summary span {
+  margin-top:
+    5px;
+
+  opacity:
+    0.62;
+}
+
+
+.admin-delete-confirmation-label {
+  display:
+    block;
+
+  margin-bottom:
+    8px;
+
+  font-weight:
+    700;
+}
+
+
+.admin-delete-confirmation-input {
+  width:
+    100%;
+
+  box-sizing:
+    border-box;
+
+  padding:
+    12px
+    13px;
+
+  border:
+    1px solid
+    rgba(
+      235,
+      90,
+      110,
+      0.25
+    );
+
+  border-radius:
+    11px;
+
+  background:
+    #211b2a;
+
+  color:
+    #ffffff;
+
+  font:
+    inherit;
+
+  outline:
+    none;
+}
+
+
+.admin-delete-confirmation-input:focus {
+  border-color:
+    rgba(
+      255,
+      120,
+      140,
+      0.72
+    );
+
+  box-shadow:
+    0
+    0
+    0
+    3px
+    rgba(
+      220,
+      70,
+      95,
+      0.12
+    );
+}
+
+
+.admin-delete-dialog-actions {
+  display:
+    flex;
+
+  justify-content:
+    flex-end;
+
+  gap:
+    10px;
+
+  margin-top:
+    22px;
+}
+
+
+.admin-delete-cancel-button,
+.admin-delete-confirm-button {
+  padding:
+    10px
+    15px;
+
+  border-radius:
+    10px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+}
+
+
+.admin-delete-cancel-button {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.1
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.05
+    );
+
+  color:
+    #ffffff;
+}
+
+
+.admin-delete-confirm-button {
+  border:
+    1px solid
+    rgba(
+      255,
+      120,
+      140,
+      0.24
+    );
+
+  background:
+    rgba(
+      190,
+      55,
+      80,
+      0.72
+    );
+
+  color:
+    #ffffff;
+}
+
+
+.admin-delete-confirm-button:disabled,
+.admin-delete-cancel-button:disabled {
+  cursor:
+    not-allowed;
+
+  opacity:
+    0.42;
+}
+
+
+@media (max-width: 600px) {
+
+  .admin-user-actions {
+    flex-direction:
+      column;
+
+    align-items:
+      stretch;
+  }
+
+
+  .admin-delete-dialog-actions {
+    flex-direction:
+      column;
+  }
+
+
+  .admin-delete-dialog-actions button {
+    width:
+      100%;
+  }
+
+}

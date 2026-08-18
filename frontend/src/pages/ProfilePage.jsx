@@ -4,10 +4,15 @@ import {
 } from "react";
 
 import {
+  useNavigate,
+} from "react-router";
+
+import {
   useAuth,
 } from "../auth/AuthContext";
 
 import {
+  deleteCurrentAccount,
   updateProfile,
 } from "../services/authApi";
 
@@ -23,8 +28,17 @@ function ProfilePage() {
   const {
     user,
     refreshUser,
+    logout,
   } = useAuth();
 
+
+  const navigate =
+    useNavigate();
+
+
+  // ==========================================================
+  // PROFILE FORM
+  // ==========================================================
 
   const [
     formData,
@@ -59,6 +73,28 @@ function ProfilePage() {
   const [
     errorMessage,
     setErrorMessage,
+  ] = useState("");
+
+
+  // ==========================================================
+  // ACCOUNT DELETION
+  // ==========================================================
+
+  const [
+    deleteConfirmation,
+    setDeleteConfirmation,
+  ] = useState("");
+
+
+  const [
+    isDeletingAccount,
+    setIsDeletingAccount,
+  ] = useState(false);
+
+
+  const [
+    deleteError,
+    setDeleteError,
   ] = useState("");
 
 
@@ -222,6 +258,105 @@ function ProfilePage() {
       } finally {
 
         setIsSaving(
+          false
+        );
+
+      }
+    };
+
+
+  // ==========================================================
+  // DELETE ACCOUNT
+  // ==========================================================
+
+  const handleDeleteAccount =
+    async () => {
+
+      setDeleteError("");
+
+
+      // ------------------------------------------------------
+      // ADMINISTRATOR PROTECTION
+      // ------------------------------------------------------
+
+      if (
+        user?.role ===
+        "administrator"
+      ) {
+
+        setDeleteError(
+          "Administrator accounts cannot be deleted from the Profile page."
+        );
+
+        return;
+      }
+
+
+      // ------------------------------------------------------
+      // CONFIRMATION
+      // ------------------------------------------------------
+
+      if (
+        deleteConfirmation !==
+        "DELETE"
+      ) {
+
+        setDeleteError(
+          "Type DELETE exactly to confirm permanent account deletion."
+        );
+
+        return;
+      }
+
+
+      setIsDeletingAccount(
+        true
+      );
+
+
+      try {
+
+        await deleteCurrentAccount(
+          deleteConfirmation
+        );
+
+
+        // ----------------------------------------------------
+        // CLEAR LOCAL AUTHENTICATION
+        // ----------------------------------------------------
+
+        logout();
+
+
+        // ----------------------------------------------------
+        // REDIRECT TO LOGIN
+        // ----------------------------------------------------
+
+        navigate(
+          "/login",
+          {
+            replace: true,
+          }
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "ACCOUNT DELETE ERROR:",
+          error
+        );
+
+
+        setDeleteError(
+          error?.message ||
+          "Your account could not be deleted."
+        );
+
+
+      } finally {
+
+        setIsDeletingAccount(
           false
         );
 
@@ -509,7 +644,7 @@ function ProfilePage() {
                   Select age group
                 </option>
 
-                <option value="Under 18">
+                <option value="Under18">
                   Under 18
                 </option>
 
@@ -726,6 +861,169 @@ function ProfilePage() {
           </div>
 
         </form>
+
+      </section>
+
+
+      {/* ==================================================== */}
+      {/* DANGER ZONE */}
+      {/* ==================================================== */}
+
+      <section className="profile-section profile-danger-zone">
+
+        <div className="profile-section-header">
+
+          <div>
+
+            <p className="profile-danger-eyebrow">
+              DANGER ZONE
+            </p>
+
+            <h2>
+              Delete Account
+            </h2>
+
+            <p>
+              Permanently remove your account
+              and private platform data.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        {
+          user.role ===
+          "administrator"
+            ? (
+
+              <div className="profile-danger-admin-note">
+
+                Administrator accounts are
+                protected from self-deletion.
+
+              </div>
+
+            )
+            : (
+
+              <>
+
+                <div className="profile-danger-warning">
+
+                  <strong>
+                    This action cannot be undone.
+                  </strong>
+
+                  <p>
+
+                    Your saved readings,
+                    follow-up chats,
+                    notifications and password
+                    recovery records will be
+                    permanently deleted.
+
+                  </p>
+
+                  <p>
+
+                    Anonymous platform statistics
+                    may remain without your
+                    account identity.
+
+                  </p>
+
+                </div>
+
+
+                <div className="profile-delete-confirmation">
+
+                  <label htmlFor="delete-account-confirmation">
+
+                    Type{" "}
+
+                    <strong>
+                      DELETE
+                    </strong>{" "}
+
+                    to confirm.
+
+                  </label>
+
+
+                  <input
+                    id="delete-account-confirmation"
+                    type="text"
+                    value={
+                      deleteConfirmation
+                    }
+                    onChange={
+                      (event) => {
+
+                        setDeleteConfirmation(
+                          event.target.value
+                        );
+
+                        setDeleteError("");
+
+                      }
+                    }
+                    placeholder="Type DELETE"
+                    autoComplete="off"
+                    disabled={
+                      isDeletingAccount
+                    }
+                  />
+
+                </div>
+
+
+                {deleteError && (
+
+                  <div
+                    className="profile-error"
+                    role="alert"
+                  >
+
+                    <strong>
+                      Account deletion failed
+                    </strong>
+
+                    <p>
+                      {deleteError}
+                    </p>
+
+                  </div>
+
+                )}
+
+
+                <button
+                  type="button"
+                  className="profile-delete-button"
+                  disabled={
+                    isDeletingAccount ||
+                    deleteConfirmation !==
+                      "DELETE"
+                  }
+                  onClick={
+                    handleDeleteAccount
+                  }
+                >
+
+                  {
+                    isDeletingAccount
+                      ? "Deleting Account..."
+                      : "Permanently Delete My Account"
+                  }
+
+                </button>
+
+              </>
+
+            )
+        }
 
       </section>
 

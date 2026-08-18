@@ -23,6 +23,7 @@ import {
 } from "../auth/AuthContext";
 
 import {
+  deleteAdminUser,
   getAdminAnalyticsSummary,
   getAdminOverview,
   getAdminReadingHistory,
@@ -270,6 +271,22 @@ function AdminDashboardPage() {
     updatingUserId,
     setUpdatingUserId,
   ] = useState(null);
+
+
+  // ==========================================================
+  // DELETE USER STATE
+  // ==========================================================
+
+  const [
+    deleteTarget,
+    setDeleteTarget,
+  ] = useState(null);
+
+
+  const [
+    deleteConfirmation,
+    setDeleteConfirmation,
+  ] = useState("");
 
 
   // ==========================================================
@@ -603,6 +620,165 @@ function AdminDashboardPage() {
         setError(
           updateError?.message ||
           "The user status could not be updated."
+        );
+
+
+      } finally {
+
+        setUpdatingUserId(
+          null
+        );
+
+      }
+    };
+
+
+  // ==========================================================
+  // OPEN DELETE USER DIALOG
+  // ==========================================================
+
+  const openDeleteUser =
+    (targetUser) => {
+
+      setDeleteTarget(
+        targetUser
+      );
+
+      setDeleteConfirmation("");
+
+      setError("");
+
+      setSuccessMessage("");
+    };
+
+
+  // ==========================================================
+  // CLOSE DELETE USER DIALOG
+  // ==========================================================
+
+  const closeDeleteUser =
+    () => {
+
+      if (
+        updatingUserId !==
+        null
+      ) {
+        return;
+      }
+
+
+      setDeleteTarget(
+        null
+      );
+
+      setDeleteConfirmation("");
+    };
+
+
+  // ==========================================================
+  // DELETE USER
+  // ==========================================================
+
+  const handleDeleteUser =
+    async () => {
+
+      if (
+        !deleteTarget
+      ) {
+        return;
+      }
+
+
+      if (
+        deleteConfirmation !==
+        "DELETE"
+      ) {
+
+        setError(
+          "Type DELETE exactly to confirm permanent account deletion."
+        );
+
+        return;
+      }
+
+
+      setUpdatingUserId(
+        deleteTarget.id
+      );
+
+      setError("");
+
+      setSuccessMessage("");
+
+
+      try {
+
+        await deleteAdminUser(
+          deleteTarget.id,
+          deleteConfirmation
+        );
+
+
+        const deletedName =
+          deleteTarget.full_name;
+
+
+        // ----------------------------------------------------
+        // REMOVE DELETED USER FROM TABLE
+        // ----------------------------------------------------
+
+        setUsers(
+          (previous) =>
+            previous.filter(
+              (account) =>
+                account.id !==
+                deleteTarget.id
+            )
+        );
+
+
+        // ----------------------------------------------------
+        // REFRESH ACCOUNT COUNTS
+        // ----------------------------------------------------
+
+        const updatedOverview =
+          await getAdminOverview();
+
+
+        setOverview(
+          updatedOverview
+        );
+
+
+        // ----------------------------------------------------
+        // CLOSE DIALOG
+        // ----------------------------------------------------
+
+        setDeleteTarget(
+          null
+        );
+
+        setDeleteConfirmation("");
+
+
+        setSuccessMessage(
+          `${deletedName}'s account has been permanently deleted.`
+        );
+
+
+      } catch (
+        deleteError
+      ) {
+
+        console.error(
+          "ADMIN DELETE USER ERROR:",
+          deleteError
+        );
+
+
+        setError(
+          deleteError?.message ||
+          "The user account could not be deleted."
         );
 
 
@@ -1045,62 +1221,62 @@ function AdminDashboardPage() {
             roleData.length > 0
               ? (
 
-              <div className="admin-chart">
+                <div className="admin-chart">
 
-                <ResponsiveContainer
-                  width="100%"
-                  height={300}
-                >
-
-                  <BarChart
-                    data={
-                      roleData
-                    }
+                  <ResponsiveContainer
+                    width="100%"
+                    height={300}
                   >
 
-                    <CartesianGrid
-                      strokeDasharray="3 3"
-                    />
-
-                    <XAxis
-                      dataKey="name"
-                      tickFormatter={
-                        formatRole
+                    <BarChart
+                      data={
+                        roleData
                       }
-                    />
+                    >
 
-                    <YAxis
-                      allowDecimals={
-                        false
-                      }
-                    />
+                      <CartesianGrid
+                        strokeDasharray="3 3"
+                      />
 
-                    <Tooltip
-                      labelFormatter={
-                        formatRole
-                      }
-                    />
+                      <XAxis
+                        dataKey="name"
+                        tickFormatter={
+                          formatRole
+                        }
+                      />
 
-                    <Bar
-                      dataKey="value"
-                      name="Users"
-                      fill="#9b5de5"
-                    />
+                      <YAxis
+                        allowDecimals={
+                          false
+                        }
+                      />
 
-                  </BarChart>
+                      <Tooltip
+                        labelFormatter={
+                          formatRole
+                        }
+                      />
 
-                </ResponsiveContainer>
+                      <Bar
+                        dataKey="value"
+                        name="Users"
+                        fill="#9b5de5"
+                      />
 
-              </div>
+                    </BarChart>
 
-            )
-            : (
+                  </ResponsiveContainer>
 
-              <AdminEmptyState
-                message="No role statistics are available."
-              />
+                </div>
 
-            )
+              )
+              : (
+
+                <AdminEmptyState
+                  message="No role statistics are available."
+                />
+
+              )
           }
 
         </article>
@@ -1244,236 +1420,278 @@ function AdminDashboardPage() {
             filteredUsers.length > 0
               ? (
 
-              <div className="admin-table-wrapper">
+                <div className="admin-table-wrapper">
 
-                <table className="admin-table">
+                  <table className="admin-table">
 
-                  <thead>
+                    <thead>
 
-                    <tr>
+                      <tr>
 
-                      <th>
-                        User
-                      </th>
+                        <th>
+                          User
+                        </th>
 
-                      <th>
-                        Age Group
-                      </th>
+                        <th>
+                          Age Group
+                        </th>
 
-                      <th>
-                        Role
-                      </th>
+                        <th>
+                          Role
+                        </th>
 
-                      <th>
-                        Status
-                      </th>
+                        <th>
+                          Status
+                        </th>
 
-                      <th>
-                        Registered
-                      </th>
+                        <th>
+                          Registered
+                        </th>
 
-                      <th>
-                        Actions
-                      </th>
+                        <th>
+                          Actions
+                        </th>
 
-                    </tr>
+                      </tr>
 
-                  </thead>
-
-
-                  <tbody>
-
-                    {
-                      filteredUsers.map(
-                        (account) => {
-
-                          const isSelf =
-                            Number(
-                              account.id
-                            ) ===
-                            Number(
-                              user?.id
-                            );
+                    </thead>
 
 
-                          const isUpdating =
-                            updatingUserId ===
-                            account.id;
+                    <tbody>
 
+                      {
+                        filteredUsers.map(
+                          (account) => {
 
-                          return (
-                            <tr
-                              key={
+                            const isSelf =
+                              Number(
                                 account.id
-                              }
-                            >
+                              ) ===
+                              Number(
+                                user?.id
+                              );
 
-                              <td>
 
-                                <div className="admin-user-cell">
+                            const isUpdating =
+                              updatingUserId ===
+                              account.id;
 
-                                  <strong>
-                                    {
-                                      account.full_name
+
+                            const isProtectedAdmin =
+                              account.role ===
+                              "administrator";
+
+
+                            return (
+                              <tr
+                                key={
+                                  account.id
+                                }
+                              >
+
+                                <td>
+
+                                  <div className="admin-user-cell">
+
+                                    <strong>
+                                      {
+                                        account.full_name
+                                      }
+                                    </strong>
+
+                                    <span>
+                                      {
+                                        account.email
+                                      }
+                                    </span>
+
+                                    {isSelf && (
+
+                                      <small>
+                                        Current administrator
+                                      </small>
+
+                                    )}
+
+                                  </div>
+
+                                </td>
+
+
+                                <td>
+
+                                  {
+                                    account.age_group ||
+                                    "Not provided"
+                                  }
+
+                                </td>
+
+
+                                <td>
+
+                                  <select
+                                    className="admin-role-select"
+                                    value={
+                                      account.role
                                     }
-                                  </strong>
-
-                                  <span>
-                                    {
-                                      account.email
+                                    disabled={
+                                      isUpdating ||
+                                      isSelf
                                     }
+                                    onChange={
+                                      (event) =>
+                                        handleRoleChange(
+                                          account,
+                                          event.target.value
+                                        )
+                                    }
+                                  >
+
+                                    {USER_ROLES.map(
+                                      (role) => (
+
+                                        <option
+                                          key={
+                                            role
+                                          }
+                                          value={
+                                            role
+                                          }
+                                        >
+                                          {
+                                            formatRole(
+                                              role
+                                            )
+                                          }
+                                        </option>
+
+                                      )
+                                    )}
+
+                                  </select>
+
+                                </td>
+
+
+                                <td>
+
+                                  <span
+                                    className={
+                                      account.is_active
+                                        ? "admin-status admin-status-active"
+                                        : "admin-status admin-status-inactive"
+                                    }
+                                  >
+
+                                    {
+                                      account.is_active
+                                        ? "Active"
+                                        : "Inactive"
+                                    }
+
                                   </span>
 
-                                  {isSelf && (
-
-                                    <small>
-                                      Current administrator
-                                    </small>
-
-                                  )}
-
-                                </div>
-
-                              </td>
+                                </td>
 
 
-                              <td>
-                                {
-                                  account.age_group ||
-                                  "Not provided"
-                                }
-                              </td>
+                                <td>
 
-
-                              <td>
-
-                                <select
-                                  className="admin-role-select"
-                                  value={
-                                    account.role
-                                  }
-                                  disabled={
-                                    isUpdating ||
-                                    isSelf
-                                  }
-                                  onChange={
-                                    (event) =>
-                                      handleRoleChange(
-                                        account,
-                                        event.target.value
-                                      )
-                                  }
-                                >
-
-                                  {USER_ROLES.map(
-                                    (role) => (
-
-                                      <option
-                                        key={
-                                          role
-                                        }
-                                        value={
-                                          role
-                                        }
-                                      >
-                                        {
-                                          formatRole(
-                                            role
-                                          )
-                                        }
-                                      </option>
-
+                                  {
+                                    formatDate(
+                                      account.created_at
                                     )
-                                  )}
-
-                                </select>
-
-                              </td>
-
-
-                              <td>
-
-                                <span
-                                  className={
-                                    account.is_active
-                                      ? "admin-status admin-status-active"
-                                      : "admin-status admin-status-inactive"
-                                  }
-                                >
-
-                                  {
-                                    account.is_active
-                                      ? "Active"
-                                      : "Inactive"
                                   }
 
-                                </span>
-
-                              </td>
+                                </td>
 
 
-                              <td>
-                                {
-                                  formatDate(
-                                    account.created_at
-                                  )
-                                }
-                              </td>
+                                <td>
+
+                                  <div className="admin-user-actions">
+
+                                    <button
+                                      type="button"
+                                      className={
+                                        account.is_active
+                                          ? "admin-disable-button"
+                                          : "admin-enable-button"
+                                      }
+                                      disabled={
+                                        isUpdating ||
+                                        isSelf
+                                      }
+                                      onClick={
+                                        () =>
+                                          handleStatusChange(
+                                            account
+                                          )
+                                      }
+                                    >
+
+                                      {
+                                        isUpdating
+                                          ? "Updating..."
+                                          : account.is_active
+                                            ? "Disable"
+                                            : "Enable"
+                                      }
+
+                                    </button>
 
 
-                              <td>
+                                    <button
+                                      type="button"
+                                      className="admin-delete-button"
+                                      disabled={
+                                        isUpdating ||
+                                        isSelf ||
+                                        isProtectedAdmin
+                                      }
+                                      title={
+                                        isSelf
+                                          ? "You cannot delete your own administrator account."
+                                          : isProtectedAdmin
+                                            ? "Administrator accounts are protected."
+                                            : "Permanently delete this account."
+                                      }
+                                      onClick={
+                                        () =>
+                                          openDeleteUser(
+                                            account
+                                          )
+                                      }
+                                    >
 
-                                <button
-                                  type="button"
-                                  className={
-                                    account.is_active
-                                      ? "admin-disable-button"
-                                      : "admin-enable-button"
-                                  }
-                                  disabled={
-                                    isUpdating ||
-                                    isSelf
-                                  }
-                                  onClick={
-                                    () =>
-                                      handleStatusChange(
-                                        account
-                                      )
-                                  }
-                                >
+                                      Delete
 
-                                  {
-                                    isUpdating
-                                      ? "Updating..."
-                                      : account.is_active
-                                        ? "Disable"
-                                        : "Enable"
-                                  }
+                                    </button>
 
-                                </button>
+                                  </div>
 
-                              </td>
+                                </td>
 
-                            </tr>
-                          );
-                        }
-                      )
-                    }
+                              </tr>
+                            );
 
-                  </tbody>
+                          }
+                        )
+                      }
 
-                </table>
+                    </tbody>
 
-              </div>
+                  </table>
 
-            )
-            : (
+                </div>
 
-              <AdminEmptyState
-                message="No users match the selected filters."
-              />
+              )
+              : (
 
-            )
+                <AdminEmptyState
+                  message="No users match the selected filters."
+                />
+
+              )
           }
 
         </article>
@@ -1520,55 +1738,55 @@ function AdminDashboardPage() {
               categoryData.length > 0
                 ? (
 
-                <div className="admin-chart">
+                  <div className="admin-chart">
 
-                  <ResponsiveContainer
-                    width="100%"
-                    height={300}
-                  >
-
-                    <BarChart
-                      data={
-                        categoryData
-                      }
+                    <ResponsiveContainer
+                      width="100%"
+                      height={300}
                     >
 
-                      <CartesianGrid
-                        strokeDasharray="3 3"
-                      />
-
-                      <XAxis
-                        dataKey="name"
-                      />
-
-                      <YAxis
-                        allowDecimals={
-                          false
+                      <BarChart
+                        data={
+                          categoryData
                         }
-                      />
+                      >
 
-                      <Tooltip />
+                        <CartesianGrid
+                          strokeDasharray="3 3"
+                        />
 
-                      <Bar
-                        dataKey="value"
-                        name="Readings"
-                        fill="#9b5de5"
-                      />
+                        <XAxis
+                          dataKey="name"
+                        />
 
-                    </BarChart>
+                        <YAxis
+                          allowDecimals={
+                            false
+                          }
+                        />
 
-                  </ResponsiveContainer>
+                        <Tooltip />
 
-                </div>
+                        <Bar
+                          dataKey="value"
+                          name="Readings"
+                          fill="#9b5de5"
+                        />
 
-              )
-              : (
+                      </BarChart>
 
-                <AdminEmptyState
-                  message="No category statistics available."
-                />
+                    </ResponsiveContainer>
 
-              )
+                  </div>
+
+                )
+                : (
+
+                  <AdminEmptyState
+                    message="No category statistics available."
+                  />
+
+                )
             }
 
           </article>
@@ -1587,49 +1805,49 @@ function AdminDashboardPage() {
               spreadData.length > 0
                 ? (
 
-                <div className="admin-chart">
+                  <div className="admin-chart">
 
-                  <ResponsiveContainer
-                    width="100%"
-                    height={300}
-                  >
+                    <ResponsiveContainer
+                      width="100%"
+                      height={300}
+                    >
 
-                    <PieChart>
+                      <PieChart>
 
-                      <Pie
-                        data={
-                          spreadData
-                        }
-                        dataKey="value"
-                        nameKey="name"
-                        outerRadius={100}
-                        fill="#b26be2"
-                        label={({
-                          name,
-                          value,
-                        }) =>
-                          `${name}: ${value}`
-                        }
-                      />
+                        <Pie
+                          data={
+                            spreadData
+                          }
+                          dataKey="value"
+                          nameKey="name"
+                          outerRadius={100}
+                          fill="#b26be2"
+                          label={({
+                            name,
+                            value,
+                          }) =>
+                            `${name}: ${value}`
+                          }
+                        />
 
-                      <Tooltip />
+                        <Tooltip />
 
-                      <Legend />
+                        <Legend />
 
-                    </PieChart>
+                      </PieChart>
 
-                  </ResponsiveContainer>
+                    </ResponsiveContainer>
 
-                </div>
+                  </div>
 
-              )
-              : (
+                )
+                : (
 
-                <AdminEmptyState
-                  message="No tarot spread statistics available."
-                />
+                  <AdminEmptyState
+                    message="No tarot spread statistics available."
+                  />
 
-              )
+                )
             }
 
           </article>
@@ -1659,49 +1877,49 @@ function AdminDashboardPage() {
               orientationData.length > 0
                 ? (
 
-                <div className="admin-chart">
+                  <div className="admin-chart">
 
-                  <ResponsiveContainer
-                    width="100%"
-                    height={300}
-                  >
+                    <ResponsiveContainer
+                      width="100%"
+                      height={300}
+                    >
 
-                    <PieChart>
+                      <PieChart>
 
-                      <Pie
-                        data={
-                          orientationData
-                        }
-                        dataKey="value"
-                        nameKey="name"
-                        outerRadius={100}
-                        fill="#7654c4"
-                        label={({
-                          name,
-                          value,
-                        }) =>
-                          `${name}: ${value}`
-                        }
-                      />
+                        <Pie
+                          data={
+                            orientationData
+                          }
+                          dataKey="value"
+                          nameKey="name"
+                          outerRadius={100}
+                          fill="#7654c4"
+                          label={({
+                            name,
+                            value,
+                          }) =>
+                            `${name}: ${value}`
+                          }
+                        />
 
-                      <Tooltip />
+                        <Tooltip />
 
-                      <Legend />
+                        <Legend />
 
-                    </PieChart>
+                      </PieChart>
 
-                  </ResponsiveContainer>
+                    </ResponsiveContainer>
 
-                </div>
+                  </div>
 
-              )
-              : (
+                )
+                : (
 
-                <AdminEmptyState
-                  message="No orientation data available."
-                />
+                  <AdminEmptyState
+                    message="No orientation data available."
+                  />
 
-              )
+                )
             }
 
           </article>
@@ -1724,52 +1942,52 @@ function AdminDashboardPage() {
                 .length > 0
                 ? (
 
-                <div className="admin-common-cards">
+                  <div className="admin-common-cards">
 
-                  {
-                    analytics
-                      .most_common_tarot_cards
-                      .map(
-                        (
-                          card,
-                          index
-                        ) => (
+                    {
+                      analytics
+                        .most_common_tarot_cards
+                        .map(
+                          (
+                            card,
+                            index
+                          ) => (
 
-                          <div
-                            className="admin-common-card-row"
-                            key={
-                              `${card.name}-${index}`
-                            }
-                          >
+                            <div
+                              className="admin-common-card-row"
+                              key={
+                                `${card.name}-${index}`
+                              }
+                            >
 
-                            <span>
-                              #{index + 1}
-                            </span>
+                              <span>
+                                #{index + 1}
+                              </span>
 
-                            <strong>
-                              {card.name}
-                            </strong>
+                              <strong>
+                                {card.name}
+                              </strong>
 
-                            <small>
-                              {card.count} draws
-                            </small>
+                              <small>
+                                {card.count} draws
+                              </small>
 
-                          </div>
+                            </div>
 
+                          )
                         )
-                      )
-                  }
+                    }
 
-                </div>
+                  </div>
 
-              )
-              : (
+                )
+                : (
 
-                <AdminEmptyState
-                  message="No tarot card statistics available."
-                />
+                  <AdminEmptyState
+                    message="No tarot card statistics available."
+                  />
 
-              )
+                )
             }
 
           </article>
@@ -1819,168 +2037,342 @@ function AdminDashboardPage() {
             readingHistory.length > 0
               ? (
 
-              <div className="admin-table-wrapper">
+                <div className="admin-table-wrapper">
 
-                <table className="admin-table">
+                  <table className="admin-table">
 
-                  <thead>
+                    <thead>
 
-                    <tr>
+                      <tr>
 
-                      <th>
-                        ID
-                      </th>
+                        <th>
+                          ID
+                        </th>
 
-                      <th>
-                        Created
-                      </th>
+                        <th>
+                          Created
+                        </th>
 
-                      <th>
-                        Category
-                      </th>
+                        <th>
+                          Category
+                        </th>
 
-                      <th>
-                        Spread
-                      </th>
+                        <th>
+                          Spread
+                        </th>
 
-                      <th>
-                        Tarot Cards
-                      </th>
+                        <th>
+                          Tarot Cards
+                        </th>
 
-                      <th>
-                        Upright
-                      </th>
+                        <th>
+                          Upright
+                        </th>
 
-                      <th>
-                        Reversed
-                      </th>
+                        <th>
+                          Reversed
+                        </th>
 
-                      <th>
-                        Score
-                      </th>
+                        <th>
+                          Score
+                        </th>
 
-                    </tr>
+                      </tr>
 
-                  </thead>
-
-
-                  <tbody>
-
-                    {
-                      readingHistory.map(
-                        (reading) => (
-
-                          <tr
-                            key={
-                              reading.id
-                            }
-                          >
-
-                            <td>
-                              #{reading.id}
-                            </td>
+                    </thead>
 
 
-                            <td>
-                              {
-                                formatDate(
-                                  reading.created_at
-                                )
+                    <tbody>
+
+                      {
+                        readingHistory.map(
+                          (reading) => (
+
+                            <tr
+                              key={
+                                reading.id
                               }
-                            </td>
+                            >
+
+                              <td>
+                                #{reading.id}
+                              </td>
 
 
-                            <td>
-                              {
-                                reading.category ||
-                                "N/A"
-                              }
-                            </td>
+                              <td>
+
+                                {
+                                  formatDate(
+                                    reading.created_at
+                                  )
+                                }
+
+                              </td>
 
 
-                            <td>
-                              {
-                                reading.spread ||
-                                "N/A"
-                              }
-                            </td>
+                              <td>
+
+                                {
+                                  reading.category ||
+                                  "N/A"
+                                }
+
+                              </td>
 
 
-                            <td>
+                              <td>
 
-                              {
-                                Array.isArray(
-                                  reading.tarot_cards
-                                ) &&
-                                reading.tarot_cards.length > 0
-                                  ? reading.tarot_cards.join(
-                                      ", "
-                                    )
-                                  : "N/A"
-                              }
+                                {
+                                  reading.spread ||
+                                  "N/A"
+                                }
 
-                            </td>
+                              </td>
 
 
-                            <td>
-                              {
-                                reading.upright_count ??
-                                0
-                              }
-                            </td>
+                              <td>
+
+                                {
+                                  Array.isArray(
+                                    reading.tarot_cards
+                                  ) &&
+                                  reading.tarot_cards.length > 0
+                                    ? reading.tarot_cards.join(
+                                        ", "
+                                      )
+                                    : "N/A"
+                                }
+
+                              </td>
 
 
-                            <td>
-                              {
-                                reading.reversed_count ??
-                                0
-                              }
-                            </td>
+                              <td>
+
+                                {
+                                  reading.upright_count ??
+                                  0
+                                }
+
+                              </td>
 
 
-                            <td>
+                              <td>
 
-                              {
-                                reading
-                                  .overall_insight_score !==
-                                  null &&
-                                reading
-                                  .overall_insight_score !==
-                                  undefined
-                                  ? `${Number(
-                                      reading
-                                        .overall_insight_score
-                                    ).toFixed(2)} / 100`
-                                  : "N/A"
-                              }
+                                {
+                                  reading.reversed_count ??
+                                  0
+                                }
 
-                            </td>
+                              </td>
 
-                          </tr>
 
+                              <td>
+
+                                {
+                                  reading
+                                    .overall_insight_score !==
+                                    null &&
+                                  reading
+                                    .overall_insight_score !==
+                                    undefined
+                                    ? `${Number(
+                                        reading
+                                          .overall_insight_score
+                                      ).toFixed(2)} / 100`
+                                    : "N/A"
+                                }
+
+                              </td>
+
+                            </tr>
+
+                          )
                         )
-                      )
-                    }
+                      }
 
-                  </tbody>
+                    </tbody>
 
-                </table>
+                  </table>
 
-              </div>
+                </div>
 
-            )
-            : (
+              )
+              : (
 
-              <AdminEmptyState
-                message="No platform reading history is available yet."
-              />
+                <AdminEmptyState
+                  message="No platform reading history is available yet."
+                />
 
-            )
+              )
           }
 
         </article>
 
       </section>
+
+
+      {/* ==================================================== */}
+      {/* DELETE USER DIALOG */}
+      {/* ==================================================== */}
+
+      {deleteTarget && (
+
+        <div
+          className="admin-delete-backdrop"
+          role="presentation"
+          onMouseDown={
+            (event) => {
+
+              if (
+                event.target ===
+                event.currentTarget
+              ) {
+
+                closeDeleteUser();
+
+              }
+            }
+          }
+        >
+
+          <div
+            className="admin-delete-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="admin-delete-title"
+          >
+
+            <p className="admin-delete-eyebrow">
+              PERMANENT ACTION
+            </p>
+
+
+            <h2 id="admin-delete-title">
+
+              Delete User Account?
+
+            </h2>
+
+
+            <p className="admin-delete-description">
+
+              This permanently removes the
+              account, saved readings, chats,
+              notifications and password-reset
+              records.
+
+            </p>
+
+
+            <div className="admin-delete-user-summary">
+
+              <strong>
+                {
+                  deleteTarget.full_name
+                }
+              </strong>
+
+              <span>
+                {
+                  deleteTarget.email
+                }
+              </span>
+
+            </div>
+
+
+            <label
+              className="admin-delete-confirmation-label"
+              htmlFor="admin-delete-confirmation"
+            >
+
+              Type{" "}
+
+              <strong>
+                DELETE
+              </strong>{" "}
+
+              to confirm.
+
+            </label>
+
+
+            <input
+              id="admin-delete-confirmation"
+              className="admin-delete-confirmation-input"
+              type="text"
+              value={
+                deleteConfirmation
+              }
+              onChange={
+                (event) => {
+
+                  setDeleteConfirmation(
+                    event.target.value
+                  );
+
+                  setError("");
+
+                }
+              }
+              placeholder="Type DELETE"
+              autoComplete="off"
+              disabled={
+                updatingUserId ===
+                deleteTarget.id
+              }
+            />
+
+
+            <div className="admin-delete-dialog-actions">
+
+              <button
+                type="button"
+                className="admin-delete-cancel-button"
+                onClick={
+                  closeDeleteUser
+                }
+                disabled={
+                  updatingUserId ===
+                  deleteTarget.id
+                }
+              >
+
+                Cancel
+
+              </button>
+
+
+              <button
+                type="button"
+                className="admin-delete-confirm-button"
+                onClick={
+                  handleDeleteUser
+                }
+                disabled={
+                  deleteConfirmation !==
+                    "DELETE" ||
+                  updatingUserId ===
+                    deleteTarget.id
+                }
+              >
+
+                {
+                  updatingUserId ===
+                    deleteTarget.id
+                    ? "Deleting User..."
+                    : "Permanently Delete User"
+                }
+
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
 
 
       {/* ==================================================== */}

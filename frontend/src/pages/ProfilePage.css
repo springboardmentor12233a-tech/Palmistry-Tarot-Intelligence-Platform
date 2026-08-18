@@ -792,3 +792,264 @@
   }
 
 }
+
+/* =========================================================
+   DANGER ZONE
+   ========================================================= */
+
+.profile-danger-zone {
+  border-color:
+    rgba(
+      225,
+      90,
+      110,
+      0.24
+    );
+
+  background:
+    rgba(
+      120,
+      30,
+      48,
+      0.07
+    );
+}
+
+
+.profile-danger-eyebrow {
+  margin:
+    0
+    0
+    7px;
+
+  color:
+    #ff9eab;
+
+  font-size:
+    0.76rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.14em;
+
+  text-transform:
+    uppercase;
+}
+
+
+.profile-danger-warning {
+  margin-bottom:
+    20px;
+
+  padding:
+    17px;
+
+  border-radius:
+    13px;
+
+  border:
+    1px solid
+    rgba(
+      225,
+      90,
+      110,
+      0.2
+    );
+
+  background:
+    rgba(
+      170,
+      50,
+      70,
+      0.1
+    );
+}
+
+
+.profile-danger-warning strong {
+  color:
+    #ffb0bd;
+}
+
+
+.profile-danger-warning p {
+  margin:
+    8px
+    0
+    0;
+
+  line-height:
+    1.55;
+
+  opacity:
+    0.72;
+}
+
+
+.profile-delete-confirmation {
+  max-width:
+    480px;
+
+  margin-bottom:
+    16px;
+}
+
+
+.profile-delete-confirmation label {
+  display:
+    block;
+
+  margin-bottom:
+    8px;
+
+  font-weight:
+    700;
+}
+
+
+.profile-delete-confirmation input {
+  width:
+    100%;
+
+  box-sizing:
+    border-box;
+
+  padding:
+    13px
+    14px;
+
+  border-radius:
+    12px;
+
+  border:
+    1px solid
+    rgba(
+      225,
+      90,
+      110,
+      0.28
+    );
+
+  background:
+    #211b2a;
+
+  color:
+    #ffffff;
+
+  font:
+    inherit;
+
+  outline:
+    none;
+}
+
+
+.profile-delete-confirmation input:focus {
+  border-color:
+    rgba(
+      255,
+      120,
+      140,
+      0.75
+    );
+
+  box-shadow:
+    0
+    0
+    0
+    3px
+    rgba(
+      225,
+      70,
+      100,
+      0.12
+    );
+}
+
+
+.profile-delete-button {
+  padding:
+    12px
+    18px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      120,
+      140,
+      0.25
+    );
+
+  border-radius:
+    11px;
+
+  background:
+    rgba(
+      180,
+      55,
+      80,
+      0.62
+    );
+
+  color:
+    #ffffff;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+}
+
+
+.profile-delete-button:hover:not(:disabled) {
+  background:
+    rgba(
+      205,
+      65,
+      90,
+      0.8
+    );
+}
+
+
+.profile-delete-button:disabled {
+  cursor:
+    not-allowed;
+
+  opacity:
+    0.42;
+}
+
+
+.profile-danger-admin-note {
+  padding:
+    15px
+    17px;
+
+  border-radius:
+    12px;
+
+  color:
+    #d6cadf;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.035
+    );
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.07
+    );
+}

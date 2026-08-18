@@ -144,6 +144,23 @@ class ProfileUpdate(
 
 
 # ============================================================
+# ACCOUNT DELETION
+# ============================================================
+
+class AccountDeleteRequest(
+    BaseModel
+):
+
+    model_config = ConfigDict(
+        extra="forbid"
+    )
+
+    confirmation: Literal[
+        "DELETE"
+    ]
+
+
+# ============================================================
 # ADMIN REQUESTS
 # ============================================================
 
