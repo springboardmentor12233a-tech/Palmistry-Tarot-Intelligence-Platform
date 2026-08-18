@@ -1,7 +1,9 @@
 import os
 from pathlib import Path
 
-from dotenv import load_dotenv
+from dotenv import (
+    load_dotenv,
+)
 
 
 BASE_DIR = (
@@ -35,6 +37,7 @@ class Settings:
         ),
     )
 
+
     PALM_RESULT_RETENTION_HOURS = int(
         os.getenv(
             "PALM_RESULT_RETENTION_HOURS",
@@ -54,12 +57,14 @@ class Settings:
         )
     )
 
+
     MIN_IMAGE_HEIGHT = int(
         os.getenv(
             "MIN_IMAGE_HEIGHT",
             "200",
         )
     )
+
 
     MAX_IMAGE_WIDTH = int(
         os.getenv(
@@ -68,12 +73,14 @@ class Settings:
         )
     )
 
+
     MAX_IMAGE_HEIGHT = int(
         os.getenv(
             "MAX_IMAGE_HEIGHT",
             "8000",
         )
     )
+
 
     MAX_UPLOAD_MB = int(
         os.getenv(
@@ -95,15 +102,18 @@ class Settings:
         ),
     )
 
+
     APP_VERSION = os.getenv(
         "APP_VERSION",
         "4.0.0",
     )
 
+
     APP_ENV = os.getenv(
         "APP_ENV",
         "development",
     ).lower()
+
 
     DEBUG = (
         os.getenv(
@@ -112,6 +122,7 @@ class Settings:
         ).lower()
         == "true"
     )
+
 
     LOG_LEVEL = os.getenv(
         "LOG_LEVEL",
@@ -125,15 +136,28 @@ class Settings:
 
     FRONTEND_URLS = [
         origin.strip()
-        for origin in os.getenv(
+
+        for origin
+        in os.getenv(
             "FRONTEND_URLS",
             (
                 "http://localhost:5173,"
                 "http://127.0.0.1:5173"
             ),
         ).split(",")
+
         if origin.strip()
     ]
+
+
+    PUBLIC_FRONTEND_URL = (
+        os.getenv(
+            "PUBLIC_FRONTEND_URL",
+            "http://localhost:5173",
+        )
+        .strip()
+        .rstrip("/")
+    )
 
 
     # =====================================================
@@ -142,7 +166,9 @@ class Settings:
 
     ALLOWED_HOSTS = [
         host.strip()
-        for host in os.getenv(
+
+        for host
+        in os.getenv(
             "ALLOWED_HOSTS",
             (
                 "127.0.0.1,"
@@ -150,6 +176,7 @@ class Settings:
                 "testserver"
             ),
         ).split(",")
+
         if host.strip()
     ]
 
@@ -165,6 +192,7 @@ class Settings:
         / "platform.db"
     )
 
+
     DATABASE_URL = os.getenv(
         "DATABASE_URL",
         (
@@ -175,7 +203,7 @@ class Settings:
 
 
     # =====================================================
-    # AUTHENTICATION / JWT
+    # JWT AUTHENTICATION
     # =====================================================
 
     JWT_SECRET_KEY = os.getenv(
@@ -183,14 +211,36 @@ class Settings:
         "",
     )
 
+
     JWT_ALGORITHM = os.getenv(
         "JWT_ALGORITHM",
         "HS256",
     )
 
+
     ACCESS_TOKEN_EXPIRE_MINUTES = int(
         os.getenv(
             "ACCESS_TOKEN_EXPIRE_MINUTES",
+            "60",
+        )
+    )
+
+
+    # =====================================================
+    # PASSWORD RESET
+    # =====================================================
+
+    PASSWORD_RESET_EXPIRE_MINUTES = int(
+        os.getenv(
+            "PASSWORD_RESET_EXPIRE_MINUTES",
+            "30",
+        )
+    )
+
+
+    PASSWORD_RESET_COOLDOWN_SECONDS = int(
+        os.getenv(
+            "PASSWORD_RESET_COOLDOWN_SECONDS",
             "60",
         )
     )
@@ -203,6 +253,31 @@ class Settings:
     GOOGLE_CLIENT_ID = os.getenv(
         "GOOGLE_CLIENT_ID",
         "",
+    )
+
+
+    # =====================================================
+    # TRANSACTIONAL EMAIL / BREVO
+    # =====================================================
+
+    BREVO_API_KEY = os.getenv(
+        "BREVO_API_KEY",
+        "",
+    )
+
+
+    EMAIL_FROM_ADDRESS = os.getenv(
+        "EMAIL_FROM_ADDRESS",
+        "",
+    )
+
+
+    EMAIL_FROM_NAME = os.getenv(
+        "EMAIL_FROM_NAME",
+        (
+            "Palmistry & Tarot "
+            "Intelligence Platform"
+        ),
     )
 
 

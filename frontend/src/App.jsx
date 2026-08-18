@@ -23,6 +23,12 @@ import LoginPage from
 import RegisterPage from
   "./pages/RegisterPage";
 
+import ForgotPasswordPage from
+  "./pages/ForgotPasswordPage";
+
+import ResetPasswordPage from
+  "./pages/ResetPasswordPage";
+
 import ReadingHistoryPage from
   "./pages/ReadingHistoryPage";
 
@@ -146,6 +152,22 @@ function App() {
         path="/register"
         element={
           <RegisterPage />
+        }
+      />
+
+
+      <Route
+        path="/forgot-password"
+        element={
+          <ForgotPasswordPage />
+        }
+      />
+
+
+      <Route
+        path="/reset-password"
+        element={
+          <ResetPasswordPage />
         }
       />
 

@@ -28,6 +28,7 @@ from app.core.security import (
 from app.models.auth_schemas import (
     GoogleLoginRequest,
     LoginRequest,
+    MessageResponse,
     ProfileUpdate,
     TokenResponse,
     UserRegister,
@@ -38,12 +39,22 @@ from app.models.database_models import (
     User,
 )
 
+from app.models.password_reset_schemas import (
+    ForgotPasswordRequest,
+    ResetPasswordRequest,
+)
+
 from app.services.auth_service import (
     authenticate_google_user,
     authenticate_user,
     create_user,
     get_current_user,
     update_user_profile,
+)
+
+from app.services.password_reset_service import (
+    request_password_reset,
+    reset_password,
 )
 
 
@@ -61,11 +72,9 @@ def build_token_response(
     user: User,
 ) -> TokenResponse:
 
-    token = (
-        create_access_token(
-            user_id=user.id,
-            role=user.role,
-        )
+    token = create_access_token(
+        user_id=user.id,
+        role=user.role,
     )
 
 
@@ -95,14 +104,9 @@ def build_token_response(
 
 @router.post(
     "/register",
-
-    response_model=(
-        TokenResponse
-    ),
-
+    response_model=TokenResponse,
     status_code=(
-        status
-        .HTTP_201_CREATED
+        status.HTTP_201_CREATED
     ),
 )
 def register(
@@ -117,6 +121,7 @@ def register(
         database,
         request,
     )
+
 
     return build_token_response(
         user
@@ -155,10 +160,12 @@ def login(
                 status
                 .HTTP_401_UNAUTHORIZED
             ),
+
             detail=(
                 "Incorrect email "
                 "or password."
             ),
+
             headers={
                 "WWW-Authenticate":
                     "Bearer",
@@ -168,6 +175,67 @@ def login(
 
     return build_token_response(
         user
+    )
+
+
+# ============================================================
+# FORGOT PASSWORD
+# ============================================================
+
+@router.post(
+    "/forgot-password",
+    response_model=MessageResponse,
+)
+def forgot_password(
+    request: ForgotPasswordRequest,
+
+    database: Session = Depends(
+        get_db
+    ),
+):
+
+    message = (
+        request_password_reset(
+            database,
+            str(
+                request.email
+            ),
+        )
+    )
+
+
+    return MessageResponse(
+        status="success",
+        message=message,
+    )
+
+
+# ============================================================
+# RESET PASSWORD
+# ============================================================
+
+@router.post(
+    "/reset-password",
+    response_model=MessageResponse,
+)
+def perform_password_reset(
+    request: ResetPasswordRequest,
+
+    database: Session = Depends(
+        get_db
+    ),
+):
+
+    message = reset_password(
+        database,
+        request.token,
+        request.new_password,
+    )
+
+
+    return MessageResponse(
+        status="success",
+        message=message,
     )
 
 
@@ -187,11 +255,9 @@ def google_login(
     ),
 ):
 
-    user = (
-        authenticate_google_user(
-            database,
-            request.credential,
-        )
+    user = authenticate_google_user(
+        database,
+        request.credential,
     )
 
 
@@ -218,14 +284,6 @@ def oauth2_token(
     ),
 ):
 
-    """
-    OAuth2-compatible password-token
-    endpoint.
-
-    The OAuth2 username field is treated
-    as the user's email address.
-    """
-
     user = authenticate_user(
         database,
         form_data.username,
@@ -240,10 +298,12 @@ def oauth2_token(
                 status
                 .HTTP_401_UNAUTHORIZED
             ),
+
             detail=(
                 "Incorrect email "
                 "or password."
             ),
+
             headers={
                 "WWW-Authenticate":
                     "Bearer",

@@ -263,6 +263,27 @@ function LoginPage() {
           </div>
 
 
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginTop: "-8px",
+              marginBottom: "20px",
+            }}
+          >
+            <Link
+              to="/forgot-password"
+              style={{
+                color: "#b76cff",
+                fontWeight: "600",
+                textDecoration: "none",
+              }}
+            >
+              Forgot password?
+            </Link>
+          </div>
+
+
           {error && (
             <div
               className="error-message"

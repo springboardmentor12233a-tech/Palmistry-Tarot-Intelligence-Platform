@@ -201,6 +201,7 @@ async function authRequest(
               : undefined,
         }
       );
+
   } catch (error) {
     console.error(
       "Authentication network error:",
@@ -266,6 +267,48 @@ export async function loginUser(
       body: {
         email,
         password,
+      },
+    }
+  );
+}
+
+
+// ============================================================
+// PASSWORD RECOVERY
+// ============================================================
+
+export async function requestPasswordReset(
+  email
+) {
+  return authRequest(
+    "/api/auth/forgot-password",
+    {
+      method:
+        "POST",
+
+      body: {
+        email,
+      },
+    }
+  );
+}
+
+
+export async function resetPassword(
+  token,
+  newPassword
+) {
+  return authRequest(
+    "/api/auth/reset-password",
+    {
+      method:
+        "POST",
+
+      body: {
+        token,
+
+        new_password:
+          newPassword,
       },
     }
   );

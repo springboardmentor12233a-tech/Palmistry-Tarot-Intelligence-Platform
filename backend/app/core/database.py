@@ -1,65 +1,97 @@
-from collections.abc import Generator
+from collections.abc import (
+    Generator,
+)
 
-from sqlalchemy import create_engine
+from sqlalchemy import (
+    create_engine,
+)
+
 from sqlalchemy.orm import (
     DeclarativeBase,
     Session,
     sessionmaker,
 )
 
-from app.config import settings
+from app.config import (
+    settings,
+)
 
+
+# ============================================================
+# DATABASE URL
+# ============================================================
 
 def normalize_database_url(
     database_url: str,
 ) -> str:
+
     """
-    Convert common PostgreSQL URLs to the
-    SQLAlchemy Psycopg 3 URL format.
+    Convert common PostgreSQL URLs to
+    SQLAlchemy's Psycopg 3 URL format.
     """
 
     if database_url.startswith(
         "postgres://"
     ):
+
         return database_url.replace(
             "postgres://",
             "postgresql+psycopg://",
             1,
         )
 
+
     if database_url.startswith(
         "postgresql://"
     ):
+
         return database_url.replace(
             "postgresql://",
             "postgresql+psycopg://",
             1,
         )
 
+
     return database_url
 
 
-DATABASE_URL = normalize_database_url(
-    settings.DATABASE_URL
+DATABASE_URL = (
+    normalize_database_url(
+        settings.DATABASE_URL
+    )
 )
 
 
-class Base(DeclarativeBase):
+# ============================================================
+# SQLALCHEMY BASE
+# ============================================================
+
+class Base(
+    DeclarativeBase
+):
+
     pass
 
 
+# ============================================================
+# ENGINE
+# ============================================================
+
 engine_options = {
-    "pool_pre_ping": True,
+    "pool_pre_ping":
+        True,
 }
 
 
 if DATABASE_URL.startswith(
     "sqlite"
 ):
+
     engine_options[
         "connect_args"
     ] = {
-        "check_same_thread": False,
+        "check_same_thread":
+            False,
     }
 
 
@@ -68,6 +100,10 @@ engine = create_engine(
     **engine_options,
 )
 
+
+# ============================================================
+# SESSION
+# ============================================================
 
 SessionLocal = sessionmaker(
     bind=engine,
@@ -82,24 +118,40 @@ def get_db() -> Generator[
     None,
     None,
 ]:
-    database = SessionLocal()
+
+    database = (
+        SessionLocal()
+    )
+
 
     try:
+
         yield database
 
     finally:
+
         database.close()
 
 
+# ============================================================
+# DATABASE INITIALIZATION
+# ============================================================
+
 def init_database() -> None:
-    """
-    Create application database tables.
 
-    Import the models here so SQLAlchemy knows
-    about them before create_all() is executed.
+    """
+    Register every SQLAlchemy model and create
+    missing application tables.
+
+    create_all() creates new tables but does
+    not destructively recreate existing ones.
     """
 
-    from app.models import database_models  # noqa: F401
+    from app.models import (  # noqa: F401
+        database_models,
+        password_reset_models,
+    )
+
 
     Base.metadata.create_all(
         bind=engine
