@@ -1,7 +1,7 @@
 import json
 import logging
 import re
-from typing import Any
+from typing import Any, cast
 
 try:
     from ..config import settings
@@ -17,6 +17,7 @@ try:
     from openai import OpenAI
     OPENAI_AVAILABLE = True
 except ImportError:
+    OpenAI = None  # type: ignore
     OPENAI_AVAILABLE = False
 
 
@@ -31,7 +32,7 @@ class LLMInterpreter:
         self._initialize_client()
 
     def _initialize_client(self):
-        if OPENAI_AVAILABLE and self.api_key and not self.api_key.startswith("your_"):
+        if OPENAI_AVAILABLE and OpenAI is not None and self.api_key and not self.api_key.startswith("your_"):
             try:
                 self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
                 logger.info(f"OpenAI client initialized with model {self.model}.")
@@ -93,7 +94,8 @@ Return ONLY valid JSON in the exact structure below:
   "recommendations": ["Actionable step 1", "Actionable step 2"]
 }}
 """
-        response = self.client.chat.completions.create(
+        client_obj = cast(Any, self.client)
+        response = client_obj.chat.completions.create(
             model=self.model,
             messages=[
                 {"role": "system", "content": "You are an AI Palmistry and Tarot Interpretation Assistant. Provide detailed, thorough narratives."},
@@ -103,7 +105,7 @@ Return ONLY valid JSON in the exact structure below:
             max_tokens=2000
         )
 
-        content = response.choices[0].message.content
+        content = response.choices[0].message.content or "{}"
         parsed = json.loads(content)
         return parsed
 
@@ -174,13 +176,11 @@ Return ONLY valid JSON in the exact structure below:
             try:
                 system_prompt = (
                     "You are an empathetic, highly articulate, and master-level AI Palmistry & Tarot Knowledge & Reading Guide.\n"
-                    "You can answer ANY reasonable question regarding palmistry (lines, mounts, hand shapes, finger proportions, thumb logic) "
-                    "and tarot (all 78 cards, Major/Minor Arcana, suits, court cards, upright vs reversed energy, spreads like Celtic Cross or 3-card, and symbolic concepts).\n\n"
-                    "INSTRUCTIONS:\n"
-                    "1. GENERAL KNOWLEDGE QUESTIONS (e.g. 'what is the Hierophant card', 'what does the Fate line mean', 'explain Celtic Cross spread', 'what is an Earth hand'): "
-                    "Answer directly, educational, and in-depth using authoritative palmistry and tarot principles. Cover symbolic meaning, elemental associations, and practical interpretation.\n"
-                    "2. PERSONAL READING QUESTIONS (e.g. 'what does MY Head line mean', 'how do MY drawn cards connect', 'explain MY reading'): "
-                    "Incorporate the user's active session reading measurements (palm shape, pixel line lengths, cluster ID, and drawn cards) to provide personalized guidance.\n"
+                    "You are the AI Palmistry & Tarot Intelligence Chatbot, a warm, wise, and deeply knowledgeable intuitive reading assistant.\n"
+                    "Your guidance is informed by computer vision hand landmark analysis, UNet palm line contours, scikit-learn PCA/KMeans clustering, and 78-card Tarot archetype interpretation.\n\n"
+                    "Core Communication Guidelines:\n"
+                    "1. Always address the user's specific question directly with depth, clarity, and empathy.\n"
+                    "2. If reading context is present (palm shape, aspect ratio, cluster, drawn tarot cards), seamlessly weave those exact measurements and card names into your answer.\n"
                     "3. Format all responses with clear headings, bold key terms, and structured bullet points where helpful. Never return generic single-line or empty answers."
                 )
                 if reading_context:
@@ -189,15 +189,16 @@ Return ONLY valid JSON in the exact structure below:
                 formatted_messages = [{"role": "system", "content": system_prompt}]
                 for msg in messages:
                     if msg.get("role") in ["user", "assistant"]:
-                        formatted_messages.append({"role": msg["role"], "content": msg["content"]})
+                        formatted_messages.append({"role": str(msg["role"]), "content": str(msg["content"])})
 
-                response = self.client.chat.completions.create(
+                client_obj = cast(Any, self.client)
+                response = client_obj.chat.completions.create(
                     model=self.model,
                     messages=formatted_messages,
                     temperature=0.7,
                     max_tokens=1500
                 )
-                reply = response.choices[0].message.content
+                reply = response.choices[0].message.content or ""
                 return {
                     "reply": reply,
                     "suggested_followups": self._generate_suggested_followups(last_user_msg, reading_context)
@@ -258,6 +259,79 @@ Return ONLY valid JSON in the exact structure below:
 
         return metrics
 
+    def _parse_minor_arcana_card(self, msg_lower: str) -> dict[str, str] | None:
+        """Parse Minor Arcana suit and rank from user message."""
+        suits = {
+            "wand": ("Suit of Wands", "Fire Element (Passion, Action, Ambition, Creative Drive)"),
+            "staves": ("Suit of Wands", "Fire Element (Passion, Action, Ambition, Creative Drive)"),
+            "rods": ("Suit of Wands", "Fire Element (Passion, Action, Ambition, Creative Drive)"),
+            "cup": ("Suit of Cups", "Water Element (Emotions, Intuition, Relationships, Feelings)"),
+            "chalice": ("Suit of Cups", "Water Element (Emotions, Intuition, Relationships, Feelings)"),
+            "sword": ("Suit of Swords", "Air Element (Intellect, Mental Clarity, Truth, Communication)"),
+            "blade": ("Suit of Swords", "Air Element (Intellect, Mental Clarity, Truth, Communication)"),
+            "pentacle": ("Suit of Pentacles", "Earth Element (Finances, Material Wealth, Career Security)"),
+            "coin": ("Suit of Pentacles", "Earth Element (Finances, Material Wealth, Career Security)"),
+            "disc": ("Suit of Pentacles", "Earth Element (Finances, Material Wealth, Career Security)"),
+        }
+
+        ranks = [
+            ("ace", "Ace", "New beginnings, fresh spark of energy, and pure elemental potential."),
+            ("one", "Ace", "New beginnings, fresh spark of energy, and pure elemental potential."),
+            (" 1 ", "Ace", "New beginnings, fresh spark of energy, and pure elemental potential."),
+            ("two", "Two", "Balance, partnership, dual choices, and initial alignment."),
+            (" 2 ", "Two", "Balance, partnership, dual choices, and initial alignment."),
+            ("three", "Three", "Expansion, group collaboration, celebration, and initial progress."),
+            (" 3 ", "Three", "Expansion, group collaboration, celebration, and initial progress."),
+            ("four", "Four", "Stability, solid foundation, rest, and protective boundary."),
+            (" 4 ", "Four", "Stability, solid foundation, rest, and protective boundary."),
+            ("five", "Five", "Conflict, temporary challenge, unexpected shift, and resilience test."),
+            (" 5 ", "Five", "Conflict, temporary challenge, unexpected shift, and resilience test."),
+            ("six", "Six", "Harmony, victory, mutual support, and restorative balance."),
+            (" 6 ", "Six", "Harmony, victory, mutual support, and restorative balance."),
+            ("seven", "Seven", "Assessment, strategic patience, deep reflection, and choice."),
+            (" 7 ", "Seven", "Assessment, strategic patience, deep reflection, and choice."),
+            ("eight", "Eight", "Skill mastery, dedication, rapid movement, and transformation."),
+            (" 8 ", "Eight", "Skill mastery, dedication, rapid movement, and transformation."),
+            ("nine", "Nine", "Near completion, resilience, self-reliance, and fulfillment."),
+            (" 9 ", "Nine", "Near completion, resilience, self-reliance, and fulfillment."),
+            ("ten", "Ten", "Culmination, major milestone, legacy, and complete cycle completion."),
+            ("10", "Ten", "Culmination, major milestone, legacy, and complete cycle completion."),
+            ("page", "Page", "Curiosity, studious learning, enthusiasm, and fresh news."),
+            ("princess", "Page", "Curiosity, studious learning, enthusiasm, and fresh news."),
+            ("knight", "Knight", "Driven pursuit, passionate action, movement, and ambition."),
+            ("prince", "Knight", "Driven pursuit, passionate action, movement, and ambition."),
+            ("queen", "Queen", "Emotional maturity, nurturing authority, and internal mastery."),
+            ("king", "King", "External leadership, tactical mastery, and commanding authority.")
+        ]
+
+        found_suit = None
+        suit_element = ""
+        for sk, (sname, selem) in suits.items():
+            if sk in msg_lower:
+                found_suit = sname
+                suit_element = selem
+                break
+
+        if not found_suit:
+            return None
+
+        found_rank = None
+        rank_desc = "Generative Arcana expression across daily endeavors."
+        for rk, rname, rdesc in ranks:
+            if rk in msg_lower:
+                found_rank = rname
+                rank_desc = rdesc
+                break
+
+        card_title = f"{found_rank} of {found_suit.replace('Suit of ', '')}" if found_rank else found_suit
+        return {
+            "title": card_title,
+            "suit": found_suit,
+            "element": suit_element,
+            "rank": found_rank or "Suit Archetype",
+            "rank_desc": rank_desc
+        }
+
     def _generate_dynamic_chat_reply(
         self,
         messages: list[dict[str, str]],
@@ -299,12 +373,70 @@ Return ONLY valid JSON in the exact structure below:
         tarot_summary = ", ".join(tarot_info_list) if tarot_info_list else ""
         cluster_str = f" (Cluster ID: {pm['cluster_id']})" if pm.get("cluster_id") is not None else ""
 
+        minor_card = self._parse_minor_arcana_card(msg_lower)
+
         # ---------------------------------------------------------------------
         # MASTER PALMISTRY & TAROT INTENT MATCHING KNOWLEDGE ENGINE
         # ---------------------------------------------------------------------
 
-        # 1. Left Hand vs Right Hand Rules
-        if any(k in msg_lower for k in ["left hand", "right hand", "which hand", "active hand", "passive hand", "dominant hand"]):
+        # 1. Greetings & Bot Identity
+        is_greeting = bool(re.match(r'^(hi+|hey+|hello+|hola+|greetings+|good\s*(morning|afternoon|evening|day)|wassup|sup)\b', msg_lower)) or msg_lower in ["hi", "hii", "hiii", "hello", "hey", "heyy", "greetings"] or any(k in msg_lower for k in ["who are you", "what are you", "what can you do", "help me", "what are your features", "who created you", "how can you help"])
+        
+        if is_greeting:
+            reply = (
+                f"### 🔮 Welcome to AI Palmistry & Tarot Intelligence Chatbot!\n\n"
+                f"Greetings! I am your dedicated AI Palmistry & Tarot Knowledge & Reading Guide.\n\n"
+                f"**What I Can Assist You With:**\n"
+                f"• **✋ Hand Geometry & Palmistry:** Ask about Heart, Head, Life, Fate, or Sun lines, hand shapes (Earth, Air, Fire, Water), mounts, or Left vs. Right hand rules.\n"
+                f"• **🎴 Tarot Arcana Interpretations:** Ask about any of the 78 Tarot cards (Major & Minor Arcana), upright vs. reversed meanings, or spread layouts.\n"
+                f"• **🌟 Session Reading Synthesis:** Ask personalized questions about your uploaded hand image, UNet line contours, or drawn cards from the 'Live Reading Demo'.\n"
+                f"• **🔬 Computer Vision & ML Pipeline:** Ask how MediaPipe 3D landmarks, PyTorch UNet line segmentation, PCA, and KMeans clustering compute hand feature vectors.\n\n"
+                f"How may I guide your reading or answer your questions today?"
+            )
+
+        # 2. Session Chat History Request
+        elif any(k in msg_lower for k in ["past chat", "previous chat", "chat history", "past message", "my previous", "old chat", "saved chat", "conversation history", "my past"]):
+            reply = (
+                f"### 💬 Session Chat & Reading History\n\n"
+                f"Regarding *\"{user_message}\"*\n\n"
+                f"• **Active Conversation History:** All your previous questions and replies in this session are automatically saved and displayed directly above in this chat window.\n"
+                f"• **Reading Context Integration:** If you ran a reading in the 'Live Reading Demo' tab, your calculated palm line measurements and drawn tarot cards are actively linked to your session.\n"
+                f"• **Asking Follow-ups:** You can ask follow-up questions about any previous topic, drawn tarot card, or palm line feature anytime!"
+            )
+
+        # 3. Interactive Card Draw Request
+        elif any(k in msg_lower for k in ["draw a card", "draw tarot card", "pull a card", "pick a card", "random card", "draw card"]):
+            card_info = ""
+            try:
+                from palmtarot.pipeline import PalmTarotPipeline
+                temp_p = PalmTarotPipeline()
+                drawn = temp_p.tarot_deck.draw_cards(1)[0]
+                card_info = f"**{drawn['name']}** ({drawn['orientation']})"
+            except Exception:
+                card_info = "**The Star (Upright)**"
+
+            reply = (
+                f"### 🃏 Interactive Card Draw Result: {card_info}\n\n"
+                f"You drew {card_info}!\n\n"
+                f"• **Arcana Message:** This card encourages you to focus on your core alignment, trust your intuition, and take decisive action.\n"
+                f"• **Next Step:** You can also click the **\"🃏 Draw Tarot Card\"** button below the chat box to draw interactive cards linked directly with visual artwork and session history!"
+            )
+
+        # 3. Heart Line vs Head Line Comparison
+        elif any(k in msg_lower for k in ["heart line vs head line", "difference between heart and head", "heart vs head", "compare heart and head"]):
+            reply = (
+                f"### ⚖️ Heart Line vs. Head Line Comparison\n\n"
+                f"Regarding your query *\"{user_message}\"*\n\n"
+                f"| Feature | **Heart Line** (Line of Emotion) | **Head Line** (Line of Intellect) |\n"
+                f"| :--- | :--- | :--- |\n"
+                f"| **Location** | Upper horizontal line beneath fingers | Middle horizontal line across center palm |\n"
+                f"| **Core Focus** | Emotional connection, empathy, relationships | Cognitive focus, analytical logic, mental clarity |\n"
+                f"| **Key Signal** | Ending under Jupiter (idealistic) vs Saturn (pragmatic) | Straight (pragmatic logic) vs Sloped (creativity) |\n\n"
+                f"💡 **Integration Rule:** In holistic reading, a well-balanced Head Line provides the strategic discipline needed to express the emotional warmth of your Heart Line."
+            )
+
+        # 4. Left Hand vs Right Hand Rules
+        elif any(k in msg_lower for k in ["left hand", "right hand", "which hand", "active hand", "passive hand", "dominant hand", "left vs right"]):
             reply = (
                 f"### ✋ Left Hand vs. Right Hand in Palmistry\n\n"
                 f"Regarding your question *\"{user_message}\"*\n\n"
@@ -317,8 +449,30 @@ Return ONLY valid JSON in the exact structure below:
                 f"💡 **Key Rule:** *\"The non-dominant hand shows what you were born with; the dominant hand shows what you have done with it!\"*"
             )
 
-        # 2. Recommendation Mechanics & Computer Vision Synthesis
-        elif any(k in msg_lower for k in ["recommend", "how are tarot", "based on palm", "synthesi", "connect"]):
+        # 5. Major vs Minor Arcana Comparison
+        elif any(k in msg_lower for k in ["major vs minor", "difference between major and minor", "major arcana vs minor arcana", "major or minor"]):
+            reply = (
+                f"### 🃏 Major Arcana vs. Minor Arcana Comparison\n\n"
+                f"Regarding *\"{user_message}\"*\n\n"
+                f"1. **Major Arcana (22 Cards - 0 to XXI):**\n"
+                f"   • Represents major life archetypes, spiritual thresholds, soul lessons, and overarching destiny shifts (e.g., The Fool, The Sun, The Tower, Death).\n"
+                f"2. **Minor Arcana (56 Cards - 4 Suits):**\n"
+                f"   • Represents day-to-day events, emotional states, mental thoughts, and practical actions across 4 elemental suits (Wands, Cups, Swords, Pentacles).\n\n"
+                f"💡 **Reading Rule:** Major Arcana cards signal *WHY* a major transition is happening; Minor Arcana cards explain *HOW* to handle the daily details."
+            )
+
+        # 6. Palmistry vs Tarot Comparison
+        elif any(k in msg_lower for k in ["palmistry vs tarot", "difference between palmistry and tarot", "how palmistry and tarot connect", "combine palmistry and tarot"]):
+            reply = (
+                f"### 🔮 Palmistry & Tarot Synthesis\n\n"
+                f"Regarding *\"{user_message}\"*\n\n"
+                f"• **Palmistry (Physical Blueprint):** Measures permanent and evolving structural features of your hand (lines, mounts, aspect ratio), establishing your core temperament and energy capacity.\n"
+                f"• **Tarot (Synchronistic Mirror):** Reflects immediate environmental momentum, choice dynamics, and psychological perspectives.\n\n"
+                f"💡 **Our AI Engine Synthesis:** MediaPipe 3D hand ratios and UNet line metrics dynamically recommend Tarot cards that complement your quantitative palm features."
+            )
+
+        # 7. Recommendation Mechanics & Computer Vision Synthesis
+        elif any(k in msg_lower for k in ["recommend", "how are tarot", "based on palm", "synthesi", "connect palm"]):
             if is_personal and pm["has_reading"]:
                 reply = (
                     f"### 🔮 Synthesis of Your Session Palm Metrics & Tarot Draw\n\n"
@@ -342,8 +496,8 @@ Return ONLY valid JSON in the exact structure below:
                     f"3. **Arcana Matching Matrix:** Quantitative features are cross-referenced with Tarot Arcana archetypes. High emotional intensity or strong cognitive focus maps to cards that balance and complement line traits."
                 )
 
-        # 3. Heart Line Deep-Dive
-        elif any(k in msg_lower for k in ["heart line", "heart", "love line", "emotional line"]):
+        # 8. Heart Line Deep-Dive
+        elif any(k in msg_lower for k in ["heart line", "love line", "emotional line"]):
             if is_personal and pm["heart_line"]:
                 hl = pm["heart_line"]
                 length = hl.get("length_px", hl.get("length", "149.1"))
@@ -369,8 +523,8 @@ Return ONLY valid JSON in the exact structure below:
                     f"• **Length & Depth:** Deep, clear lines indicate steady emotional resilience and capacity for lasting love."
                 )
 
-        # 4. Head Line Deep-Dive
-        elif any(k in msg_lower for k in ["head line", "head", "mind line", "brain line", "logic line", "intellect"]):
+        # 9. Head Line Deep-Dive
+        elif any(k in msg_lower for k in ["head line", "mind line", "brain line", "logic line", "intellect"]):
             if is_personal and pm["head_line"]:
                 hl = pm["head_line"]
                 length = hl.get("length_px", hl.get("length", "135.4"))
@@ -395,8 +549,8 @@ Return ONLY valid JSON in the exact structure below:
                     f"• **Writer's Fork / Branching:** A fork at the end signifies dual capacity to combine hard logic with artistic imagination."
                 )
 
-        # 5. Life Line Deep-Dive (Clearing up the Lifespan Myth!)
-        elif any(k in msg_lower for k in ["life line", "life", "vitality line"]):
+        # 10. Life Line Deep-Dive (Clearing up the Lifespan Myth!)
+        elif any(k in msg_lower for k in ["life line", "vitality line"]):
             if is_personal and pm["life_line"]:
                 ll = pm["life_line"]
                 length = ll.get("length_px", ll.get("length", "162.8"))
@@ -421,8 +575,8 @@ Return ONLY valid JSON in the exact structure below:
                     f"• **Deep & Clear:** High immune resilience and physical vitality."
                 )
 
-        # 6. Fate Line / Destiny Line / Secondary Lines
-        elif any(k in msg_lower for k in ["fate", "saturn line", "destiny", "sun line", "apollo line", "mercury line", "health line", "girdle of venus", "intuition line", "rascette"]):
+        # 11. Fate Line / Secondary Lines
+        elif any(k in msg_lower for k in ["fate", "saturn line", "destiny", "sun line", "apollo line", "mercury line", "health line", "girdle of venus", "intuition line"]):
             reply = (
                 f"### ✋ Palmistry Secondary Lines & Specialty Contours\n\n"
                 f"Regarding your palmistry inquiry *\"{user_message}\"*\n\n"
@@ -435,7 +589,7 @@ Return ONLY valid JSON in the exact structure below:
                 f"Deep, clear lines denote steady, uninterrupted energy flow, while breaks or islands signify temporary pivot points or restructuring phases."
             )
 
-        # 7. Line Markings (Breaks, Islands, Stars, Crosses, Squares, Forks)
+        # 12. Line Markings (Breaks, Islands, Stars, Crosses, Squares, Forks)
         elif any(k in msg_lower for k in ["break", "island", "cross", "star", "square", "triangle", "chain", "fork"]):
             reply = (
                 f"### 🔍 Palm Line Markings & Special Symbols\n\n"
@@ -447,7 +601,7 @@ Return ONLY valid JSON in the exact structure below:
                 f"• **Fork / Writer's Fork:** Dual talent combining analytical logic with creative synthesis."
             )
 
-        # 8. All Major Arcana Tarot Cards (Fool, Magician, Priestess, Empress, Emperor, Hierophant, Lovers, Chariot, Strength, Hermit, Wheel, Justice, Hanged Man, Death, Temperance, Devil, Tower, Star, Moon, Sun, Judgement, World)
+        # 13. 22 Major Arcana Cards
         elif any(k in msg_lower for k in [
             "fool", "magician", "high priestess", "priestess", "empress", "emperor", "hierophant", "lovers", "chariot",
             "strength", "hermit", "wheel of fortune", "wheel", "justice", "hanged man", "death", "temperance", "devil",
@@ -482,97 +636,114 @@ Return ONLY valid JSON in the exact structure below:
                 f"Reflect on how {card_found}'s core lesson applies to your current choices. Combine spiritual insight with practical action."
             )
 
-        # 9. Minor Arcana Suits & Court Cards
-        elif any(k in msg_lower for k in ["wand", "cup", "sword", "pentacle", "court card", "page", "knight", "queen", "king", "suit", "ace", "minor arcana"]):
+        # 14. Minor Arcana Specific Card & Suit Matching
+        elif minor_card is not None:
             reply = (
-                f"### 🎴 Minor Arcana Suits & Court Card Hierarchy\n\n"
-                f"Regarding Minor Arcana *\"{user_message}\"*\n\n"
-                f"**1. The 4 Minor Arcana Suits:**\n"
-                f"• **Wands (Fire Element):** Passion, ambition, career drive, creativity, and action.\n"
-                f"• **Cups (Water Element):** Emotions, relationships, intuition, and artistic feeling.\n"
-                f"• **Swords (Air Element):** Cognition, truth, mental clarity, challenges, and communication.\n"
-                f"• **Pentacles (Earth Element):** Finance, material wealth, career security, and physical health.\n\n"
-                f"**2. Court Cards Progression:**\n"
-                f"Page (Studious learner/message) ➔ Knight (Action/pursuit) ➔ Queen (Internal emotional mastery) ➔ King (External leadership/authority)."
+                f"### 🎴 Minor Arcana: {minor_card['title']}\n\n"
+                f"Regarding *\"{user_message}\"*\n\n"
+                f"• **Suit & Element:** {minor_card['suit']} — {minor_card['element']}\n"
+                f"• **Rank Archetype:** **{minor_card['rank']}** — {minor_card['rank_desc']}\n\n"
+                f"**Interpretation Insights:**\n"
+                f"• **Upright:** Direct application of {minor_card['title']}'s energy to your daily endeavors, encouraging constructive momentum.\n"
+                f"• **Reversed:** A call to re-evaluate internal boundaries, avoid burnout, and realign your underlying intentions."
             )
 
-        # 10. Spreads & Layout Architecture
+        # 15. Computer Vision & ML Pipeline Technical Questions
+        elif any(k in msg_lower for k in ["mediapipe", "unet", "pca", "kmeans", "cluster", "computer vision", "how is hand analyzed", "how does image work", "landmark", "aspect ratio"]):
+            reply = (
+                f"### 🔬 Computer Vision & Machine Learning Pipeline\n\n"
+                f"Regarding technical details *\"{user_message}\"*\n\n"
+                f"1. **MediaPipe Hand Landmarker:** Detects 21 3D hand coordinates (X, Y, Z) to compute palm width, length, and aspect ratio.\n"
+                f"2. **PyTorch UNet Model:** Performs pixel-level line segmentation to extract pixel length, area, and slope for Heart, Head, and Life lines.\n"
+                f"3. **PCA & KMeans Clustering:** Reduces feature dimensionality to 2D coordinates and assigns the hand to 1 of 5 distinct topological clusters.\n"
+                f"4. **Rule & LLM Engine:** Maps extracted feature vectors to geometric interpretation rules and Tarot Arcana recommendations."
+            )
+
+        # 16. Image Upload & Troubleshooting
+        elif any(k in msg_lower for k in ["upload", "hand not detected", "image quality", "failed to detect", "photo tips"]):
+            reply = (
+                f"### 📸 Photo Upload & Detection Guidelines\n\n"
+                f"Regarding hand image detection *\"{user_message}\"*\n\n"
+                f"• **Positioning:** Hold your palm flat facing the camera with fingers naturally spread.\n"
+                f"• **Lighting:** Ensure even, bright lighting with clear contrast between hand and background.\n"
+                f"• **Format & Size:** Upload `.jpg` or `.png` images under 10MB."
+            )
+
+        # 17. Platform Features & PDF Reports
+        elif any(k in msg_lower for k in ["pdf", "download report", "history", "admin", "login", "register", "role"]):
+            reply = (
+                f"### 📄 Platform Features & PDF Reports\n\n"
+                f"Regarding platform features *\"{user_message}\"*\n\n"
+                f"• **PDF Report Generation:** Once you generate a reading in 'Live Reading Demo', a complete ReportLab PDF summary report is compiled and downloadable.\n"
+                f"• **User Accounts & Roles:** Supports Standard Users, Readers, Consultants, and System Admins with persistent session history."
+            )
+
+        # 18. Spreads & Layout Architecture
         elif any(k in msg_lower for k in ["spread", "celtic cross", "three card", "3 card", "layout", "draw format"]):
             reply = (
                 f"### 🃏 Tarot Spreads & Layout Architecture\n\n"
                 f"Regarding your spread question *\"{user_message}\"*\n\n"
-                f"**1. Popular Spread Architectures:**\n"
-                f"• **3-Card Spread (Past / Present / Future):** A focused, versatile spread evaluating timeline momentum or Mind / Body / Spirit dynamics.\n"
-                f"• **Celtic Cross (10 Cards):** The comprehensive classic spread analyzing immediate focus, crossing challenges, foundation, past influences, crown aspirations, near future, self-attitude, environment, hopes/fears, and ultimate outcome.\n"
+                f"• **3-Card Spread (Past / Present / Future):** A versatile spread evaluating timeline momentum or Mind / Body / Spirit dynamics.\n"
+                f"• **Celtic Cross (10 Cards):** The comprehensive classic spread analyzing foundation, past influences, crown aspirations, near future, self-attitude, environment, hopes/fears, and ultimate outcome.\n"
                 f"• **1-Card Daily Draw:** A concise focal archetype for morning reflection and daily mindfulness."
             )
 
-        # 11. Palmistry Mounts
+        # 19. Palmistry Mounts
         elif any(k in msg_lower for k in ["mount", "venus", "jupiter", "saturn", "apollo", "luna", "plain of mars"]):
             reply = (
                 f"### ✋ Palmistry Mounts & Planetary Energies\n\n"
                 f"Regarding mounts *\"{user_message}\"*\n\n"
-                f"**1. Mount Locations & Traits:**\n"
-                f"• **Mount of Venus (Thumb Base):** Passion, vitality, love capacity, and appreciation for beauty.\n"
+                f"• **Mount of Venus (Thumb Base):** Vitality, passion, love capacity, and appreciation for beauty.\n"
                 f"• **Mount of Jupiter (Index Finger Base):** Ambition, leadership capacity, honor, and self-confidence.\n"
                 f"• **Mount of Saturn (Middle Finger Base):** Discipline, responsibility, philosophical depth, and caution.\n"
                 f"• **Mount of Apollo / Sun (Ring Finger Base):** Artistic talent, charisma, optimism, and creative drive.\n"
                 f"• **Mount of Mercury (Pinky Finger Base):** Eloquence, scientific acumen, commerce, and adaptability.\n"
-                f"• **Mount of Moon / Luna (Base Opposite Thumb):** Intuition, imagination, subconscious depth, and travel.\n\n"
-                f"**2. Interpretation Principle:**\n"
-                f"Well-developed, firm mounts indicate high energy density in that domain, balancing hand line features."
+                f"• **Mount of Moon / Luna (Base Opposite Thumb):** Intuition, imagination, subconscious depth, and travel."
             )
 
-        # 12. Hand Shapes & Elemental Archetypes
-        elif any(k in msg_lower for k in ["element", "earth hand", "air hand", "fire hand", "water hand", "spatulate", "conic", "psychic hand", "hand shape"]):
+        # 20. Hand Shapes & Elemental Archetypes
+        elif any(k in msg_lower for k in ["element", "earth hand", "air hand", "fire hand", "water hand", "spatulate", "conic", "hand shape"]):
             reply = (
                 f"### 🖐️ Hand Shapes & Elemental Archetypes\n\n"
                 f"Regarding hand shape classification *\"{user_message}\"*\n\n"
-                f"**1. The 4 Elemental Hand Archetypes:**\n"
                 f"• **Earth Hand (Square Palm, Short Fingers):** Grounded, practical, reliable, methodical, and physical.\n"
                 f"• **Air Hand (Square Palm, Long Fingers):** Intellectual, communicative, analytical, curious, and articulate.\n"
                 f"• **Fire Hand (Long Palm, Short Fingers):** Energetic, passionate, spontaneous, impulsive, and charismatic.\n"
-                f"• **Water Hand (Long Palm, Long Fingers):** Sensitive, intuitive, imaginative, emotional, and creative.\n\n"
-                f"**2. Aspect Ratio Mechanics:**\n"
-                f"Our MediaPipe computer vision engine calculates palm width to height ratios to classify hand topology automatically."
+                f"• **Water Hand (Long Palm, Long Fingers):** Sensitive, intuitive, imaginative, emotional, and creative."
             )
 
-        # 13. Finger Types & Thumb Logic
+        # 21. Finger Types & Thumb Logic
         elif any(k in msg_lower for k in ["finger", "thumb", "index", "pinky", "joint", "phalange"]):
             reply = (
                 f"### ✋ Finger Proportions & Thumb Psychology\n\n"
                 f"Regarding finger traits *\"{user_message}\"*\n\n"
-                f"**1. Finger Symbolic Roles:**\n"
-                f"• **Thumb:** The anchor of personality. Top phalange = Willpower; Lower phalange = Logic. Stiff thumb = strong determination; Flexible thumb = adaptable nature.\n"
+                f"• **Thumb:** Anchor of personality. Top = Willpower; Lower = Logic. Stiff thumb = determination; Flexible thumb = adaptability.\n"
                 f"• **Index Finger (Jupiter):** Leadership drive, self-worth, and ambition.\n"
-                f"• **Middle Finger (Saturn):** Duty, moral compass, structure, and balance.\n"
+                f"• **Middle Finger (Saturn):** Structure, moral compass, and balance.\n"
                 f"• **Ring Finger (Apollo):** Expression, creativity, and public reputation.\n"
                 f"• **Little Finger (Mercury):** Verbal clarity, intimacy, and commercial instincts."
             )
 
-        # 14. Core Domain Focus Topics (Career, Relationship, Health, Future, Money, Upright/Reversed)
-        elif any(k in msg_lower for k in ["career", "job", "work", "business"]):
+        # 22. Core Domain Focus Topics
+        elif any(k in msg_lower for k in ["career", "job", "work", "vocation", "business"]):
             reply = (
                 f"### 💼 Career & Professional Guidance\n\n"
                 f"Regarding career insights *\"{user_message}\"*\n\n"
-                f"In palmistry and tarot systems, career development is indicated by the Head Line (cognitive strategy), "
-                f"the Fate Line (vocational path), and the Wands & Pentacles suits in Tarot. Focus on steady, value-creating milestones."
+                f"Career development is indicated by the Head Line (cognitive strategy), the Fate Line (vocational path), and Wands & Pentacles suits in Tarot. Focus on steady, value-creating milestones."
             )
 
         elif any(k in msg_lower for k in ["love", "relationship", "romance", "partner"]):
             reply = (
                 f"### ❤️ Relationship & Emotional Insights\n\n"
                 f"Regarding relationship dynamics *\"{user_message}\"*\n\n"
-                f"Emotional expressiveness is governed by the Heart Line and Mount of Venus in palmistry, paired with the Cups suit and Lovers/2 of Cups in Tarot. "
-                f"Deep lines indicate strong emotional resonance, while clear communication fosters lasting connections."
+                f"Emotional expressiveness is governed by the Heart Line and Mount of Venus in palmistry, paired with the Cups suit and Lovers/2 of Cups in Tarot. Deep lines indicate strong emotional resonance."
             )
 
         elif any(k in msg_lower for k in ["health", "vitality", "energy", "wellness"]):
             reply = (
                 f"### 🌿 Health & Energy Vitality\n\n"
                 f"Regarding vitality insights *\"{user_message}\"*\n\n"
-                f"Physical energy is measured by Life Line curvature and Mount of Venus in palmistry. Line length reflects energy density and stamina rather than lifespan duration. "
-                f"Tarot guidance reminds us to balance cognitive work with physical rest."
+                f"Physical energy is measured by Life Line curvature and Mount of Venus in palmistry. Line length reflects energy density and stamina rather than lifespan duration."
             )
 
         elif any(k in msg_lower for k in ["future", "destiny", "outlook", "timing", "predict"]):
@@ -601,7 +772,7 @@ Return ONLY valid JSON in the exact structure below:
             reply = (
                 f"### ✋ What is Palmistry?\n\n"
                 f"Regarding *\"{user_message}\"*\n\n"
-                f"**Palmistry (Chiromancy)** is the ancient art and science of analyzing the physical contours, line features, mounts, and proportions of the hand.\n\n"
+                f"**Palmistry (Chiromancy)** is the ancient art and science of analyzing physical contours, line features, mounts, and proportions of the hand:\n\n"
                 f"1. **Major Lines:** Heart (emotions), Head (intellect), Life (vitality).\n"
                 f"2. **Secondary Lines:** Fate (career), Sun (fame/art), Mercury (communication).\n"
                 f"3. **Hand Archetypes:** Square, Rectangular, Long, and Spatulate shapes linked to Earth, Air, Fire, and Water elements."
@@ -612,11 +783,11 @@ Return ONLY valid JSON in the exact structure below:
                 f"### 🎴 What is Tarot?\n\n"
                 f"Regarding *\"{user_message}\"*\n\n"
                 f"**Tarot** is a symbolic system of 78 cards designed for self-reflection and energetic insight:\n\n"
-                f"1. **22 Major Arcana Cards:** Represent major life lessons, spiritual archetypes, and developmental milestones (e.g. The Fool, The Star, The Sun).\n"
-                f"2. **56 Minor Arcana Cards:** Divided into 4 suits (Wands, Cups, Swords, Pentacles) governing daily situations, emotions, thoughts, and practical efforts."
+                f"1. **22 Major Arcana Cards:** Represent major life lessons, spiritual archetypes, and developmental milestones.\n"
+                f"2. **56 Minor Arcana Cards:** Divided into 4 suits (Wands, Cups, Swords, Pentacles) governing daily situations, thoughts, and practical efforts."
             )
 
-        # 15. Personal Reading Q&A (Matches when explicitly asking about user's active session)
+        # 23. Personal Reading Q&A Synthesis
         elif is_personal or any(k in msg_lower for k in ["my reading", "my session", "my result", "my drawn cards"]):
             if pm["has_reading"]:
                 reply = (
@@ -640,21 +811,21 @@ Return ONLY valid JSON in the exact structure below:
                     f"Our MediaPipe + PyTorch UNet vision pipeline will calculate your exact line measurements and connect them to your tarot draw."
                 )
 
-        # 16. General Dynamic Synthesizer (Catches any open-ended or custom question)
+        # 24. Intelligent NLP Dynamic Synthesizer (Catches any custom open-ended question)
         else:
-            words = [w for w in re.findall(r'\b[a-zA-Z]{3,}\b', user_message) if w.lower() not in ["what", "how", "why", "when", "does", "this", "that", "with", "from", "about", "your", "have", "been", "give", "tell"]]
-            topic_str = ", ".join(words[:4]).title() if words else "Palmistry & Tarot Wisdom"
+            clean_words = [w.title() for w in re.findall(r'\b[a-zA-Z]{3,}\b', user_message) if w.lower() not in ["what", "how", "why", "when", "where", "which", "does", "this", "that", "with", "from", "about", "your", "have", "been", "give", "tell", "show", "can", "will", "would", "should"]]
+            topic_str = ", ".join(clean_words[:4]) if clean_words else "Intuitive Self-Reflection"
 
             reply = (
-                f"### 🔮 Educational Guidance: {topic_str}\n\n"
-                f"Thank you for asking: *\"{user_message}\"*\n\n"
-                f"**1. Core Principles & Insight:**\n"
-                f"In our integrated platform, we analyze both the structural features of your hand (palm lines, aspect ratio, mounts) and celestial Tarot Arcana to address questions regarding **{topic_str or 'life guidance'}**.\n\n"
-                f"**2. Practical Perspective:**\n"
-                f"• Combine logical structure (Head Line clarity) with emotional awareness (Heart Line resonance).\n"
-                f"• Use Tarot archetypes as mirrors for self-reflection and strategic decision-making.\n"
-                f"• Ground your choices in concrete priorities and self-trust.\n\n"
-                f"💡 *Tip: You can ask specific questions about any of the 78 tarot cards, 5 major palm lines, 8 mounts, left vs right hand, or your active reading results!*"
+                f"### 🔮 Insights & Guidance: {topic_str}\n\n"
+                f"Addressing your inquiry: *\"{user_message}\"*\n\n"
+                f"**1. Analytical Perspective:**\n"
+                f"When reflecting on **{topic_str}**, our platform combines structural hand geometry principles with Tarot archetypes to offer clarity:\n"
+                f"• **Cognitive Balance (Head Line):** Use analytical logic and clear priorities to evaluate your choices objectively.\n"
+                f"• **Emotional Resonance (Heart Line):** Ensure your decisions align with your genuine core values and emotional well-being.\n"
+                f"• **Vitality & Action (Life Line & Arcana):** Ground your vision with steady physical habits and intentional daily effort.\n\n"
+                f"**2. Recommended Action Step:**\n"
+                f"Take a moment to write down your immediate priorities regarding {topic_str.lower()}. Trust your inner clarity and take measured forward steps."
             )
 
         return {
@@ -696,7 +867,7 @@ if __name__ == "__main__":
     import io
     import sys
     if hasattr(sys.stdout, "reconfigure"):
-        sys.stdout.reconfigure(encoding="utf-8")
+        cast(Any, sys.stdout).reconfigure(encoding="utf-8")
     else:
         sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8")
 

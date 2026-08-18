@@ -1,3 +1,5 @@
+from typing import Any, cast
+
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
@@ -24,7 +26,7 @@ class PalmClusterPipeline:
         self.random_state = random_state
         self.scaler = StandardScaler()
         self.pca = PCA(n_components=2, random_state=random_state)
-        self.kmeans = KMeans(n_clusters=n_clusters, random_state=random_state, n_init=10)
+        self.kmeans = KMeans(n_clusters=n_clusters, random_state=random_state, n_init=cast(Any, 10))
         self.is_fitted = False
 
     def _generate_synthetic_training_data(self, n_samples: int = 100) -> pd.DataFrame:
@@ -43,7 +45,7 @@ class PalmClusterPipeline:
         df["aspect_ratio"] = df["palm_height"] / df["palm_width"]
         return df
 
-    def fit(self, df: pd.DataFrame = None) -> "PalmClusterPipeline":
+    def fit(self, df: pd.DataFrame | None = None) -> "PalmClusterPipeline":
         """Fit scaler, PCA, and KMeans models."""
         if df is None or df.empty or not set(FEATURE_COLUMNS).issubset(df.columns):
             df = self._generate_synthetic_training_data()
@@ -56,7 +58,7 @@ class PalmClusterPipeline:
         return self
 
     def transform_and_predict(self, feature_dict: dict[str, float]) -> tuple[int, tuple[float, float]]:
-        """Predict cluster and return 2D PCA coordinates for a single feature vector."""
+        """Predict cluster index and 2D PCA coordinates for a single feature dictionary."""
         if not self.is_fitted:
             self.fit()
 
@@ -67,7 +69,7 @@ class PalmClusterPipeline:
 
         return cluster_id, (float(pca_coords[0]), float(pca_coords[1]))
 
-    def get_cluster_summary(self, df: pd.DataFrame = None) -> pd.DataFrame:
+    def get_cluster_summary(self, df: pd.DataFrame | None = None) -> pd.DataFrame:
         """Calculate cluster mean summary statistics."""
         if df is None or df.empty or not set(FEATURE_COLUMNS).issubset(df.columns):
             df = self._generate_synthetic_training_data(200)
@@ -82,4 +84,4 @@ class PalmClusterPipeline:
         df_copy = df.copy()
         df_copy["Cluster"] = clusters
         summary = df_copy.groupby("Cluster")[FEATURE_COLUMNS].mean()
-        return summary
+        return cast(pd.DataFrame, summary)

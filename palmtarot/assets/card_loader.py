@@ -1,5 +1,6 @@
 import logging
 from pathlib import Path
+from typing import cast
 
 import requests
 from PIL import Image
@@ -88,7 +89,7 @@ def get_card_image_path(img_filename: str) -> Path:
 def get_card_pil_image(img_filename: str, orientation: str = "Upright") -> Image.Image:
     """Load authentic card artwork PIL image, rotated 180 deg if Reversed."""
     image_path = get_card_image_path(img_filename)
-    img = Image.open(image_path)
+    img: Image.Image = cast(Image.Image, Image.open(image_path))
     if orientation.lower() == "reversed":
         img = img.rotate(180)
     return img

@@ -42,6 +42,7 @@ class Up(nn.Module):
 
     def __init__(self, in_channels: int, out_channels: int, bilinear: bool = True):
         super().__init__()
+        self.up: nn.Module
         if bilinear:
             self.up = nn.Upsample(scale_factor=2, mode='bilinear', align_corners=True)
             self.conv = DoubleConv(in_channels, out_channels, in_channels // 2)

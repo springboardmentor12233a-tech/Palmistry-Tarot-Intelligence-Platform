@@ -77,3 +77,48 @@ def test_chat_general_question_dynamic_synthesizer():
     # Verify it gives direct guidance rather than generic boilerplate
     assert len(reply) > 100
     assert "Career" in reply or "vocation" in reply.lower() or "Fate" in reply or "Head Line" in reply or "Guidance" in reply
+
+
+def test_chat_greetings():
+    interpreter = LLMInterpreter()
+    messages = [{"role": "user", "content": "Hello! Who are you?"}]
+    res = interpreter.chat_completion(messages)
+
+    assert "reply" in res
+    reply = res["reply"]
+    assert "Welcome" in reply or "Greetings" in reply or "Guide" in reply
+    assert "Palmistry" in reply and "Tarot" in reply
+
+
+def test_chat_minor_arcana_card():
+    interpreter = LLMInterpreter()
+    messages = [{"role": "user", "content": "What does the 3 of Cups tarot card mean?"}]
+    res = interpreter.chat_completion(messages)
+
+    assert "reply" in res
+    reply = res["reply"]
+    assert "Three of Cups" in reply or "Cups" in reply
+    assert "Water" in reply or "Emotions" in reply or "Expansion" in reply
+
+
+def test_chat_comparison_heart_vs_head():
+    interpreter = LLMInterpreter()
+    messages = [{"role": "user", "content": "What is the difference between Heart Line and Head Line?"}]
+    res = interpreter.chat_completion(messages)
+
+    assert "reply" in res
+    reply = res["reply"]
+    assert "Heart Line" in reply and "Head Line" in reply
+    assert "Emotion" in reply or "Intellect" in reply or "Comparison" in reply
+
+
+def test_chat_computer_vision_tech():
+    interpreter = LLMInterpreter()
+    messages = [{"role": "user", "content": "How does MediaPipe and UNet analyze my hand?"}]
+    res = interpreter.chat_completion(messages)
+
+    assert "reply" in res
+    reply = res["reply"]
+    assert "MediaPipe" in reply or "UNet" in reply
+    assert "landmarks" in reply.lower() or "segmentation" in reply.lower()
+

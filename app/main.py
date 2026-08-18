@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import cv2
 import numpy as np
@@ -19,6 +19,7 @@ from app.auth import (
 from app.schemas import (
     ChatRequest,
     ChatResponse,
+    ClusterInfo,
     FullReadingResponse,
     HealthCheckResponse,
     PalmAnalysisResponse,
@@ -135,7 +136,7 @@ def register(req: UserRegisterRequest):
 @app.post("/auth/login", response_model=TokenResponse, tags=["Authentication"])
 def login(req: UserLoginRequest):
     """Authenticate user credentials (email or username) and return JWT bearer access token."""
-    login_id = req.email or req.username
+    login_id = req.email or req.username or ""
     user = authenticate_user(login_id, req.password)
     if not user:
         raise HTTPException(
@@ -219,7 +220,7 @@ def get_demo_users():
             "email": u.email,
             "password": passwords.get(u.email, "password123"),
             "role": u.role,
-            "role_label": ROLE_LABELS.get(u.role, u.role),
+            "role_label": ROLE_LABELS.get(cast(Any, u.role), str(u.role)),
             "full_name": u.full_name
         })
     return {"demo_users": demo_list}
@@ -248,7 +249,7 @@ def admin_get_users(admin: dict[str, Any] = Depends(get_current_admin_user)):
 @app.put("/admin/users/{user_id}/status", tags=["Admin Dashboards"])
 def admin_update_user_status(user_id: str, req: UserStatusUpdateRequest, admin: dict[str, Any] = Depends(get_current_admin_user)):
     """Update registered user active status or role assignment."""
-    updates = {"is_active": req.is_active}
+    updates: dict[str, Any] = {"is_active": req.is_active}
     if req.role:
         updates["role"] = req.role
     updated = db_manager.update_user(user_id, updates)
@@ -341,10 +342,10 @@ async def analyze_palm(
         return PalmAnalysisResponse(
             landmarks=palm_res["landmarks"],
             engineered_features=palm_res["engineered_features"],
-            cluster={
-                "cluster_id": palm_res["cluster"]["cluster_id"],
-                "pca_coords": list(palm_res["cluster"]["pca_coords"])
-            },
+            cluster=ClusterInfo(
+                cluster_id=int(palm_res["cluster"]["cluster_id"]),
+                pca_coords=list(palm_res["cluster"]["pca_coords"])
+            ),
             rule_report=palm_res["rule_report"],
             palm_lines=palm_res["palm_lines"]
         )
@@ -445,10 +446,10 @@ async def full_reading(
             palm_features=res["palm_features"],
             palm_report=res["palm_report"],
             palm_lines=res["palm_lines"],
-            cluster={
-                "cluster_id": res["cluster"]["cluster_id"],
-                "pca_coords": list(res["cluster"]["pca_coords"])
-            },
+            cluster=ClusterInfo(
+                cluster_id=int(res["cluster"]["cluster_id"]),
+                pca_coords=list(res["cluster"]["pca_coords"])
+            ),
             tarot_reading=TarotDrawResponse(
                 num_cards=res["tarot_reading"]["num_cards"],
                 cards=res["tarot_reading"]["cards"]

@@ -122,7 +122,7 @@ class LandmarkExtractor:
 
     def extract_from_image_array(self, image_np: np.ndarray) -> dict[str, Any]:
         """Extract 21 landmarks and engineered features from an image numpy array (RGB)."""
-        landmarks_list = []
+        landmarks_list: list[dict[str, float]] = []
         if self.detector is not None:
             try:
                 import mediapipe as mp

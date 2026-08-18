@@ -86,16 +86,14 @@
 
 ---
 
-## Slide 9: Testing, CI/CD & Cloud Deployment
+## Slide 9: Testing & CI/CD Pipeline
 - **Testing Suite (`pytest`)**:
   - Unit tests for distance math, geometric rule boundaries, tarot deck shuffle, PCA/KMeans fitting, and PDF creation.
   - Integration tests for FastAPI endpoints with mocked OpenAI client calls.
-- **Containerization & CI/CD**:
-  - Multi-stage `Dockerfile.api` and `Dockerfile.dashboard`.
-  - Orchestrated via `docker-compose.yml`.
-  - GitHub Actions CI workflow automates testing and Docker build verification on push.
-- **Cloud Target**:
-  - Ready for Google Cloud Run / Render container deployment.
+- **CI/CD Automation**:
+  - GitHub Actions CI workflow automates testing suite execution and linting on push/pull request.
+- **Local Deployment**:
+  - Modular local setup launching FastAPI backend (`:8000`) and Streamlit dashboard (`:8501`).
 
 ---
 

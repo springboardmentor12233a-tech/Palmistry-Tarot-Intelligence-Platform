@@ -2,6 +2,7 @@ import base64
 import sys
 import time
 from pathlib import Path
+from typing import Any, cast
 
 import cv2
 import numpy as np
@@ -200,8 +201,6 @@ bg_css = f"""
 st.markdown(bg_css, unsafe_allow_html=True)
 
 
-# Caching Expensive Computations
-@st.cache_resource
 def get_pipeline():
     return PalmTarotPipeline()
 
@@ -384,7 +383,7 @@ with st.sidebar:
         UserRole.ADMIN.value: "role-admin"
     }.get(role, "role-user")
 
-    role_label = ROLE_LABELS.get(role, role.capitalize())
+    role_label = ROLE_LABELS.get(cast(Any, role), str(role).capitalize())
 
     st.success(f"Logged in as **{st.session_state.full_name}** (`{st.session_state.username}`)")
     st.markdown(f"Role: <span class='role-badge {badge_class}'>{role_label}</span>", unsafe_allow_html=True)
@@ -478,29 +477,36 @@ def render_user_profile():
 
     with col_u2:
         st.subheader("📜 Reading & Q&A History")
-        palm_history = db_manager.get_user_palm_analyses(user_id) if user_id else (db_manager.get_latest_palm_analysis(session_id) and [db_manager.get_latest_palm_analysis(session_id)] or [])
-        tarot_history = db_manager.get_user_tarot_readings(user_id) if user_id else (db_manager.get_latest_tarot_reading(session_id) and [db_manager.get_latest_tarot_reading(session_id)] or [])
-        chat_history = db_manager.get_user_chat_messages(user_id) if user_id else (session_id and db_manager.get_chat_history(session_id) or [])
+        sid = session_id or ""
+        p_latest = db_manager.get_latest_palm_analysis(sid) if sid else None
+        t_latest = db_manager.get_latest_tarot_reading(sid) if sid else None
+
+        palm_history = db_manager.get_user_palm_analyses(user_id) if user_id else ([p_latest] if p_latest else [])
+        tarot_history = db_manager.get_user_tarot_readings(user_id) if user_id else ([t_latest] if t_latest else [])
+        chat_history = db_manager.get_user_chat_messages(user_id) if user_id else (db_manager.get_chat_history(sid) if sid else [])
 
         combined = []
         for p in palm_history:
-            combined.append({
-                "icon": "✋",
-                "type": "Palm Analysis",
-                "timestamp": p.timestamp,
-                "question": "Palm Landmark & Structural Feature Analysis",
-                "answer": f"Palm Shape: **{p.palm_shape}** | Aspect Ratio: **{p.aspect_ratio:.2f}** | Cluster **#{p.cluster_id}**"
-            })
+            if p:
+                combined.append({
+                    "icon": "✋",
+                    "type": "Palm Analysis",
+                    "timestamp": p.timestamp,
+                    "question": "Palm Landmark & Structural Feature Analysis",
+                    "answer": f"Palm Shape: **{p.palm_shape}** | Aspect Ratio: **{p.aspect_ratio:.2f}** | Cluster **#{p.cluster_id}**"
+                })
         for t in tarot_history:
-            cards_str = ", ".join([f"{c.get('name', 'Card')} ({c.get('orientation', 'Upright')})" for c in t.cards])
-            summary = t.interpretation.get("personality") or t.interpretation.get("career_guidance") or "Tarot Cards Drawn"
-            combined.append({
-                "icon": "🎴",
-                "type": "Tarot Reading",
-                "timestamp": t.timestamp,
-                "question": t.user_question or "General Tarot Draw Focus",
-                "answer": f"**Drawn Cards:** {cards_str}\n\n**Reading Summary:** {summary}"
-            })
+            if t and t.cards:
+                cards_str = ", ".join([f"{c.get('name', 'Card')} ({c.get('orientation', 'Upright')})" for c in t.cards])
+                interp = t.interpretation or {}
+                summary = interp.get("personality") or interp.get("career_guidance") or "Tarot Cards Drawn"
+                combined.append({
+                    "icon": "🎴",
+                    "type": "Tarot Reading",
+                    "timestamp": t.timestamp,
+                    "question": t.user_question or "General Tarot Draw Focus",
+                    "answer": f"**Drawn Cards:** {cards_str}\n\n**Reading Summary:** {summary}"
+                })
         for c in chat_history:
             combined.append({
                 "icon": "💬",
@@ -799,8 +805,9 @@ def render_tarot_analytics():
             st.subheader("⚔️ Minor Arcana Suit Breakdown")
             if "suit" in tarot_df.columns:
                 suits_df = tarot_df[tarot_df["suit"] != "Major"]
+                suit_series = pd.Series(suits_df["suit"])
                 suit_fig = px.bar(
-                    suits_df["suit"].value_counts().reset_index(),
+                    suit_series.value_counts().reset_index(),
                     x="suit",
                     y="count",
                     title="Cards per Suit",
@@ -1132,7 +1139,7 @@ def render_ai_chatbot():
         with st.chat_message(msg["role"], avatar=avatar):
             st.write(msg["content"])
             if msg.get("card"):
-                card = msg["card"]
+                card = cast(dict[str, Any], msg["card"])
                 col_c1, col_c2 = st.columns([1, 3])
                 orient = card.get("orientation", "Upright")
                 with col_c1:
@@ -1159,11 +1166,12 @@ def render_ai_chatbot():
             )
             bot_reply = res["reply"]
 
-        st.session_state.chat_history.append({
+        bot_msg: dict[str, Any] = {
             "role": "assistant",
             "content": bot_reply,
             "card": drawn_card
-        })
+        }
+        st.session_state.chat_history.append(bot_msg)
 
         if session_id:
             linked_ctx = context.copy() if context else {}

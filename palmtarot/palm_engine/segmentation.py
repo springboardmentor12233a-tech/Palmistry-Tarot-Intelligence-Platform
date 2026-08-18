@@ -17,6 +17,8 @@ try:
     from torchvision import transforms
     TORCH_AVAILABLE = True
 except ImportError:
+    torch = None  # type: ignore
+    transforms = None  # type: ignore
     TORCH_AVAILABLE = False
 
 
@@ -31,7 +33,7 @@ class PalmSegmenter:
 
     def _initialize_model(self):
         """Initialize PyTorch UNet model and load pre-trained weights if available."""
-        if not TORCH_AVAILABLE:
+        if not TORCH_AVAILABLE or torch is None:
             logger.warning("PyTorch not installed. Segmentation will use classical vision fallback.")
             return
 
@@ -83,7 +85,7 @@ class PalmSegmenter:
 
     def predict_mask(self, roi_rgb: np.ndarray) -> np.ndarray:
         """Generate binary palm line mask using UNet model or classical fallback."""
-        if self.model is not None and TORCH_AVAILABLE:
+        if self.model is not None and TORCH_AVAILABLE and torch is not None and transforms is not None:
             try:
                 roi_pil = Image.fromarray(roi_rgb)
                 transform = transforms.Compose([
@@ -91,7 +93,8 @@ class PalmSegmenter:
                     transforms.ToTensor(),
                     transforms.Normalize(mean=[0.5, 0.5, 0.5], std=[0.5, 0.5, 0.5])
                 ])
-                tensor = transform(roi_pil).unsqueeze(0).to(self.device)
+                tensor_input: Any = transform(roi_pil)
+                tensor = tensor_input.unsqueeze(0).to(self.device)
 
                 with torch.no_grad():
                     output = self.model(tensor)
@@ -147,7 +150,7 @@ class PalmSegmenter:
         contours, _ = cv2.findContours(binary_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         valid_contours = [c for c in contours if cv2.contourArea(c) > 10 or cv2.arcLength(c, False) > 15]
 
-        stats = []
+        stats: list[dict[str, Any]] = []
         for cnt in valid_contours:
             x, y, cw, ch = cv2.boundingRect(cnt)
             M = cv2.moments(cnt)
@@ -158,11 +161,11 @@ class PalmSegmenter:
         heart, head, life = None, None, None
 
         if len(stats) > 0:
-            heart = min(stats, key=lambda s: s['top_y'])
+            heart = min(stats, key=lambda s: float(s['top_y']))
             remaining = [s for s in stats if s is not heart]
 
             if remaining:
-                life = min(remaining, key=lambda s: s['cx'])
+                life = min(remaining, key=lambda s: float(s['cx']))
                 remaining = [s for s in remaining if s is not life]
 
             if remaining:
@@ -215,7 +218,7 @@ class PalmSegmenter:
             ("Life", life, fallback_contours["Life"])
         ]:
             cnt_to_draw = line_obj["cnt"] if line_obj is not None else fallback_cnt
-            cv2.polylines(overlay, [cnt_to_draw], False, colors[line_item], 3)
+            cv2.polylines(overlay, [np.asarray(cnt_to_draw, dtype=np.int32)], False, colors[line_item], 3)
 
         return {
             "line_features": line_features,
