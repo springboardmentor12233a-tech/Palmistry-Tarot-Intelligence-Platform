@@ -1,0 +1,2884 @@
+{
+  "cards": [
+    {
+      "name": "The Fool",
+      "number": "0",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m00.jpg",
+      "keywords": [
+        "beginnings",
+        "innocence",
+        "spontaneity",
+        "free spirit"
+      ],
+      "meanings": {
+        "light": [
+          "New beginnings",
+          "Embracing pure potential",
+          "Leap of faith",
+          "Living in the moment"
+        ],
+        "shadow": [
+          "Recklessness",
+          "Risk taking",
+          "Foolishness",
+          "Naivety"
+        ]
+      },
+      "fortune_telling": [
+        "A surprise opportunity is on its way",
+        "Trust the journey ahead"
+      ],
+      "elemental": "Air",
+      "archetype": "The Divine Explorer",
+      "questions_to_ask": [
+        "How does The Fool invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Magician",
+      "number": "1",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m01.jpg",
+      "keywords": [
+        "manifestation",
+        "resourcefulness",
+        "power",
+        "inspired action"
+      ],
+      "meanings": {
+        "light": [
+          "Manifesting desires",
+          "Utilizing all available tools",
+          "Conscious awareness",
+          "Creative willpower"
+        ],
+        "shadow": [
+          "Trickery",
+          "Wasted talent",
+          "Illusion",
+          "Manipulation"
+        ]
+      },
+      "fortune_telling": [
+        "You have all the resources you need to succeed",
+        "Focus your will to create your reality"
+      ],
+      "elemental": "Mercury",
+      "archetype": "The Alchemist",
+      "questions_to_ask": [
+        "How does The Magician invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The High Priestess",
+      "number": "2",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m02.jpg",
+      "keywords": [
+        "intuition",
+        "sacred knowledge",
+        "divine feminine",
+        "subconscious"
+      ],
+      "meanings": {
+        "light": [
+          "Trusting intuition",
+          "Unveiling mysteries",
+          "Inner silence",
+          "Spiritual insight"
+        ],
+        "shadow": [
+          "Secrets",
+          "Disconnected from intuition",
+          "Surface illusions",
+          "Hidden agendas"
+        ]
+      },
+      "fortune_telling": [
+        "Look beneath the surface; your inner voice holds the truth",
+        "Answers lie in stillness"
+      ],
+      "elemental": "Moon",
+      "archetype": "The Oracle",
+      "questions_to_ask": [
+        "How does The High Priestess invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Empress",
+      "number": "3",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m03.jpg",
+      "keywords": [
+        "abundance",
+        "fertility",
+        "nurturing",
+        "creativity"
+      ],
+      "meanings": {
+        "light": [
+          "Creative fruitfulness",
+          "Nurturing relationships",
+          "Sensory joy",
+          "Harmony and prosperity"
+        ],
+        "shadow": [
+          "Creative block",
+          "Smothering",
+          "Overdependence",
+          "Neglecting self-care"
+        ]
+      },
+      "fortune_telling": [
+        "Growth and bountiful returns are blossoming in your life",
+        "Nurture what you wish to see thrive"
+      ],
+      "elemental": "Venus",
+      "archetype": "The Great Mother",
+      "questions_to_ask": [
+        "How does The Empress invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Emperor",
+      "number": "4",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m04.jpg",
+      "keywords": [
+        "authority",
+        "structure",
+        "control",
+        "fatherhood"
+      ],
+      "meanings": {
+        "light": [
+          "Solid foundation",
+          "Leadership and discipline",
+          "Organized structure",
+          "Protective guidance"
+        ],
+        "shadow": [
+          "Tyranny",
+          "Rigidity",
+          "Lack of discipline",
+          "Abuse of authority"
+        ]
+      },
+      "fortune_telling": [
+        "Bring discipline and order to your current endeavor",
+        "Stand strong in your authority"
+      ],
+      "elemental": "Aries",
+      "archetype": "The Sovereign",
+      "questions_to_ask": [
+        "How does The Emperor invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Hierophant",
+      "number": "5",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m05.jpg",
+      "keywords": [
+        "tradition",
+        "conformity",
+        "morality",
+        "institutions"
+      ],
+      "meanings": {
+        "light": [
+          "Spiritual wisdom",
+          "Mentorship",
+          "Honoring proven traditions",
+          "Ethical discernment"
+        ],
+        "shadow": [
+          "Rebellion",
+          "Dogmatism",
+          "Challenging traditions",
+          "Hypocrisy"
+        ]
+      },
+      "fortune_telling": [
+        "Seek guidance from trusted mentors or timeless principles",
+        "Align with your deepest ethics"
+      ],
+      "elemental": "Taurus",
+      "archetype": "The Spiritual Teacher",
+      "questions_to_ask": [
+        "How does The Hierophant invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Lovers",
+      "number": "6",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m06.jpg",
+      "keywords": [
+        "love",
+        "harmony",
+        "relationships",
+        "values alignment"
+      ],
+      "meanings": {
+        "light": [
+          "Soul connections",
+          "Deep partnership",
+          "Harmonious union",
+          "Choices aligned with true values"
+        ],
+        "shadow": [
+          "Disharmony",
+          "Misalignment of values",
+          "Indecision",
+          "Conflict in relationships"
+        ]
+      },
+      "fortune_telling": [
+        "A vital relationship or decision calls for authentic alignment",
+        "Choose from the heart"
+      ],
+      "elemental": "Gemini",
+      "archetype": "The Sacred Union",
+      "questions_to_ask": [
+        "How does The Lovers invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Chariot",
+      "number": "7",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m07.jpg",
+      "keywords": [
+        "determination",
+        "willpower",
+        "victory",
+        "assertion"
+      ],
+      "meanings": {
+        "light": [
+          "Overcoming obstacles",
+          "Focused determination",
+          "Victorious momentum",
+          "Mastery of opposing forces"
+        ],
+        "shadow": [
+          "Lack of direction",
+          "Aggression",
+          "Loss of control",
+          "Forcefulness"
+        ]
+      },
+      "fortune_telling": [
+        "Triumph is yours if you maintain unwavering focus and self-discipline",
+        "Stay determined"
+      ],
+      "elemental": "Cancer",
+      "archetype": "The Victor",
+      "questions_to_ask": [
+        "How does The Chariot invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "Strength",
+      "number": "8",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m08.jpg",
+      "keywords": [
+        "courage",
+        "persuasion",
+        "compassion",
+        "inner strength"
+      ],
+      "meanings": {
+        "light": [
+          "Gentle power",
+          "Taming inner beasts",
+          "Endurance and patience",
+          "Compassionate resilience"
+        ],
+        "shadow": [
+          "Self-doubt",
+          "Weakness",
+          "Raw emotion",
+          "Impatience"
+        ]
+      },
+      "fortune_telling": [
+        "Patience and inner fortitude will overcome raw force",
+        "Lead with gentle courage"
+      ],
+      "elemental": "Leo",
+      "archetype": "The Gentle Tamer",
+      "questions_to_ask": [
+        "How does Strength invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Hermit",
+      "number": "9",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m09.jpg",
+      "keywords": [
+        "soul searching",
+        "introspection",
+        "solitude",
+        "inner guidance"
+      ],
+      "meanings": {
+        "light": [
+          "Seeking inner truth",
+          "Spiritual retreat",
+          "Inner illumination",
+          "Wisdom found in silence"
+        ],
+        "shadow": [
+          "Loneliness",
+          "Isolation",
+          "Lost in the dark",
+          "Refusing wise counsel"
+        ]
+      },
+      "fortune_telling": [
+        "Step back from external noise to discover your inner light",
+        "Solitude will bring clarity"
+      ],
+      "elemental": "Virgo",
+      "archetype": "The Sage",
+      "questions_to_ask": [
+        "How does The Hermit invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "Wheel of Fortune",
+      "number": "10",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m10.jpg",
+      "keywords": [
+        "cycles",
+        "good luck",
+        "karma",
+        "destiny"
+      ],
+      "meanings": {
+        "light": [
+          "Positive turning point",
+          "Karmic rewards",
+          "Fortuitous cycles",
+          "Destined encounters"
+        ],
+        "shadow": [
+          "Bad luck",
+          "Resisting inevitable change",
+          "Negative cycles",
+          "Helplessness"
+        ]
+      },
+      "fortune_telling": [
+        "A shift of destiny is occurring in your favor",
+        "Embrace the cycles of life with grace"
+      ],
+      "elemental": "Jupiter",
+      "archetype": "The Wheel of Destiny",
+      "questions_to_ask": [
+        "How does Wheel of Fortune invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "Justice",
+      "number": "11",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m11.jpg",
+      "keywords": [
+        "fairness",
+        "truth",
+        "cause and effect",
+        "law"
+      ],
+      "meanings": {
+        "light": [
+          "Truth revealed",
+          "Fair resolution",
+          "Accountability",
+          "Honest discernment"
+        ],
+        "shadow": [
+          "Dishonesty",
+          "Unfair treatment",
+          "Lack of accountability",
+          "Prejudice"
+        ]
+      },
+      "fortune_telling": [
+        "Integrity and truth will restore balance to your situation",
+        "Act with honor and clarity"
+      ],
+      "elemental": "Libra",
+      "archetype": "The Great Arbiter",
+      "questions_to_ask": [
+        "How does Justice invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Hanged Man",
+      "number": "12",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m12.jpg",
+      "keywords": [
+        "surrender",
+        "new perspective",
+        "letting go",
+        "pause"
+      ],
+      "meanings": {
+        "light": [
+          "Surrendering ego",
+          "Gaining fresh viewpoints",
+          "Sacred pause",
+          "Enlightening sacrifice"
+        ],
+        "shadow": [
+          "Stalling",
+          "Pointless sacrifice",
+          "Martyrdom",
+          "Resistance to surrender"
+        ]
+      },
+      "fortune_telling": [
+        "Pause and look at this from an entirely inverted perspective",
+        "Letting go allows breakthrough"
+      ],
+      "elemental": "Water",
+      "archetype": "The Transcendent",
+      "questions_to_ask": [
+        "How does The Hanged Man invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "Death",
+      "number": "13",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m13.jpg",
+      "keywords": [
+        "transformation",
+        "endings",
+        "transition",
+        "renewal"
+      ],
+      "meanings": {
+        "light": [
+          "Closing obsolete chapters",
+          "Profound rebirth",
+          "Metamorphosis",
+          "Making space for the new"
+        ],
+        "shadow": [
+          "Fear of change",
+          "Holding on to the past",
+          "Stagnation",
+          "Decay"
+        ]
+      },
+      "fortune_telling": [
+        "An old phase concludes to make room for an empowering resurrection",
+        "Embrace rebirth"
+      ],
+      "elemental": "Scorpio",
+      "archetype": "The Transformer",
+      "questions_to_ask": [
+        "How does Death invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "Temperance",
+      "number": "14",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m14.jpg",
+      "keywords": [
+        "balance",
+        "moderation",
+        "patience",
+        "synthesis"
+      ],
+      "meanings": {
+        "light": [
+          "Harmonizing opposites",
+          "Alchemical fusion",
+          "Peaceful moderation",
+          "Emotional equilibrium"
+        ],
+        "shadow": [
+          "Imbalance",
+          "Excess",
+          "Discord",
+          "Extremes"
+        ]
+      },
+      "fortune_telling": [
+        "Find the golden middle way through patience and blending diverse viewpoints",
+        "Remain calm"
+      ],
+      "elemental": "Sagittarius",
+      "archetype": "The Alchemist of Soul",
+      "questions_to_ask": [
+        "How does Temperance invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Devil",
+      "number": "15",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m15.jpg",
+      "keywords": [
+        "shadow self",
+        "attachment",
+        "addiction",
+        "illusion of restriction"
+      ],
+      "meanings": {
+        "light": [
+          "Confronting shadow",
+          "Breaking invisible chains",
+          "Recognizing unhealthy patterns",
+          "Reclaiming autonomy"
+        ],
+        "shadow": [
+          "Trap of materialism",
+          "Obsession",
+          "Powerlessness",
+          "Toxic codependency"
+        ]
+      },
+      "fortune_telling": [
+        "You possess the power to break free from any self-imposed limitations",
+        "Acknowledge the shadow"
+      ],
+      "elemental": "Capricorn",
+      "archetype": "The Shadow Binder",
+      "questions_to_ask": [
+        "How does The Devil invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Tower",
+      "number": "16",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m16.jpg",
+      "keywords": [
+        "sudden upheaval",
+        "breakthrough",
+        "revelation",
+        "awakening"
+      ],
+      "meanings": {
+        "light": [
+          "Shattering false illusions",
+          "Sudden breakthrough",
+          "Clearing rigid structures",
+          "Liberating awakening"
+        ],
+        "shadow": [
+          "Avoiding inevitable change",
+          "Fear of collapse",
+          "Prolonged disaster",
+          "Denial"
+        ]
+      },
+      "fortune_telling": [
+        "A sudden truth sweeps away illusions to build upon genuine bedrock",
+        "Liberation follows shock"
+      ],
+      "elemental": "Mars",
+      "archetype": "The Lightning Bolt",
+      "questions_to_ask": [
+        "How does The Tower invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Star",
+      "number": "17",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m17.jpg",
+      "keywords": [
+        "hope",
+        "faith",
+        "purpose",
+        "renewal",
+        "serenity"
+      ],
+      "meanings": {
+        "light": [
+          "Renewed inspiration",
+          "Spiritual healing",
+          "Guiding beacon",
+          "Wishes aligned with universe"
+        ],
+        "shadow": [
+          "Hopelessness",
+          "Disillusionment",
+          "Despair",
+          "Loss of faith"
+        ]
+      },
+      "fortune_telling": [
+        "Hope and radiant blessings shine upon your path",
+        "Trust your guiding star"
+      ],
+      "elemental": "Aquarius",
+      "archetype": "The Beacon of Hope",
+      "questions_to_ask": [
+        "How does The Star invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Moon",
+      "number": "18",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m18.jpg",
+      "keywords": [
+        "subconscious",
+        "illusions",
+        "intuition",
+        "dreams"
+      ],
+      "meanings": {
+        "light": [
+          "Navigating deep emotions",
+          "Deciphering dreams",
+          "Heightened psychic sensitivity",
+          "Facing the unknown"
+        ],
+        "shadow": [
+          "Confusion",
+          "Deception",
+          "Anxiety",
+          "Paranoia"
+        ]
+      },
+      "fortune_telling": [
+        "Trust your instincts through uncertain or shadowy terrain",
+        "Look past surface illusions"
+      ],
+      "elemental": "Pisces",
+      "archetype": "The Dream Weaver",
+      "questions_to_ask": [
+        "How does The Moon invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The Sun",
+      "number": "19",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m19.jpg",
+      "keywords": [
+        "joy",
+        "success",
+        "vitality",
+        "celebration",
+        "clarity"
+      ],
+      "meanings": {
+        "light": [
+          "Radiant vitality",
+          "Unabashed happiness",
+          "Clarity and optimism",
+          "Abundant victory"
+        ],
+        "shadow": [
+          "Temporary cloudiness",
+          "Overconfidence",
+          "Delayed gratification",
+          "Unexpressed joy"
+        ]
+      },
+      "fortune_telling": [
+        "Brilliant light, vitality, and success illuminate your journey",
+        "Celebrate your triumphs"
+      ],
+      "elemental": "Sun",
+      "archetype": "The Radiant Light",
+      "questions_to_ask": [
+        "How does The Sun invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "Judgement",
+      "number": "20",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m20.jpg",
+      "keywords": [
+        "reckoning",
+        "calling",
+        "awakening",
+        "absolution"
+      ],
+      "meanings": {
+        "light": [
+          "Heeding your true calling",
+          "Higher awakening",
+          "Liberating self-forgiveness",
+          "Karmic clarity"
+        ],
+        "shadow": [
+          "Self-criticism",
+          "Ignoring the call",
+          "Regret",
+          "Doubt"
+        ]
+      },
+      "fortune_telling": [
+        "Rise up and claim your true purpose with a clear conscience",
+        "Answer the spiritual trumpet"
+      ],
+      "elemental": "Pluto",
+      "archetype": "The Great Awakening",
+      "questions_to_ask": [
+        "How does Judgement invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "The World",
+      "number": "21",
+      "arcana": "Major Arcana",
+      "suit": "Trump",
+      "img": "m21.jpg",
+      "keywords": [
+        "completion",
+        "wholeness",
+        "accomplishment",
+        "travel"
+      ],
+      "meanings": {
+        "light": [
+          "Triumphant completion",
+          "Mastery and wholeness",
+          "Global connections",
+          "Cosmic integration"
+        ],
+        "shadow": [
+          "Incomplete goals",
+          "Shortcuts",
+          "Lack of closure",
+          "Stagnant finish"
+        ]
+      },
+      "fortune_telling": [
+        "A major life cycle culminates in triumph, wholeness, and celebration",
+        "You have arrived"
+      ],
+      "elemental": "Saturn",
+      "archetype": "The Cosmic Whole",
+      "questions_to_ask": [
+        "How does The World invite me to grow today?",
+        "What wisdom is calling for my attention?"
+      ]
+    },
+    {
+      "name": "Ace of Wands",
+      "number": "1",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w01.jpg",
+      "keywords": [
+        "new spark",
+        "potential",
+        "breakthrough",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Burst of fresh energy",
+          "Raw potential realized",
+          "Channeling the pure Fire essence of Wands in Ace form"
+        ],
+        "shadow": [
+          "Missed opportunity",
+          "Blocked force",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle ace energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Ace of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Ace energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Two of Wands",
+      "number": "2",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w02.jpg",
+      "keywords": [
+        "balance",
+        "decision",
+        "planning",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Weighing choices",
+          "Harmony in progress",
+          "Channeling the pure Fire essence of Wands in Two form"
+        ],
+        "shadow": [
+          "Indecision",
+          "Conflict in path",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle two energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Two of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Two energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Three of Wands",
+      "number": "3",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w03.jpg",
+      "keywords": [
+        "growth",
+        "collaboration",
+        "expansion",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Reaching milestones",
+          "Collective effort",
+          "Channeling the pure Fire essence of Wands in Three form"
+        ],
+        "shadow": [
+          "Delays in progress",
+          "Miscommunication",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle three energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Three of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Three energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Four of Wands",
+      "number": "4",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w04.jpg",
+      "keywords": [
+        "stability",
+        "celebration",
+        "foundation",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Secure base",
+          "Contentment and rest",
+          "Channeling the pure Fire essence of Wands in Four form"
+        ],
+        "shadow": [
+          "Restlessness",
+          "Rigid stagnation",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle four energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Four of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Four energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Five of Wands",
+      "number": "5",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w05.jpg",
+      "keywords": [
+        "conflict",
+        "challenge",
+        "competition",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Navigating discord",
+          "Testing of resilience",
+          "Channeling the pure Fire essence of Wands in Five form"
+        ],
+        "shadow": [
+          "Avoidance of struggle",
+          "Lingering strife",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle five energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Five of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Five energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Six of Wands",
+      "number": "6",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w06.jpg",
+      "keywords": [
+        "victory",
+        "harmony",
+        "nostalgia",
+        "success",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Sweet memories",
+          "Earned triumph",
+          "Giving and receiving",
+          "Channeling the pure Fire essence of Wands in Six form"
+        ],
+        "shadow": [
+          "Ego arrogance",
+          "Living in past",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle six energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Six of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Six energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Seven of Wands",
+      "number": "7",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w07.jpg",
+      "keywords": [
+        "assessment",
+        "perseverance",
+        "strategy",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Evaluating results",
+          "Strategic patience",
+          "Channeling the pure Fire essence of Wands in Seven form"
+        ],
+        "shadow": [
+          "Impatience",
+          "Deception in strategy",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle seven energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Seven of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Seven energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Eight of Wands",
+      "number": "8",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w08.jpg",
+      "keywords": [
+        "speed",
+        "dedication",
+        "movement",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Rapid progress",
+          "Honing craftsmanship",
+          "Channeling the pure Fire essence of Wands in Eight form"
+        ],
+        "shadow": [
+          "Hasty errors",
+          "Overworking in vain",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle eight energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Eight of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Eight energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Nine of Wands",
+      "number": "9",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w09.jpg",
+      "keywords": [
+        "resilience",
+        "fulfillment",
+        "nearing goal",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Boundary defense",
+          "Satisfaction of desires",
+          "Channeling the pure Fire essence of Wands in Nine form"
+        ],
+        "shadow": [
+          "Burnout",
+          "Paranoia near the end",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle nine energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Nine of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Nine energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Ten of Wands",
+      "number": "10",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w10.jpg",
+      "keywords": [
+        "culmination",
+        "abundance",
+        "completion",
+        "burden",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Legacy fulfilled",
+          "Overcoming heavy burden",
+          "Abundant family",
+          "Channeling the pure Fire essence of Wands in Ten form"
+        ],
+        "shadow": [
+          "Exhaustion",
+          "Overburdened",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle ten energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Ten of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Ten energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Page of Wands",
+      "number": "11",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w11.jpg",
+      "keywords": [
+        "curiosity",
+        "enthusiasm",
+        "messages",
+        "learning",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Eager student",
+          "Exciting news arriving",
+          "Fresh creative urge",
+          "Channeling the pure Fire essence of Wands in Page form"
+        ],
+        "shadow": [
+          "Immaturity",
+          "Unreliable messenger",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle page energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Page of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Page energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Knight of Wands",
+      "number": "12",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w12.jpg",
+      "keywords": [
+        "action",
+        "pursuit",
+        "intensity",
+        "movement",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Charging toward goals",
+          "Dedicated quest",
+          "Passionate crusade",
+          "Channeling the pure Fire essence of Wands in Knight form"
+        ],
+        "shadow": [
+          "Impulsiveness",
+          "Reckless charge",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle knight energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Knight of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Knight energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Queen of Wands",
+      "number": "13",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w13.jpg",
+      "keywords": [
+        "mastery",
+        "nourishment",
+        "grace",
+        "depth",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Emotional/creative maturity",
+          "Graceful leadership",
+          "Inspiring authority",
+          "Channeling the pure Fire essence of Wands in Queen form"
+        ],
+        "shadow": [
+          "Jealousy",
+          "Overbearing control",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle queen energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The Queen of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is Queen energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "King of Wands",
+      "number": "14",
+      "arcana": "Minor Arcana",
+      "suit": "Wands",
+      "img": "w14.jpg",
+      "keywords": [
+        "command",
+        "wisdom",
+        "stability",
+        "vision",
+        "wands",
+        "fire"
+      ],
+      "meanings": {
+        "light": [
+          "Wise governance",
+          "Pinnacle of mastery",
+          "Enduring legacy",
+          "Channeling the pure Fire essence of Wands in King form"
+        ],
+        "shadow": [
+          "Tyranny",
+          "Stubborn misuse of power",
+          "Blocked or distorted expression of Wands"
+        ]
+      },
+      "fortune_telling": [
+        "A development in creativity, passion, ambition, willpower is developing rapidly.",
+        "Trust your ability to handle king energy in this circumstance."
+      ],
+      "elemental": "Fire",
+      "archetype": "The King of Wands",
+      "questions_to_ask": [
+        "How can I channel the Fire power of Wands today?",
+        "Where is King energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Ace of Cups",
+      "number": "1",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c01.jpg",
+      "keywords": [
+        "new spark",
+        "potential",
+        "breakthrough",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Burst of fresh energy",
+          "Raw potential realized",
+          "Channeling the pure Water essence of Cups in Ace form"
+        ],
+        "shadow": [
+          "Missed opportunity",
+          "Blocked force",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle ace energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Ace of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Ace energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Two of Cups",
+      "number": "2",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c02.jpg",
+      "keywords": [
+        "balance",
+        "decision",
+        "planning",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Weighing choices",
+          "Harmony in progress",
+          "Channeling the pure Water essence of Cups in Two form"
+        ],
+        "shadow": [
+          "Indecision",
+          "Conflict in path",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle two energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Two of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Two energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Three of Cups",
+      "number": "3",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c03.jpg",
+      "keywords": [
+        "growth",
+        "collaboration",
+        "expansion",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Reaching milestones",
+          "Collective effort",
+          "Channeling the pure Water essence of Cups in Three form"
+        ],
+        "shadow": [
+          "Delays in progress",
+          "Miscommunication",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle three energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Three of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Three energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Four of Cups",
+      "number": "4",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c04.jpg",
+      "keywords": [
+        "stability",
+        "celebration",
+        "foundation",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Secure base",
+          "Contentment and rest",
+          "Channeling the pure Water essence of Cups in Four form"
+        ],
+        "shadow": [
+          "Restlessness",
+          "Rigid stagnation",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle four energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Four of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Four energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Five of Cups",
+      "number": "5",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c05.jpg",
+      "keywords": [
+        "conflict",
+        "challenge",
+        "competition",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Navigating discord",
+          "Testing of resilience",
+          "Channeling the pure Water essence of Cups in Five form"
+        ],
+        "shadow": [
+          "Avoidance of struggle",
+          "Lingering strife",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle five energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Five of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Five energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Six of Cups",
+      "number": "6",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c06.jpg",
+      "keywords": [
+        "victory",
+        "harmony",
+        "nostalgia",
+        "success",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Sweet memories",
+          "Earned triumph",
+          "Giving and receiving",
+          "Channeling the pure Water essence of Cups in Six form"
+        ],
+        "shadow": [
+          "Ego arrogance",
+          "Living in past",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle six energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Six of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Six energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Seven of Cups",
+      "number": "7",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c07.jpg",
+      "keywords": [
+        "assessment",
+        "perseverance",
+        "strategy",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Evaluating results",
+          "Strategic patience",
+          "Channeling the pure Water essence of Cups in Seven form"
+        ],
+        "shadow": [
+          "Impatience",
+          "Deception in strategy",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle seven energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Seven of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Seven energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Eight of Cups",
+      "number": "8",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c08.jpg",
+      "keywords": [
+        "speed",
+        "dedication",
+        "movement",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Rapid progress",
+          "Honing craftsmanship",
+          "Channeling the pure Water essence of Cups in Eight form"
+        ],
+        "shadow": [
+          "Hasty errors",
+          "Overworking in vain",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle eight energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Eight of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Eight energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Nine of Cups",
+      "number": "9",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c09.jpg",
+      "keywords": [
+        "resilience",
+        "fulfillment",
+        "nearing goal",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Boundary defense",
+          "Satisfaction of desires",
+          "Channeling the pure Water essence of Cups in Nine form"
+        ],
+        "shadow": [
+          "Burnout",
+          "Paranoia near the end",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle nine energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Nine of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Nine energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Ten of Cups",
+      "number": "10",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c10.jpg",
+      "keywords": [
+        "culmination",
+        "abundance",
+        "completion",
+        "burden",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Legacy fulfilled",
+          "Overcoming heavy burden",
+          "Abundant family",
+          "Channeling the pure Water essence of Cups in Ten form"
+        ],
+        "shadow": [
+          "Exhaustion",
+          "Overburdened",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle ten energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Ten of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Ten energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Page of Cups",
+      "number": "11",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c11.jpg",
+      "keywords": [
+        "curiosity",
+        "enthusiasm",
+        "messages",
+        "learning",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Eager student",
+          "Exciting news arriving",
+          "Fresh creative urge",
+          "Channeling the pure Water essence of Cups in Page form"
+        ],
+        "shadow": [
+          "Immaturity",
+          "Unreliable messenger",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle page energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Page of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Page energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Knight of Cups",
+      "number": "12",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c12.jpg",
+      "keywords": [
+        "action",
+        "pursuit",
+        "intensity",
+        "movement",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Charging toward goals",
+          "Dedicated quest",
+          "Passionate crusade",
+          "Channeling the pure Water essence of Cups in Knight form"
+        ],
+        "shadow": [
+          "Impulsiveness",
+          "Reckless charge",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle knight energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Knight of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Knight energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Queen of Cups",
+      "number": "13",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c13.jpg",
+      "keywords": [
+        "mastery",
+        "nourishment",
+        "grace",
+        "depth",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Emotional/creative maturity",
+          "Graceful leadership",
+          "Inspiring authority",
+          "Channeling the pure Water essence of Cups in Queen form"
+        ],
+        "shadow": [
+          "Jealousy",
+          "Overbearing control",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle queen energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The Queen of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is Queen energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "King of Cups",
+      "number": "14",
+      "arcana": "Minor Arcana",
+      "suit": "Cups",
+      "img": "c14.jpg",
+      "keywords": [
+        "command",
+        "wisdom",
+        "stability",
+        "vision",
+        "cups",
+        "water"
+      ],
+      "meanings": {
+        "light": [
+          "Wise governance",
+          "Pinnacle of mastery",
+          "Enduring legacy",
+          "Channeling the pure Water essence of Cups in King form"
+        ],
+        "shadow": [
+          "Tyranny",
+          "Stubborn misuse of power",
+          "Blocked or distorted expression of Cups"
+        ]
+      },
+      "fortune_telling": [
+        "A development in emotions, intuition, relationships, soul is developing rapidly.",
+        "Trust your ability to handle king energy in this circumstance."
+      ],
+      "elemental": "Water",
+      "archetype": "The King of Cups",
+      "questions_to_ask": [
+        "How can I channel the Water power of Cups today?",
+        "Where is King energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Ace of Swords",
+      "number": "1",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s01.jpg",
+      "keywords": [
+        "new spark",
+        "potential",
+        "breakthrough",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Burst of fresh energy",
+          "Raw potential realized",
+          "Channeling the pure Air essence of Swords in Ace form"
+        ],
+        "shadow": [
+          "Missed opportunity",
+          "Blocked force",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle ace energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Ace of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Ace energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Two of Swords",
+      "number": "2",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s02.jpg",
+      "keywords": [
+        "balance",
+        "decision",
+        "planning",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Weighing choices",
+          "Harmony in progress",
+          "Channeling the pure Air essence of Swords in Two form"
+        ],
+        "shadow": [
+          "Indecision",
+          "Conflict in path",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle two energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Two of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Two energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Three of Swords",
+      "number": "3",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s03.jpg",
+      "keywords": [
+        "growth",
+        "collaboration",
+        "expansion",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Reaching milestones",
+          "Collective effort",
+          "Channeling the pure Air essence of Swords in Three form"
+        ],
+        "shadow": [
+          "Delays in progress",
+          "Miscommunication",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle three energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Three of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Three energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Four of Swords",
+      "number": "4",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s04.jpg",
+      "keywords": [
+        "stability",
+        "celebration",
+        "foundation",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Secure base",
+          "Contentment and rest",
+          "Channeling the pure Air essence of Swords in Four form"
+        ],
+        "shadow": [
+          "Restlessness",
+          "Rigid stagnation",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle four energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Four of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Four energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Five of Swords",
+      "number": "5",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s05.jpg",
+      "keywords": [
+        "conflict",
+        "challenge",
+        "competition",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Navigating discord",
+          "Testing of resilience",
+          "Channeling the pure Air essence of Swords in Five form"
+        ],
+        "shadow": [
+          "Avoidance of struggle",
+          "Lingering strife",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle five energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Five of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Five energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Six of Swords",
+      "number": "6",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s06.jpg",
+      "keywords": [
+        "victory",
+        "harmony",
+        "nostalgia",
+        "success",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Sweet memories",
+          "Earned triumph",
+          "Giving and receiving",
+          "Channeling the pure Air essence of Swords in Six form"
+        ],
+        "shadow": [
+          "Ego arrogance",
+          "Living in past",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle six energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Six of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Six energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Seven of Swords",
+      "number": "7",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s07.jpg",
+      "keywords": [
+        "assessment",
+        "perseverance",
+        "strategy",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Evaluating results",
+          "Strategic patience",
+          "Channeling the pure Air essence of Swords in Seven form"
+        ],
+        "shadow": [
+          "Impatience",
+          "Deception in strategy",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle seven energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Seven of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Seven energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Eight of Swords",
+      "number": "8",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s08.jpg",
+      "keywords": [
+        "speed",
+        "dedication",
+        "movement",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Rapid progress",
+          "Honing craftsmanship",
+          "Channeling the pure Air essence of Swords in Eight form"
+        ],
+        "shadow": [
+          "Hasty errors",
+          "Overworking in vain",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle eight energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Eight of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Eight energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Nine of Swords",
+      "number": "9",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s09.jpg",
+      "keywords": [
+        "resilience",
+        "fulfillment",
+        "nearing goal",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Boundary defense",
+          "Satisfaction of desires",
+          "Channeling the pure Air essence of Swords in Nine form"
+        ],
+        "shadow": [
+          "Burnout",
+          "Paranoia near the end",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle nine energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Nine of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Nine energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Ten of Swords",
+      "number": "10",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s10.jpg",
+      "keywords": [
+        "culmination",
+        "abundance",
+        "completion",
+        "burden",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Legacy fulfilled",
+          "Overcoming heavy burden",
+          "Abundant family",
+          "Channeling the pure Air essence of Swords in Ten form"
+        ],
+        "shadow": [
+          "Exhaustion",
+          "Overburdened",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle ten energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Ten of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Ten energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Page of Swords",
+      "number": "11",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s11.jpg",
+      "keywords": [
+        "curiosity",
+        "enthusiasm",
+        "messages",
+        "learning",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Eager student",
+          "Exciting news arriving",
+          "Fresh creative urge",
+          "Channeling the pure Air essence of Swords in Page form"
+        ],
+        "shadow": [
+          "Immaturity",
+          "Unreliable messenger",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle page energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Page of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Page energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Knight of Swords",
+      "number": "12",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s12.jpg",
+      "keywords": [
+        "action",
+        "pursuit",
+        "intensity",
+        "movement",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Charging toward goals",
+          "Dedicated quest",
+          "Passionate crusade",
+          "Channeling the pure Air essence of Swords in Knight form"
+        ],
+        "shadow": [
+          "Impulsiveness",
+          "Reckless charge",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle knight energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Knight of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Knight energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Queen of Swords",
+      "number": "13",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s13.jpg",
+      "keywords": [
+        "mastery",
+        "nourishment",
+        "grace",
+        "depth",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Emotional/creative maturity",
+          "Graceful leadership",
+          "Inspiring authority",
+          "Channeling the pure Air essence of Swords in Queen form"
+        ],
+        "shadow": [
+          "Jealousy",
+          "Overbearing control",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle queen energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The Queen of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is Queen energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "King of Swords",
+      "number": "14",
+      "arcana": "Minor Arcana",
+      "suit": "Swords",
+      "img": "s14.jpg",
+      "keywords": [
+        "command",
+        "wisdom",
+        "stability",
+        "vision",
+        "swords",
+        "air"
+      ],
+      "meanings": {
+        "light": [
+          "Wise governance",
+          "Pinnacle of mastery",
+          "Enduring legacy",
+          "Channeling the pure Air essence of Swords in King form"
+        ],
+        "shadow": [
+          "Tyranny",
+          "Stubborn misuse of power",
+          "Blocked or distorted expression of Swords"
+        ]
+      },
+      "fortune_telling": [
+        "A development in intellect, truth, mental clarity, challenges is developing rapidly.",
+        "Trust your ability to handle king energy in this circumstance."
+      ],
+      "elemental": "Air",
+      "archetype": "The King of Swords",
+      "questions_to_ask": [
+        "How can I channel the Air power of Swords today?",
+        "Where is King energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Ace of Pentacles",
+      "number": "1",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p01.jpg",
+      "keywords": [
+        "new spark",
+        "potential",
+        "breakthrough",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Burst of fresh energy",
+          "Raw potential realized",
+          "Channeling the pure Earth essence of Pentacles in Ace form"
+        ],
+        "shadow": [
+          "Missed opportunity",
+          "Blocked force",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle ace energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Ace of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Ace energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Two of Pentacles",
+      "number": "2",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p02.jpg",
+      "keywords": [
+        "balance",
+        "decision",
+        "planning",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Weighing choices",
+          "Harmony in progress",
+          "Channeling the pure Earth essence of Pentacles in Two form"
+        ],
+        "shadow": [
+          "Indecision",
+          "Conflict in path",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle two energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Two of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Two energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Three of Pentacles",
+      "number": "3",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p03.jpg",
+      "keywords": [
+        "growth",
+        "collaboration",
+        "expansion",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Reaching milestones",
+          "Collective effort",
+          "Channeling the pure Earth essence of Pentacles in Three form"
+        ],
+        "shadow": [
+          "Delays in progress",
+          "Miscommunication",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle three energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Three of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Three energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Four of Pentacles",
+      "number": "4",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p04.jpg",
+      "keywords": [
+        "stability",
+        "celebration",
+        "foundation",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Secure base",
+          "Contentment and rest",
+          "Channeling the pure Earth essence of Pentacles in Four form"
+        ],
+        "shadow": [
+          "Restlessness",
+          "Rigid stagnation",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle four energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Four of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Four energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Five of Pentacles",
+      "number": "5",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p05.jpg",
+      "keywords": [
+        "conflict",
+        "challenge",
+        "competition",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Navigating discord",
+          "Testing of resilience",
+          "Channeling the pure Earth essence of Pentacles in Five form"
+        ],
+        "shadow": [
+          "Avoidance of struggle",
+          "Lingering strife",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle five energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Five of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Five energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Six of Pentacles",
+      "number": "6",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p06.jpg",
+      "keywords": [
+        "victory",
+        "harmony",
+        "nostalgia",
+        "success",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Sweet memories",
+          "Earned triumph",
+          "Giving and receiving",
+          "Channeling the pure Earth essence of Pentacles in Six form"
+        ],
+        "shadow": [
+          "Ego arrogance",
+          "Living in past",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle six energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Six of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Six energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Seven of Pentacles",
+      "number": "7",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p07.jpg",
+      "keywords": [
+        "assessment",
+        "perseverance",
+        "strategy",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Evaluating results",
+          "Strategic patience",
+          "Channeling the pure Earth essence of Pentacles in Seven form"
+        ],
+        "shadow": [
+          "Impatience",
+          "Deception in strategy",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle seven energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Seven of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Seven energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Eight of Pentacles",
+      "number": "8",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p08.jpg",
+      "keywords": [
+        "speed",
+        "dedication",
+        "movement",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Rapid progress",
+          "Honing craftsmanship",
+          "Channeling the pure Earth essence of Pentacles in Eight form"
+        ],
+        "shadow": [
+          "Hasty errors",
+          "Overworking in vain",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle eight energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Eight of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Eight energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Nine of Pentacles",
+      "number": "9",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p09.jpg",
+      "keywords": [
+        "resilience",
+        "fulfillment",
+        "nearing goal",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Boundary defense",
+          "Satisfaction of desires",
+          "Channeling the pure Earth essence of Pentacles in Nine form"
+        ],
+        "shadow": [
+          "Burnout",
+          "Paranoia near the end",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle nine energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Nine of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Nine energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Ten of Pentacles",
+      "number": "10",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p10.jpg",
+      "keywords": [
+        "culmination",
+        "abundance",
+        "completion",
+        "burden",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Legacy fulfilled",
+          "Overcoming heavy burden",
+          "Abundant family",
+          "Channeling the pure Earth essence of Pentacles in Ten form"
+        ],
+        "shadow": [
+          "Exhaustion",
+          "Overburdened",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle ten energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Ten of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Ten energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Page of Pentacles",
+      "number": "11",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p11.jpg",
+      "keywords": [
+        "curiosity",
+        "enthusiasm",
+        "messages",
+        "learning",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Eager student",
+          "Exciting news arriving",
+          "Fresh creative urge",
+          "Channeling the pure Earth essence of Pentacles in Page form"
+        ],
+        "shadow": [
+          "Immaturity",
+          "Unreliable messenger",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle page energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Page of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Page energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Knight of Pentacles",
+      "number": "12",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p12.jpg",
+      "keywords": [
+        "action",
+        "pursuit",
+        "intensity",
+        "movement",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Charging toward goals",
+          "Dedicated quest",
+          "Passionate crusade",
+          "Channeling the pure Earth essence of Pentacles in Knight form"
+        ],
+        "shadow": [
+          "Impulsiveness",
+          "Reckless charge",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle knight energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Knight of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Knight energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "Queen of Pentacles",
+      "number": "13",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p13.jpg",
+      "keywords": [
+        "mastery",
+        "nourishment",
+        "grace",
+        "depth",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Emotional/creative maturity",
+          "Graceful leadership",
+          "Inspiring authority",
+          "Channeling the pure Earth essence of Pentacles in Queen form"
+        ],
+        "shadow": [
+          "Jealousy",
+          "Overbearing control",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle queen energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The Queen of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is Queen energy most needed in my life?"
+      ]
+    },
+    {
+      "name": "King of Pentacles",
+      "number": "14",
+      "arcana": "Minor Arcana",
+      "suit": "Pentacles",
+      "img": "p14.jpg",
+      "keywords": [
+        "command",
+        "wisdom",
+        "stability",
+        "vision",
+        "pentacles",
+        "earth"
+      ],
+      "meanings": {
+        "light": [
+          "Wise governance",
+          "Pinnacle of mastery",
+          "Enduring legacy",
+          "Channeling the pure Earth essence of Pentacles in King form"
+        ],
+        "shadow": [
+          "Tyranny",
+          "Stubborn misuse of power",
+          "Blocked or distorted expression of Pentacles"
+        ]
+      },
+      "fortune_telling": [
+        "A development in wealth, work, health, physical reality is developing rapidly.",
+        "Trust your ability to handle king energy in this circumstance."
+      ],
+      "elemental": "Earth",
+      "archetype": "The King of Pentacles",
+      "questions_to_ask": [
+        "How can I channel the Earth power of Pentacles today?",
+        "Where is King energy most needed in my life?"
+      ]
+    }
+  ]
+}

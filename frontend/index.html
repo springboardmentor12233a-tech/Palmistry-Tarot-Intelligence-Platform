@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Palmistry & Tarot AI</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=5">
+</head>
+<body>
+    <!-- Cosmic Background Canvas & Stars -->
+    <div class="stars-container" id="starsContainer"></div>
+    <div class="nebula-glow"></div>
+
+    <!-- Main Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="brand">
+                <span class="brand-icon">✨</span>
+                <div class="brand-text">
+                    <span class="brand-subtitle">Palmistry & Tarot AI</span>
+                </div>
+            </div>
+
+            <nav class="nav-tabs hidden" id="mainNavTabs">
+                <button class="nav-tab active" data-tab="combined"><span class="tab-icon">🔮</span> Combined Reading</button>
+                <button class="nav-tab" data-tab="tarot"><span class="tab-icon">🃏</span> Tarot Deck</button>
+                <button class="nav-tab" data-tab="palm"><span class="tab-icon">✋</span> Palm Analysis</button>
+                <button class="nav-tab" data-tab="history" id="historyNavTab"><span class="tab-icon">📜</span> My History</button>
+            </nav>
+
+            <div class="nav-auth" id="navAuthContainer">
+                <button class="btn btn-outline" id="openLoginBtn">Sign In</button>
+                <button class="btn btn-gold" id="openRegisterBtn">Register</button>
+            </div>
+
+            <div class="nav-user hidden" id="navUserContainer">
+                <span class="user-greeting">Greetings, <strong id="navUserName">Seeker</strong> <span id="navUserZodiac" class="zodiac-badge">♈</span></span>
+                <button class="btn btn-sm btn-outline" id="logoutBtn">Log Out</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== SIGN-IN GATE ==================== -->
+    <!-- Shown when nobody is logged in. The real app below stays hidden until auth succeeds. -->
+    <section class="tab-pane active" id="authGateSection">
+        <div class="hero-section">
+            <h1 class="hero-title">The Circle Requires Initiation</h1>
+            <p class="hero-subtitle">Register or sign in to unlock palmistry & tarot readings, AI-generated destiny reports, and your personal reading history.</p>
+            <div class="prompt-chips" style="justify-content: center; margin-top: 24px;">
+                <button class="btn btn-gold btn-large" id="gateSignInBtn">Sign In</button>
+                <button class="btn btn-outline btn-large" id="gateRegisterBtn">Register</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Container -->
+    <main class="main-content hidden" id="mainAppContent">
+
+        <!-- ==================== TAB 1: COMBINED READING ==================== -->
+        <section class="tab-pane active" id="tab-combined">
+            <div class="hero-section">
+                <h1 class="hero-title">Celestial Destiny Reading</h1>
+                <p class="hero-subtitle">Synthesize the sacred lines etched on your palm with the cosmic archetypes of the 78-card Tarot.</p>
+            </div>
+
+            <div class="combined-grid">
+                <!-- Left Control Panel: Inputs -->
+                <div class="card glass-card control-card">
+                    <h2 class="card-title">1. Your Inquiry & Intention</h2>
+                    <div class="form-group">
+                        <label for="combinedQuestion">What guidance do you seek from the cosmos?</label>
+                        <input type="text" id="combinedQuestion" class="input-text" placeholder="e.g. What does this upcoming cycle hold for my career and relationships?" value="What should I focus on for my destiny this month?">
+                        <div class="prompt-chips">
+                            <span class="chip" onclick="setCombinedPrompt('What should I focus on for my career & finances?')">💼 Career</span>
+                            <span class="chip" onclick="setCombinedPrompt('What is unfolding in my love life and relationships?')">❤️ Love</span>
+                            <span class="chip" onclick="setCombinedPrompt('What spiritual lesson is presenting itself right now?')">🧘 Spiritual</span>
+                            <span class="chip" onclick="setCombinedPrompt('How can I optimize my energy, health and vitality?')">🌿 Vitality</span>
+                        </div>
+                    </div>
+
+                    <h2 class="card-title mt-4">2. Palmistry Photo (Optional / Real-time)</h2>
+                    <div class="upload-zone" id="combinedUploadZone">
+                        <input type="file" id="combinedPalmInput" accept="image/*" class="file-input">
+                        <div class="upload-placeholder" id="combinedUploadPlaceholder">
+                            <span class="upload-icon">✋</span>
+                            <p class="upload-text"><strong>Click to upload</strong> or drag & drop palm photo</p>
+                            <p class="upload-subtext">JPG, PNG or WEBP (Palmar surface facing up)</p>
+                        </div>
+                        <div class="upload-preview hidden" id="combinedUploadPreview">
+                            <img src="" id="combinedPreviewImg" alt="Palm Preview">
+                            <button type="button" class="btn btn-sm btn-danger remove-img-btn" id="combinedRemoveImgBtn">Remove</button>
+                        </div>
+                    </div>
+
+                    <h2 class="card-title mt-4">3. Sacred Tarot Spread</h2>
+                    <div class="tarot-drawer-box">
+                        <div class="spread-controls">
+                            <span class="spread-info">3-Card Destiny Spread (Past • Present • Future)</span>
+                            <button class="btn btn-sm btn-outline" id="combinedReshuffleBtn">🔄 Draw New Cards</button>
+                        </div>
+                        <div class="mini-cards-display" id="combinedMiniCards">
+                            <!-- Cards rendered dynamically -->
+                        </div>
+                    </div>
+
+                    <button class="btn btn-gold btn-large btn-block mt-4" id="generateCombinedBtn">
+                        <span class="sparkle-icon">✨</span> Generate Combined Multi-Modal Reading
+                    </button>
+                </div>
+
+                <!-- Right Display Panel: Results -->
+                <div class="card glass-card result-card" id="combinedResultContainer">
+                    <div class="empty-state" id="combinedEmptyState">
+                        <div class="empty-oracle-symbol">🔮</div>
+                        <h3>The Oracle Awaits</h3>
+                        <p>Enter your question, optionally upload your palm photo, reveal your tarot cards, and invoke the reading.</p>
+                    </div>
+
+                    <div class="loading-state hidden" id="combinedLoadingState">
+                        <div class="mystic-spinner"></div>
+                        <p class="loading-text">Aligning planetary energies and interpreting celestial blueprints...</p>
+                    </div>
+
+                    <div class="reading-result-view hidden" id="combinedResultView">
+                        <div class="result-header">
+                            <div class="result-badge"><span class="pulse-dot"></span> <span id="combinedResultSource">Celestial Multimodal AI</span></div>
+                            <button class="btn btn-gold btn-sm" id="combinedDownloadPdfBtn">
+                                📥 Download PDF Report
+                            </button>
+                        </div>
+
+                        <!-- Palm Lines Analysis Highlights -->
+                        <div class="palm-metrics-preview" id="combinedPalmMetrics"></div>
+
+                        <!-- Tarot Spread Visual Summary -->
+                        <div class="tarot-spread-summary" id="combinedTarotSummary"></div>
+
+                        <!-- Synthesized Interpretation Narrative -->
+                        <div class="narrative-content" id="combinedNarrativeText"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: TAROT DECK ==================== -->
+        <section class="tab-pane" id="tab-tarot">
+            <div class="hero-section">
+                <h1 class="hero-title">Sacred Tarot Sanctuary</h1>
+                <p class="hero-subtitle">Shuffle the 78-card Rider-Waite deck, choose your spread, and unveil ancestral archetypes.</p>
+            </div>
+
+            <div class="tarot-controls-bar glass-card">
+                <div class="tarot-spread-picker">
+                    <label>Spread Mode:</label>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline active" data-spread="1">1 Card (Daily Oracle)</button>
+                        <button class="btn btn-sm btn-outline" data-spread="3">3 Cards (Past • Present • Future)</button>
+                        <button class="btn btn-sm btn-outline" data-spread="5">5 Cards (Pathway & Guidance)</button>
+                    </div>
+                </div>
+
+                <div class="tarot-actions">
+                    <button class="btn btn-gold" id="tarotShuffleDrawBtn">🔀 Shuffle & Deal Deck</button>
+                </div>
+            </div>
+
+            <div class="tarot-table-board" id="tarotTableBoard">
+                <!-- Tarot 3D interactive Cards will be injected here -->
+            </div>
+
+            <div class="card glass-card mt-4" id="tarotReadingBox">
+                <div class="tarot-interpret-header">
+                    <h2 class="card-title">Spread Interpretation</h2>
+                    <button class="btn btn-outline btn-sm" id="tarotInterpretBtn">🔮 Interpret with AI</button>
+                </div>
+                <div class="tarot-reading-output" id="tarotReadingOutput">
+                    <p class="text-muted">Flip all cards above, then click <strong>Interpret with AI</strong> for an in-depth reading.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: PALM READING ==================== -->
+        <section class="tab-pane" id="tab-palm">
+            <div class="hero-section">
+                <h1 class="hero-title">AI Palmistry Line Analyzer</h1>
+                <p class="hero-subtitle">Advanced biometric & morphology analysis of the Heart, Head, Life, and Fate lines.</p>
+            </div>
+
+            <div class="palm-grid">
+                <div class="card glass-card">
+                    <h2 class="card-title">Upload Hand Photo</h2>
+                    <div class="upload-zone" id="palmTabUploadZone">
+                        <input type="file" id="palmTabInput" accept="image/*" class="file-input">
+                        <div class="upload-placeholder" id="palmTabPlaceholder">
+                            <span class="upload-icon">📸</span>
+                            <p class="upload-text"><strong>Upload clear palm photo</strong></p>
+                            <p class="upload-subtext">Ensure good lighting and open palm</p>
+                        </div>
+                        <div class="upload-preview hidden" id="palmTabPreview">
+                            <div class="palm-canvas-wrapper">
+                                <img src="" id="palmTabImg" alt="Palm">
+                                <canvas id="palmOverlayCanvas" class="palm-overlay-canvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-gold btn-block mt-3" id="analyzePalmBtn">
+                        🖐️ Analyze Palm Lines
+                    </button>
+                </div>
+
+                <div class="card glass-card" id="palmAnalysisContainer">
+                    <div class="empty-state" id="palmEmptyState">
+                        <div class="empty-oracle-symbol">✋</div>
+                        <h3>No Palm Scanned Yet</h3>
+                        <p>Upload a palm photo to compute line morphology, emotional quotients, and vitality metrics.</p>
+                    </div>
+
+                    <div class="loading-state hidden" id="palmLoadingState">
+                        <div class="mystic-spinner"></div>
+                        <p class="loading-text">Extracting palm lines and calculating mount energies...</p>
+                    </div>
+
+                    <div class="palm-results-view hidden" id="palmResultsView">
+                        <h2 class="card-title">Palmistry Metrics & Archetypes</h2>
+                        <div class="result-badge mb-2"><span class="pulse-dot"></span> Source: <span id="palmResultSource">Celestial Engine</span></div>
+                        <div class="lines-details-list" id="palmLinesList"></div>
+                        <h3 class="mounts-title mt-4">Astrological Mounts</h3>
+                        <div class="mounts-grid" id="palmMountsList"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: READING HISTORY ==================== -->
+        <section class="tab-pane" id="tab-history">
+            <div class="hero-section">
+                <h1 class="hero-title">Your Reading Chronicles</h1>
+                <p class="hero-subtitle">Access your past Tarot and Palmistry readings and re-download your PDF reports anytime.</p>
+            </div>
+
+            <div class="card glass-card history-container" id="historyListContainer">
+                <div class="empty-state" id="historyEmptyState">
+                    <div class="empty-oracle-symbol">📜</div>
+                    <h3>No Saved Readings Yet</h3>
+                    <p>Sign in to your account and perform a reading to save it to your permanent chronicle.</p>
+                </div>
+                <div class="history-items-grid hidden" id="historyItemsGrid"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==================== AUTH MODALS ==================== -->
+
+    <!-- 1. Sign In Modal -->
+    <div class="modal-backdrop hidden" id="loginModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAuthModals()">✕</button>
+            <div class="modal-header">
+                <span class="modal-icon">🔐</span>
+                <h2 class="modal-title">Welcome Back, Seeker</h2>
+                <p class="modal-subtitle">Sign in to access your readings and destiny chronicles</p>
+            </div>
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" class="input-text" placeholder="seeker@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="input-text" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-gold btn-block mt-3" id="loginSubmitBtn">Sign In</button>
+                <p class="switch-auth-text">New here? <a href="#" id="switchToRegister" class="link-gold">Create an account</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. Register Modal -->
+    <div class="modal-backdrop hidden" id="registerModal">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeAuthModals()">✕</button>
+            <div class="modal-header">
+                <span class="modal-icon">✨</span>
+                <h2 class="modal-title">Join the Circle</h2>
+                <p class="modal-subtitle">Create an account for personalized readings & history tracking</p>
+            </div>
+            <form id="registerForm" class="auth-form">
+                <div class="form-group">
+                    <label for="regFullName">Full Name</label>
+                    <input type="text" id="regFullName" class="input-text" placeholder="e.g. Bhavya Sharma" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email Address</label>
+                    <input type="email" id="regEmail" class="input-text" placeholder="seeker@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" class="input-text" placeholder="Choose a secure password" minlength="6" required>
+                </div>
+                <div class="form-group">
+                    <label for="regZodiac">Zodiac Sign (Sun Sign)</label>
+                    <select id="regZodiac" class="input-text">
+                        <option value="Aries">♈ Aries (Mar 21 - Apr 19)</option>
+                        <option value="Taurus">♉ Taurus (Apr 20 - May 20)</option>
+                        <option value="Gemini">♊ Gemini (May 21 - Jun 20)</option>
+                        <option value="Cancer">♋ Cancer (Jun 21 - Jul 22)</option>
+                        <option value="Leo">♌ Leo (Jul 23 - Aug 22)</option>
+                        <option value="Virgo">♍ Virgo (Aug 23 - Sep 22)</option>
+                        <option value="Libra">♎ Libra (Sep 23 - Oct 22)</option>
+                        <option value="Scorpio">♏ Scorpio (Oct 23 - Nov 21)</option>
+                        <option value="Sagittarius">♐ Sagittarius (Nov 22 - Dec 21)</option>
+                        <option value="Capricorn">♑ Capricorn (Dec 22 - Jan 19)</option>
+                        <option value="Aquarius">♒ Aquarius (Jan 20 - Feb 18)</option>
+                        <option value="Pisces">♓ Pisces (Feb 19 - Mar 20)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-gold btn-block mt-3" id="regSubmitBtn">Create Account</button>
+                <p class="switch-auth-text">Already registered? <a href="#" id="switchToLogin" class="link-gold">Sign in</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Scripts -->
+    <script src="/static/js/auth.js?v=5"></script>
+    <script src="/static/js/tarot.js?v=5"></script>
+    <script src="/static/js/palm.js?v=5"></script>
+    <script src="/static/js/app.js?v=5"></script>
+</body>
+</html>
