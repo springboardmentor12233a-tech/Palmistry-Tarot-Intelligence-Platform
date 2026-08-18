@@ -1,0 +1,80 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Seeker's profile data, including spiritual goals and zodiac sign.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "email": {
+          "type": "string",
+          "maxLength": 150
+        },
+        "zodiacSign": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user"]
+        },
+        "spiritualGoals": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "maxItems": 10
+        },
+        "createdAt": {
+          "type": "timestamp"
+        },
+        "updatedAt": {
+          "type": "timestamp"
+        }
+      },
+      "required": ["name", "email", "zodiacSign", "role", "spiritualGoals", "createdAt", "updatedAt"]
+    },
+    "ReadingReport": {
+      "title": "Reading Report",
+      "description": "A saved reading containing palm biometrics, tarot spread, and synthesized insights.",
+      "type": "object",
+      "properties": {
+        "seekerName": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "palmReading": {
+          "type": "object"
+        },
+        "tarotSpread": {
+          "type": "object"
+        },
+        "synthesis": {
+          "type": "object"
+        },
+        "createdAt": {
+          "type": "timestamp"
+        }
+      },
+      "required": ["seekerName", "palmReading", "tarotSpread", "synthesis", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "User profile data."
+    },
+    "/users/{userId}/reports/{reportId}": {
+      "schema": {
+        "$ref": "#/entities/ReadingReport"
+      },
+      "description": "Reports belonging to a specific user."
+    }
+  }
+}

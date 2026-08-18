@@ -1,0 +1,6 @@
+{
+  "name": "Mystiq",
+  "description": "An end-to-end AI spiritual intelligence platform synthesizing palm biometric line extraction, 78-card tarot spreads, 5-factor insight scoring, and multimodal guidance with executive analytics and PDF reports.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

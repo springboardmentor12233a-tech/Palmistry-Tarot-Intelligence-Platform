@@ -1,0 +1,77 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Global Helpers
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { 
+      return request.auth != null && request.auth.token.email_verified == true; 
+    }
+    
+    // Validation Helpers
+    function isValidUserProfile(data) {
+      return data.keys().hasAll(['name', 'email', 'zodiacSign', 'role', 'spiritualGoals', 'createdAt', 'updatedAt']) &&
+             data.keys().size() == 7 &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.email is string && data.email.size() > 0 && data.email.size() <= 150 &&
+             data.zodiacSign is string && data.zodiacSign.size() <= 30 &&
+             data.role == 'user' &&
+             data.spiritualGoals is list && data.spiritualGoals.size() <= 10 &&
+             (data.spiritualGoals.size() == 0 || data.spiritualGoals[0] is string) &&
+             data.createdAt is timestamp &&
+             data.updatedAt is timestamp;
+    }
+
+    function isValidReadingReport(data) {
+      return data.keys().hasAll(['seekerName', 'createdAt']) &&
+             data.seekerName is string && data.seekerName.size() > 0 && data.seekerName.size() <= 100 &&
+             data.createdAt is timestamp;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow get: if isSignedIn() && isValidId(userId) && request.auth.uid == userId;
+      allow list: if false; // No blanket reads
+
+      allow create: if isSignedIn() && isValidId(userId) && request.auth.uid == userId &&
+                       isValidUserProfile(incoming()) &&
+                       incoming().createdAt == request.time &&
+                       incoming().updatedAt == request.time &&
+                       incoming().email == request.auth.token.email;
+
+      allow update: if isSignedIn() && isValidId(userId) && request.auth.uid == userId &&
+                       isValidUserProfile(incoming()) &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().email == existing().email &&
+                       incoming().updatedAt == request.time &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(['name', 'zodiacSign', 'spiritualGoals', 'updatedAt']);
+                       
+      allow delete: if false; // Users shouldn't be deleted from client
+
+      // Reports Subcollection
+      match /reports/{reportId} {
+        allow get: if isSignedIn() && isValidId(userId) && isValidId(reportId) && request.auth.uid == userId;
+        allow list: if isSignedIn() && isValidId(userId) && request.auth.uid == userId; // since the path requires userId match
+
+        allow create: if isSignedIn() && isValidId(userId) && isValidId(reportId) && request.auth.uid == userId &&
+                         isValidReadingReport(incoming()) &&
+                         incoming().createdAt == request.time &&
+                         exists(/databases/$(database)/documents/users/$(userId));
+
+        allow update: if false; // Reports are immutable once generated
+
+        allow delete: if isSignedIn() && isValidId(userId) && isValidId(reportId) && request.auth.uid == userId;
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function() {
+        try {
+          var originalFetch = window.fetch;
+          var fetchHandler = originalFetch;
+          // Protect against getter-only fetch property in iframe sandbox
+          try {
+            Object.defineProperty(window, 'fetch', {
+              get: function() { return fetchHandler; },
+              set: function(fn) { if (typeof fn === 'function') { fetchHandler = fn; } },
+              configurable: true,
+              enumerable: true
+            });
+          } catch (e) {
+            // Ignore if already locked
+          }
+          if (typeof globalThis !== 'undefined' && globalThis !== window) {
+            try {
+              Object.defineProperty(globalThis, 'fetch', {
+                get: function() { return fetchHandler; },
+                set: function(fn) { if (typeof fn === 'function') { fetchHandler = fn; } },
+                configurable: true,
+                enumerable: true
+              });
+            } catch (e) {}
+          }
+        } catch (err) {
+          console.warn('Fetch shim initialized with fallback', err);
+        }
+      })();
+    </script>
+    <title>Mystiq</title>
+    <meta name="description" content="Mystiq — AI-powered Palmistry & Tarot Intelligence with biometric extraction, interactive spreads, and 5-factor insight synthesis." />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Caveat:wght@400;500;600;700&family=Alex+Brush&family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Great+Vibes&family=Pinyon+Script&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[#080a14] text-[#e2e8f0] font-sans antialiased selection:bg-amber-500/30 selection:text-amber-200 overflow-x-hidden">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
