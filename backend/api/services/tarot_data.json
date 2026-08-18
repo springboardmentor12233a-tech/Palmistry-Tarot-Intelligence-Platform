@@ -1,0 +1,184 @@
+[
+    {
+        "name": "The Fool",
+        "arcana": "Major",
+        "keywords": ["Beginnings", "Innocence", "Spontaneity", "A Free Spirit"],
+        "meaning": "The Fool represents new beginnings, having faith in the future, being inexperienced, not knowing what to expect, having beginner's luck, improvisation and believing in the universe.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/9/90/RWS_Tarot_00_Fool.jpg"
+    },
+    {
+        "name": "The Magician",
+        "arcana": "Major",
+        "keywords": ["Manifestation", "Resourcefulness", "Power", "Inspired Action"],
+        "meaning": "The Magician brings you the tools, resources and energy you need to make your dreams come true. Everything you need right now is at your fingertips.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/d/de/RWS_Tarot_01_Magician.jpg"
+    },
+    {
+        "name": "The High Priestess",
+        "arcana": "Major",
+        "keywords": ["Intuition", "Sacred Knowledge", "Divine Feminine", "The Subconscious Mind"],
+        "meaning": "The High Priestess sits at the gate before the great Mystery. She indicates that now is the time to retreat and reflect upon the situation and trust your inner instincts.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/8/88/RWS_Tarot_02_High_Priestess.jpg"
+    },
+    {
+        "name": "The Empress",
+        "arcana": "Major",
+        "keywords": ["Femininity", "Beauty", "Nature", "Nurturing", "Abundance"],
+        "meaning": "The Empress calls on you to connect with your feminine energy. Create beauty in your life. Be in touch with nature and the creative spark within you.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/d/d2/RWS_Tarot_03_Empress.jpg"
+    },
+    {
+        "name": "The Emperor",
+        "arcana": "Major",
+        "keywords": ["Authority", "Establishment", "Structure", "A Father Figure"],
+        "meaning": "The Emperor represents structure, order, and regulation. He is a symbol of authority, worldly power, and stability.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/c/c3/RWS_Tarot_04_Emperor.jpg"
+    },
+    {
+        "name": "The Hierophant",
+        "arcana": "Major",
+        "keywords": ["Spiritual Wisdom", "Religious Beliefs", "Conformity", "Tradition", "Institutions"],
+        "meaning": "The Hierophant stands for tradition and convention. He can represent marriage in an arranged setup, schooling, theology, and the status quo.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/8/8f/RWS_Tarot_05_Hierophant.jpg"
+    },
+    {
+        "name": "The Lovers",
+        "arcana": "Major",
+        "keywords": ["Love", "Harmony", "Relationships", "Values Alignment", "Choices"],
+        "meaning": "The Lovers represent beautiful partnerships and close relationships, but also the necessity of making choices about your core values.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/d/db/RWS_Tarot_06_Lovers.jpg"
+    },
+    {
+        "name": "The Chariot",
+        "arcana": "Major",
+        "keywords": ["Control", "Willpower", "Success", "Action", "Determination"],
+        "meaning": "The Chariot indicates overcoming conflicts and moving forward in a positive direction. It is a sign of victory through discipline and willpower.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/9/9b/RWS_Tarot_07_Chariot.jpg"
+    },
+    {
+        "name": "Strength",
+        "arcana": "Major",
+        "keywords": ["Strength", "Courage", "Persuasion", "Influence", "Compassion"],
+        "meaning": "Strength predicts the triumphant conclusion to a major life problem, situation or temptation through strength of character.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/f/f5/RWS_Tarot_08_Strength.jpg"
+    },
+    {
+        "name": "The Hermit",
+        "arcana": "Major",
+        "keywords": ["Soul-Searching", "Introspection", "Being Alone", "Inner Guidance"],
+        "meaning": "The Hermit suggests that you are in a phase of introspection where you are drawing your attention inwards and looking for answers within.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/4/4d/RWS_Tarot_09_Hermit.jpg"
+    },
+    {
+        "name": "Wheel of Fortune",
+        "arcana": "Major",
+        "keywords": ["Good Luck", "Karma", "Life Cycles", "Destiny", "A Turning Point"],
+        "meaning": "The Wheel of Fortune represents the wheel of karma, reminding us that 'what goes around comes around'. It is a sign of good luck and positive changes.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/3/3c/RWS_Tarot_10_Wheel_of_Fortune.jpg"
+    },
+    {
+        "name": "Justice",
+        "arcana": "Major",
+        "keywords": ["Justice", "Fairness", "Truth", "Cause and Effect", "Law"],
+        "meaning": "Justice indicates that the fairest decision will be made. You are being called to account for your actions and will be judged accordingly.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/e/e0/RWS_Tarot_11_Justice.jpg"
+    },
+    {
+        "name": "The Hanged Man",
+        "arcana": "Major",
+        "keywords": ["Pause", "Surrender", "Letting Go", "New Perspectives"],
+        "meaning": "The Hanged Man asks you to surrender, to pause, and to view things from a different perspective. It's a time of suspension and letting go.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/2/2b/RWS_Tarot_12_Hanged_Man.jpg"
+    },
+    {
+        "name": "Death",
+        "arcana": "Major",
+        "keywords": ["Endings", "Change", "Transformation", "Transition"],
+        "meaning": "Death is not about physical death; it represents the end of a major phase or aspect of your life that you realize is no longer serving you, opening up the possibility of something far more valuable and essential.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/d/d7/RWS_Tarot_13_Death.jpg"
+    },
+    {
+        "name": "Temperance",
+        "arcana": "Major",
+        "keywords": ["Balance", "Moderation", "Patience", "Purpose"],
+        "meaning": "Temperance represents a need for balance, tranquility, and patience. It's about blending opposites and finding a middle ground.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/f/f8/RWS_Tarot_14_Temperance.jpg"
+    },
+    {
+        "name": "The Devil",
+        "arcana": "Major",
+        "keywords": ["Shadow Self", "Attachment", "Addiction", "Restriction", "Sexuality"],
+        "meaning": "The Devil represents your shadow (or darker) side and the negative forces that constrain you and hold you back from being the best version of yourself.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/5/55/RWS_Tarot_15_Devil.jpg"
+    },
+    {
+        "name": "The Tower",
+        "arcana": "Major",
+        "keywords": ["Sudden Change", "Upheaval", "Chaos", "Revelation", "Awakening"],
+        "meaning": "The Tower indicates a major upheaval, sudden change, or revelation that shakes the foundation of your current understanding.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/5/53/RWS_Tarot_16_Tower.jpg"
+    },
+    {
+        "name": "The Star",
+        "arcana": "Major",
+        "keywords": ["Hope", "Faith", "Purpose", "Renewal", "Spirituality"],
+        "meaning": "The Star brings hope, renewed power, and strength to carry on with life. It is a sign of spiritual connection and inspiration.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/c/cd/RWS_Tarot_17_Star.jpg"
+    },
+    {
+        "name": "The Moon",
+        "arcana": "Major",
+        "keywords": ["Illusion", "Fear", "Anxiety", "Subconscious", "Intuition"],
+        "meaning": "The Moon represents illusions and deception, and therefore often suggests a time when something is not as it appears to be.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/7/7f/RWS_Tarot_18_Moon.jpg"
+    },
+    {
+        "name": "The Sun",
+        "arcana": "Major",
+        "keywords": ["Positivity", "Fun", "Warmth", "Success", "Vitality"],
+        "meaning": "The Sun represents success, radiance, and abundance. The Sun gives you strength and tells you that no matter where you go or what you do, your positive and radiant energy will follow you.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/1/17/RWS_Tarot_19_Sun.jpg"
+    },
+    {
+        "name": "Judgement",
+        "arcana": "Major",
+        "keywords": ["Judgement", "Rebirth", "Inner Calling", "Absolution"],
+        "meaning": "Judgement calls for a period of reflection and self-evaluation. It's a time to review your past actions and learn from them to prepare for a spiritual rebirth.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/d/dd/RWS_Tarot_20_Judgement.jpg"
+    },
+    {
+        "name": "The World",
+        "arcana": "Major",
+        "keywords": ["Completion", "Integration", "Accomplishment", "Travel"],
+        "meaning": "The World represents completion, achievement, and fulfillment. It signifies that a major cycle in your life has come to a successful end.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/f/ff/RWS_Tarot_21_World.jpg"
+    },
+    {
+        "name": "Ace of Wands",
+        "arcana": "Minor",
+        "keywords": ["Inspiration", "New Opportunities", "Growth", "Potential"],
+        "meaning": "A surge of creative energy and passion. A new project or opportunity that excites you.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/1/11/Wands01.jpg"
+    },
+    {
+        "name": "Ace of Cups",
+        "arcana": "Minor",
+        "keywords": ["Love", "New Feelings", "Emotional Awakening", "Creativity"],
+        "meaning": "The beginning of a new emotional experience, love, or deep spiritual connection.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/3/36/Cups01.jpg"
+    },
+    {
+        "name": "Ace of Swords",
+        "arcana": "Minor",
+        "keywords": ["Breakthroughs", "New Ideas", "Mental Clarity", "Success"],
+        "meaning": "A sudden breakthrough, a new way of thinking, or a moment of pure clarity and truth.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/1/1a/Swords01.jpg"
+    },
+    {
+        "name": "Ace of Pentacles",
+        "arcana": "Minor",
+        "keywords": ["A New Financial Opportunity", "Manifestation", "Abundance"],
+        "meaning": "A new financial or career opportunity, the manifestation of a goal, or a solid foundation.",
+        "image_url": "https://upload.wikimedia.org/wikipedia/en/f/fd/Pents01.jpg"
+    }
+]
