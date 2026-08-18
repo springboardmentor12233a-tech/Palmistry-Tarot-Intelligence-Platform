@@ -1,0 +1,617 @@
+/* =========================
+   ORACLE JOURNEY
+========================= */
+
+.oracleJourneyPage {
+    min-height: 100vh;
+    padding: 38px 7% 70px;
+    position: relative;
+    overflow: hidden;
+  
+    color: #f7f2ff;
+  
+    background:
+      radial-gradient(
+        circle at 50% 5%,
+        rgba(139, 92, 246, 0.16),
+        transparent 35%
+      ),
+      radial-gradient(
+        circle at 10% 70%,
+        rgba(168, 85, 247, 0.08),
+        transparent 30%
+      ),
+      #090611;
+  }
+  
+  
+  /* =========================
+     COSMIC BACKGROUND
+  ========================= */
+  
+  .oracleJourneyPage::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+  
+    pointer-events: none;
+  
+    opacity: 0.35;
+  
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,0.7) 1px, transparent 1px),
+      radial-gradient(circle, rgba(196,181,253,0.4) 1px, transparent 1px);
+  
+    background-size: 150px 150px, 230px 230px;
+    background-position: 20px 30px, 80px 100px;
+  }
+  
+  .oracleJourneyPage::after {
+    content: "";
+  
+    position: fixed;
+  
+    width: 600px;
+    height: 600px;
+  
+    top: -280px;
+    left: 50%;
+  
+    transform: translateX(-50%);
+  
+    border-radius: 50%;
+  
+    background: rgba(124, 58, 237, 0.08);
+  
+    filter: blur(100px);
+  
+    pointer-events: none;
+  }
+  
+  
+  /* =========================
+     BACK BUTTON
+  ========================= */
+  
+  .oracleJourneyBackBtn {
+    position: relative;
+    z-index: 2;
+  
+    background: transparent;
+    border: none;
+  
+    color: #b9accb;
+  
+    font-size: 15px;
+  
+    cursor: pointer;
+  
+    padding: 8px 0;
+  
+    transition: 0.25s ease;
+  }
+  
+  .oracleJourneyBackBtn:hover {
+    color: #ffffff;
+    transform: translateX(-4px);
+  }
+  
+  
+  /* =========================
+     CONTENT
+  ========================= */
+  
+  .oracleJourneyContent {
+    position: relative;
+    z-index: 2;
+  
+    max-width: 950px;
+  
+    margin: 0 auto;
+  }
+  
+  
+  /* =========================
+     HEADER
+  ========================= */
+  
+  .journeyHeader {
+    text-align: center;
+  
+    margin: 45px auto 55px;
+  }
+  
+  .journeyOrb {
+    width: 70px;
+    height: 70px;
+  
+    margin: 0 auto 20px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    border-radius: 50%;
+  
+    font-size: 28px;
+  
+    color: #e9d5ff;
+  
+    background:
+      radial-gradient(
+        circle,
+        rgba(168, 85, 247, 0.3),
+        rgba(91, 33, 182, 0.08)
+      );
+  
+    border: 1px solid rgba(216, 180, 254, 0.3);
+  
+    box-shadow:
+      0 0 25px rgba(168, 85, 247, 0.2),
+      inset 0 0 20px rgba(168, 85, 247, 0.1);
+  
+    animation: oraclePulse 4s ease-in-out infinite;
+  }
+  
+  @keyframes oraclePulse {
+    0%,
+    100% {
+      box-shadow:
+        0 0 25px rgba(168, 85, 247, 0.18),
+        inset 0 0 20px rgba(168, 85, 247, 0.08);
+    }
+  
+    50% {
+      box-shadow:
+        0 0 45px rgba(168, 85, 247, 0.3),
+        inset 0 0 25px rgba(168, 85, 247, 0.15);
+    }
+  }
+  
+  .journeyHeader h1 {
+    margin: 0 0 12px;
+  
+    font-size: 46px;
+    font-weight: 500;
+  
+    letter-spacing: -1px;
+  }
+  
+  .journeyHeader p {
+    margin: 0;
+  
+    color: #958ba4;
+  
+    font-size: 16px;
+  }
+  
+  
+  /* =========================
+     STATISTICS
+  ========================= */
+  
+  .journeyStats {
+    display: grid;
+  
+    grid-template-columns: 1.4fr 1fr 1fr;
+  
+    gap: 14px;
+  
+    margin-bottom: 75px;
+  }
+  
+  .journeyStat {
+    position: relative;
+  
+    padding: 25px;
+  
+    text-align: center;
+  
+    background: rgba(255, 255, 255, 0.025);
+  
+    border-top: 1px solid rgba(216, 180, 254, 0.12);
+    border-bottom: 1px solid rgba(216, 180, 254, 0.06);
+  
+    transition: 0.25s ease;
+  }
+  
+  .journeyStat:hover {
+    background: rgba(139, 92, 246, 0.06);
+    transform: translateY(-3px);
+  }
+  
+  .journeyStat.mainStat {
+    background:
+      radial-gradient(
+        circle at center,
+        rgba(139, 92, 246, 0.11),
+        transparent 70%
+      );
+  }
+  
+  .statNumber {
+    display: block;
+  
+    font-size: 34px;
+    font-weight: 500;
+  
+    color: #e9d5ff;
+  
+    margin-bottom: 5px;
+  }
+  
+  .statLabel {
+    display: block;
+  
+    color: #837a90;
+  
+    font-size: 13px;
+  
+    letter-spacing: 0.5px;
+  }
+  
+  
+  /* =========================
+     SECTION HEADING
+  ========================= */
+  
+  .sectionHeading {
+    display: flex;
+  
+    align-items: center;
+  
+    gap: 16px;
+  
+    margin-bottom: 38px;
+  }
+  
+  .sectionHeading > span {
+    width: 44px;
+    height: 44px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    border-radius: 12px;
+  
+    color: #d8b4fe;
+  
+    background: rgba(139, 92, 246, 0.08);
+  
+    border: 1px solid rgba(196, 181, 253, 0.13);
+  }
+  
+  .sectionHeading h2 {
+    margin: 0 0 4px;
+  
+    font-size: 22px;
+    font-weight: 500;
+  }
+  
+  .sectionHeading p {
+    margin: 0;
+  
+    color: #766d82;
+  
+    font-size: 13px;
+  }
+  
+  
+  /* =========================
+     JOURNEY PATH
+  ========================= */
+  
+  .journeyPath {
+    position: relative;
+  
+    width: 100%;
+  
+    padding-left: 20px;
+  }
+  
+  
+  /* =========================
+     MILESTONE
+  ========================= */
+  
+  .journeyMilestone {
+    display: flex;
+  
+    min-height: 115px;
+  
+    position: relative;
+  }
+  
+  
+  /* =========================
+     MILESTONE LINE
+  ========================= */
+  
+  .milestoneLine {
+    position: relative;
+  
+    width: 70px;
+  
+    flex-shrink: 0;
+  
+    display: flex;
+  
+    justify-content: center;
+  }
+  
+  .milestoneOrb {
+    position: relative;
+    z-index: 2;
+  
+    width: 48px;
+    height: 48px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    border-radius: 50%;
+  
+    font-size: 19px;
+  
+    color: #686071;
+  
+    background: #110c1b;
+  
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  
+    transition: 0.3s ease;
+  }
+  
+  
+  /* connector */
+  
+  .journeyConnector {
+    position: absolute;
+  
+    top: 48px;
+    bottom: -5px;
+  
+    width: 1px;
+  
+    background: rgba(255, 255, 255, 0.08);
+  }
+  
+  .journeyConnector.active {
+    background:
+      linear-gradient(
+        to bottom,
+        rgba(196, 181, 253, 0.6),
+        rgba(139, 92, 246, 0.15)
+      );
+  
+    box-shadow:
+      0 0 8px rgba(139, 92, 246, 0.2);
+  }
+  
+  
+  /* =========================
+     UNLOCKED
+  ========================= */
+  
+  .journeyMilestone.unlocked .milestoneOrb {
+    color: #f0d9ff;
+  
+    background:
+      radial-gradient(
+        circle,
+        rgba(139, 92, 246, 0.28),
+        rgba(76, 29, 149, 0.12)
+      );
+  
+    border-color: rgba(216, 180, 254, 0.35);
+  
+    box-shadow:
+      0 0 25px rgba(139, 92, 246, 0.18);
+  }
+  
+  .journeyMilestone.unlocked .milestoneOrb::after {
+    content: "";
+  
+    position: absolute;
+  
+    inset: -5px;
+  
+    border-radius: 50%;
+  
+    border: 1px solid rgba(196, 181, 253, 0.12);
+  }
+  
+  
+  /* =========================
+     LOCKED
+  ========================= */
+  
+  .journeyMilestone.locked {
+    opacity: 0.48;
+  }
+  
+  .journeyMilestone.locked .milestoneOrb {
+    filter: grayscale(1);
+  }
+  
+  
+  /* =========================
+     MILESTONE CONTENT
+  ========================= */
+  
+  .milestoneContent {
+    padding: 3px 0 35px 22px;
+  }
+  
+  .milestoneStatus {
+    font-size: 9px;
+  
+    letter-spacing: 1.8px;
+  
+    color: #8d7c9f;
+  
+    margin-bottom: 6px;
+  }
+  
+  .journeyMilestone.unlocked .milestoneStatus {
+    color: #c4a6dc;
+  }
+  
+  .milestoneContent h3 {
+    margin: 0 0 6px;
+  
+    font-size: 18px;
+  
+    font-weight: 500;
+  }
+  
+  .milestoneContent p {
+    margin: 0;
+  
+    color: #777080;
+  
+    font-size: 13px;
+  
+    line-height: 1.6;
+  }
+  
+  
+  /* =========================
+     JOURNEY BEGINNING
+  ========================= */
+  
+  .journeyBeginning {
+    margin-top: 55px;
+  
+    display: flex;
+  
+    align-items: center;
+  
+    gap: 20px;
+  
+    padding: 25px 30px;
+  
+    background:
+      linear-gradient(
+        90deg,
+        rgba(139, 92, 246, 0.08),
+        transparent
+      );
+  
+    border-left: 1px solid rgba(196, 181, 253, 0.3);
+  
+    border-radius: 0 14px 14px 0;
+  }
+  
+  .beginningStar {
+    font-size: 25px;
+  
+    color: #d8b4fe;
+  
+    text-shadow:
+      0 0 15px rgba(216, 180, 254, 0.6);
+  }
+  
+  .journeyBeginning span {
+    font-size: 9px;
+  
+    letter-spacing: 2px;
+  
+    color: #85798f;
+  }
+  
+  .journeyBeginning h2 {
+    margin: 5px 0;
+  
+    font-size: 18px;
+  
+    font-weight: 500;
+  }
+  
+  .journeyBeginning p {
+    margin: 0;
+  
+    color: #756c80;
+  
+    font-size: 13px;
+  }
+  
+  
+  /* =========================
+     DISCLAIMER
+  ========================= */
+  
+  .journeyDisclaimer {
+    margin: 55px auto 0;
+  
+    max-width: 600px;
+  
+    text-align: center;
+  
+    color: #625a69;
+  
+    font-size: 11px;
+  
+    line-height: 1.6;
+  }
+  
+  
+  /* =========================
+     LOADING
+  ========================= */
+  
+  .oracleJourneyLoading {
+    min-height: 80vh;
+  
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+  
+    color: #c4b5fd;
+  
+    font-size: 15px;
+  }
+  
+  
+  /* =========================
+     RESPONSIVE
+  ========================= */
+  
+  @media (max-width: 700px) {
+  
+    .oracleJourneyPage {
+      padding: 25px 20px 55px;
+    }
+  
+    .journeyHeader {
+      margin-top: 35px;
+      margin-bottom: 45px;
+    }
+  
+    .journeyHeader h1 {
+      font-size: 35px;
+    }
+  
+    .journeyStats {
+      grid-template-columns: 1fr 1fr;
+    }
+  
+    .journeyStat.mainStat {
+      grid-column: 1 / -1;
+    }
+  
+    .journeyPath {
+      padding-left: 0;
+    }
+  
+    .milestoneContent {
+      padding-left: 15px;
+    }
+  
+    .journeyBeginning {
+      padding: 20px;
+    }
+  }

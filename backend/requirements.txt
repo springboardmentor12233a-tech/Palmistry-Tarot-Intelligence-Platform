@@ -1,0 +1,15 @@
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+pydantic==2.10.4
+python-dotenv==1.0.1
+groq==0.13.1
+reportlab==4.2.5
+
+# Palm engine dependencies from external_repos/palmistry/code/requirements.txt
+torch
+torchvision
+scikit-image
+opencv-python
+pillow-heif
+mediapipe==0.10.14

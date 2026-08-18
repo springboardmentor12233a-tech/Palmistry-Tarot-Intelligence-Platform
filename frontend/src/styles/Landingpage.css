@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Great+Vibes&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html,
+body,
+#root{
+    width:100%;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+/*.landing{
+    width:100%;
+    min-height:100vh;
+
+    background-image:url("../assets/images/background.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    
+}*/
+.landing {
+    background-image:url("../assets/images/background.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+
+.overlay{
+
+    width:100%;
+    min-height:100vh;
+
+    background:rgba(0, 0, 0, 0.082);
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    padding:40px;
+}
+
+.title{
+
+    font-family:"Great Vibes",cursive;
+
+    color:#FFD700;
+
+    font-size:72px;
+
+    text-shadow:
+    0 0 8px gold,
+    0 0 18px orange,
+    0 0 40px gold;
+
+}
+
+.subtitle{
+
+    color:white;
+
+    width:700px;
+
+    text-align:center;
+
+    font-size:22px;
+
+    margin-top:20px;
+
+    line-height:1.7;
+
+}
+
+.buttons{
+
+    display:flex;
+
+    gap:35px;
+
+    margin-top:50px;
+
+}
+
+.goldButton{
+
+    background:linear-gradient(45deg,#a86b00,#ffd700);
+
+    color:black;
+
+    border:none;
+
+    padding:18px 45px;
+
+    font-size:20px;
+
+    border-radius:40px;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+    font-weight:bold;
+
+}
+
+.goldButton:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:
+    0 0 25px gold;
+
+}

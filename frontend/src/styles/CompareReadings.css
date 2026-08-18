@@ -1,0 +1,164 @@
+.comparePage {
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+  
+    background:
+      radial-gradient(
+        circle at 50% 15%,
+        rgba(120, 85, 180, 0.18),
+        transparent 45%
+      ),
+      #08070d;
+  
+    color: #eee;
+    padding: 100px 8% 70px;
+  
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  .compareBackBtn {
+    position: absolute;
+    top: 30px;
+    left: 35px;
+  
+    background: transparent;
+    border: 1px solid rgba(214, 184, 102, 0.5);
+    color: #d6b866;
+  
+    padding: 10px 20px;
+    border-radius: 25px;
+  
+    cursor: pointer;
+    font-size: 15px;
+  
+    transition: 0.3s;
+  }
+  
+  .compareBackBtn:hover {
+    background: rgba(214, 184, 102, 0.1);
+    box-shadow: 0 0 15px rgba(214, 184, 102, 0.25);
+  }
+  
+  .compareContent {
+    max-width: 1050px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .compareContent h1 {
+    font-family: "Cinzel", serif;
+    color: #d6b866;
+    font-size: 48px;
+    margin-bottom: 15px;
+  }
+  
+  .compareSubtitle {
+    color: #c9c6cf;
+    font-size: 18px;
+    line-height: 1.7;
+    margin-bottom: 45px;
+  }
+  
+  .comparisonCards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    margin-bottom: 35px;
+  }
+  
+  .comparisonCard {
+    min-height: 240px;
+    padding: 30px;
+  
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(214, 184, 102, 0.2);
+  
+    border-radius: 18px;
+    backdrop-filter: blur(10px);
+  
+    text-align: left;
+  
+    transition: 0.3s;
+  }
+  
+  .comparisonCard:hover {
+    transform: translateY(-5px);
+    border-color: rgba(214, 184, 102, 0.5);
+    box-shadow: 0 10px 30px rgba(214, 184, 102, 0.08);
+  }
+  
+  .comparisonCard h2 {
+    color: #d6b866;
+    font-family: "Cinzel", serif;
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+  
+  .comparisonCard p {
+    color: #c5c2ca;
+    line-height: 1.8;
+  }
+  
+  .commonThemes {
+    padding: 35px;
+  
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(214, 184, 102, 0.3);
+  
+    border-radius: 20px;
+  
+    text-align: center;
+  
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  }
+  
+  .commonThemes h2 {
+    color: #d6b866;
+    font-family: "Cinzel", serif;
+    margin-bottom: 18px;
+  }
+  
+  .commonThemes p {
+    color: #c5c2ca;
+    line-height: 1.8;
+  }
+  
+  .readMoreBtn:hover {
+    background: rgba(214, 184, 102, 0.18);
+    box-shadow: 0 0 20px rgba(214, 184, 102, 0.2);
+  }
+  .readMoreBtn{
+    margin-top: 30px;
+  
+    padding: 13px 30px;
+  
+    border: 1px solid rgba(214, 184, 102, 0.6);
+    border-radius: 25px;
+  
+    background: rgba(214, 184, 102, 0.08);
+    color: #d6b866;
+  
+    font-size: 15px;
+    cursor: pointer;
+  
+    transition: 0.3s;
+  }
+  
+  
+  /* Responsive */
+  
+  @media (max-width: 750px) {
+    .comparisonCards {
+      grid-template-columns: 1fr;
+    }
+  
+    .compareContent h1 {
+      font-size: 38px;
+    }
+  
+    .comparePage {
+      padding: 100px 5% 50px;
+    }
+  }

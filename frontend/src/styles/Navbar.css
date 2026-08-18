@@ -1,0 +1,134 @@
+.navbar {
+    width: 100%;
+    height: 72px;
+    padding: 0 35px;
+    box-sizing: border-box;
+  
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+    background: rgba(10, 10, 15, 0.92);
+    border-bottom: 1px solid rgba(214, 184, 102, 0.25);
+  
+    backdrop-filter: blur(12px);
+  
+    position: absolute;
+    top: 0;
+    left: 0;
+  
+    z-index: 100;
+}
+  
+  .navLogo {
+    font-family: "Cinzel", serif;
+    color: #d6b866;
+    font-size: 20px;
+    letter-spacing: 2px;
+    cursor: pointer;
+  }
+  
+  .navLinks {
+    display: flex;
+    gap: 28px;
+  }
+  .dropdown{
+    display: flex;
+    gap: 28px;
+    background: none;
+    border: none;
+    color: #c7c5bf;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+  .navLinks button,
+  .profileButton {
+    background: none;
+    border: none;
+    color: #c7c5bf;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.25s ease;
+  }
+  
+  .navLinks button:hover,
+  .profileButton:hover {
+    color: #d6b866;
+  }
+  
+  .profileButton {
+    padding: 9px 18px;
+    border: 1px solid rgba(214, 184, 102, 0.45);
+    border-radius: 20px;
+  }
+  
+  .profileButton:hover {
+    background: rgba(214, 184, 102, 0.08);
+  }
+  .profileWrapper {
+  position: relative;
+}
+
+.profileMenu {
+  position: absolute;
+  top: 48px;
+  right: 0;
+
+  min-width: 130px;
+
+  background: rgba(18, 18, 23, 0.98);
+  border: 1px solid rgba(214, 184, 102, 0.3);
+  border-radius: 10px;
+
+  padding: 8px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.profileMenu button {
+  width: 100%;
+  padding: 10px 14px;
+
+  background: transparent;
+  border: none;
+
+  color: #c7c5bf;
+  text-align: left;
+
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.profileMenu button:hover {
+  background: rgba(214, 184, 102, 0.1);
+  color: #d6b866;
+}
+.dropdownWrapper {
+    position: relative;
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+
+    min-width: 180px;
+
+    background: rgba(18, 18, 23, 0.98);
+    border: 1px solid rgba(214, 184, 102, 0.3);
+    border-radius: 10px;
+
+    padding: 8px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    flex-direction: column;
+}
+.dropdown button:hover{
+    background-color: #d6b866;
+    color:black;
+    padding: 9px;
+    border-radius: 10px;
+}

@@ -1,0 +1,1131 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&display=swap');
+
+
+/* =========================
+   MAIN PAGE
+========================= */
+
+.tarotPage {
+
+    width: 100%;
+    min-height: 100vh;
+
+    background-image:
+        url("../assets/images/oracle.png");
+
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    background-repeat: no-repeat;
+
+    color: white;
+}
+
+
+/* =========================
+   OVERLAY
+========================= */
+
+.tarotOverlay {
+
+    width: 100%;
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            rgba(12, 0, 30, 0.70),
+            rgba(20, 0, 45, 0.82)
+        );
+
+    padding: 50px 20px 80px;
+
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+}
+
+
+/* =========================
+   BACK BUTTON
+========================= */
+
+.tarotBackBtn {
+
+    align-self: flex-start;
+
+    background: transparent;
+
+    color: #ffd700;
+
+    border: 1px solid rgba(255, 215, 0, 0.6);
+
+    padding: 10px 20px;
+
+    border-radius: 25px;
+
+    cursor: pointer;
+
+    font-family: "Cinzel", serif;
+
+    transition: 0.3s;
+}
+
+.tarotBackBtn:hover {
+
+    background: rgba(255, 215, 0, 0.12);
+
+    box-shadow:
+        0 0 15px rgba(255, 215, 0, 0.5);
+
+    transform: translateX(-3px);
+}
+
+
+/* =========================
+   TITLE
+========================= */
+
+.tarotTitle {
+
+    font-family: "Great Vibes", cursive;
+
+    color: #ffd700;
+
+    font-size: 70px;
+
+    margin-top: 25px;
+
+    margin-bottom: 10px;
+
+    text-shadow:
+        0 0 8px gold,
+        0 0 20px gold,
+        0 0 40px rgba(255, 215, 0, 0.7);
+
+    text-align: center;
+}
+
+
+/* =========================
+   SUBTITLE
+========================= */
+
+.tarotSubtitle {
+
+    font-family: "Cinzel", serif;
+
+    font-size: 18px;
+
+    color: #eee;
+
+    text-align: center;
+
+    max-width: 700px;
+
+    line-height: 1.7;
+
+    margin-bottom: 35px;
+}
+
+
+/* =========================
+   FORM
+========================= */
+
+.tarotForm {
+
+    width: min(650px, 90%);
+
+    background:
+        rgba(25, 5, 50, 0.78);
+
+    border:
+
+        1px solid
+        rgba(255, 215, 0, 0.45);
+
+    border-radius: 25px;
+
+    padding: 35px;
+
+    box-sizing: border-box;
+
+    backdrop-filter: blur(8px);
+
+    box-shadow:
+        0 0 25px rgba(255, 215, 0, 0.12);
+}
+
+
+.tarotForm label {
+
+    display: block;
+
+    color: #ffd700;
+
+    font-family: "Cinzel", serif;
+
+    margin-bottom: 8px;
+
+    margin-top: 18px;
+}
+
+
+.tarotForm label:first-child {
+
+    margin-top: 0;
+}
+
+
+.tarotForm input,
+.tarotForm textarea,
+.tarotForm select {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 14px 16px;
+
+    border-radius: 12px;
+
+    border: 1px solid
+        rgba(255, 215, 0, 0.35);
+
+    background:
+        rgba(10, 0, 25, 0.75);
+
+    color: white;
+
+    font-family: "Cinzel", serif;
+
+    font-size: 15px;
+
+    outline: none;
+}
+
+
+.tarotForm input:focus,
+.tarotForm textarea:focus,
+.tarotForm select:focus {
+
+    border-color: #ffd700;
+
+    box-shadow:
+        0 0 12px
+        rgba(255, 215, 0, 0.35);
+}
+
+
+.tarotForm textarea {
+
+    resize: vertical;
+}
+
+
+.tarotForm select option {
+
+    background: #24103d;
+
+    color: white;
+}
+
+
+/* =========================
+   REVEAL BUTTON
+========================= */
+
+.tarotAnalyzeBtn {
+
+    display: block;
+
+    margin: 30px auto 0;
+
+    padding: 16px 35px;
+
+    border: none;
+
+    border-radius: 35px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #8b5a00,
+            #ffd700,
+            #fff0a3
+        );
+
+    color: #24102f;
+
+    font-family: "Cinzel", serif;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.35s;
+}
+
+
+.tarotAnalyzeBtn:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 0 15px gold,
+        0 0 35px
+        rgba(255, 215, 0, 0.55);
+}
+
+
+.tarotAnalyzeBtn:disabled {
+
+    opacity: 0.6;
+
+    cursor: wait;
+}
+
+
+/* =========================
+   RESULTS
+========================= */
+
+.tarotResults {
+
+    width: min(1100px, 95%);
+
+    margin-top: 60px;
+
+    text-align: center;
+}
+
+
+.tarotResults > h2 {
+
+    font-family: "Great Vibes", cursive;
+
+    font-size: 45px;
+
+    color: #ffd700;
+
+    text-shadow:
+        0 0 15px gold;
+
+    margin-bottom: 35px;
+}
+
+
+/* =========================
+   TAROT CARDS
+========================= */
+
+.cardsContainer {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: stretch;
+
+    gap: 25px;
+
+    flex-wrap: wrap;
+}
+
+
+.tarotCard {
+
+    width: 260px;
+
+    min-height: 310px;
+
+    padding: 25px;
+
+    box-sizing: border-box;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(45, 10, 75, 0.9),
+            rgba(15, 0, 35, 0.92)
+        );
+
+    border:
+        1px solid
+        rgba(255, 215, 0, 0.5);
+
+    box-shadow:
+        0 0 20px
+        rgba(255, 215, 0, 0.15);
+
+    transition: 0.35s;
+}
+
+
+.tarotCard:hover {
+
+    transform:
+        translateY(-8px)
+        scale(1.02);
+
+    box-shadow:
+        0 0 25px
+        rgba(255, 215, 0, 0.35);
+}
+
+
+.cardPosition {
+
+    color: #ffd700;
+
+    font-family: "Cinzel", serif;
+
+    font-size: 14px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 15px;
+}
+
+
+.cardSymbol {
+
+    font-size: 55px;
+
+    margin-bottom: 10px;
+
+    filter:
+        drop-shadow(
+            0 0 10px gold
+        );
+}
+
+
+.tarotCard h3 {
+
+    font-family: "Cinzel", serif;
+
+    color: #ffd700;
+
+    font-size: 22px;
+
+    margin: 10px 0;
+}
+
+
+.orientation {
+
+    color: #e8d5ff;
+
+    font-style: italic;
+
+    margin-bottom: 20px;
+}
+
+
+.tarotCard strong {
+
+    color: #ffd700;
+
+    font-family: "Cinzel", serif;
+}
+
+
+.keywords {
+
+    color: #ddd;
+
+    line-height: 1.7;
+}
+
+
+/* =========================
+   INTERPRETATION
+========================= */
+
+.tarotInterpretation {
+
+    margin-top: 50px;
+
+    padding: 35px;
+
+    background:
+        rgba(20, 0, 40, 0.82);
+
+    border-radius: 25px;
+
+    border:
+        1px solid
+        rgba(255, 215, 0, 0.4);
+
+    text-align: left;
+
+    box-shadow:
+        0 0 25px
+        rgba(255, 215, 0, 0.12);
+}
+
+
+.tarotInterpretation h2 {
+
+    text-align: center;
+
+    font-family: "Great Vibes", cursive;
+
+    font-size: 40px;
+
+    color: #ffd700;
+
+    margin-bottom: 25px;
+}
+
+
+.tarotInterpretation p {
+
+    white-space: pre-wrap;
+
+    color: #eee;
+
+    font-family: "Cinzel", serif;
+
+    line-height: 1.9;
+
+    font-size: 16px;
+}
+
+
+/* =========================
+   PDF BUTTON
+========================= */
+
+.tarotPdfBtn {
+
+    margin-top: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #8b5a00,
+            #ffd700,
+            #fff0a3
+        );
+
+    color: #24102f;
+
+    border: none;
+
+    padding: 15px 35px;
+
+    border-radius: 35px;
+
+    font-family: "Cinzel", serif;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.35s;
+}
+
+
+.tarotPdfBtn:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 0 15px gold,
+        0 0 35px
+        rgba(255, 215, 0, 0.55);
+}
+
+
+/* =========================
+   FOLLOW-UP
+========================= */
+
+.followUpCard {
+
+    margin-top: 45px;
+
+    padding: 35px;
+
+    background:
+        rgba(25, 5, 50, 0.82);
+
+    border-radius: 25px;
+
+    border:
+        1px solid
+        rgba(255, 215, 0, 0.35);
+
+    text-align: center;
+}
+
+
+.followUpCard h2 {
+
+    font-family: "Great Vibes", cursive;
+
+    font-size: 40px;
+
+    color: #ffd700;
+
+    margin-bottom: 10px;
+}
+
+
+.followUpCard p {
+
+    color: #ddd;
+
+    font-family: "Cinzel", serif;
+}
+
+
+.followUpCard textarea {
+
+    width: 100%;
+
+    max-width: 750px;
+
+    min-height: 100px;
+
+    box-sizing: border-box;
+
+    margin-top: 15px;
+
+    padding: 15px;
+
+    border-radius: 15px;
+
+    border:
+        1px solid
+        rgba(255, 215, 0, 0.35);
+
+    background:
+        rgba(10, 0, 25, 0.75);
+
+    color: white;
+
+    resize: vertical;
+
+    font-family: "Cinzel", serif;
+
+    outline: none;
+}
+
+
+.followUpCard textarea:focus {
+
+    border-color: #ffd700;
+
+    box-shadow:
+        0 0 12px
+        rgba(255, 215, 0, 0.35);
+}
+
+
+.followUpBtn {
+
+    display: block;
+
+    margin: 20px auto;
+
+    padding: 13px 30px;
+
+    border: 1px solid #ffd700;
+
+    border-radius: 30px;
+
+    background: transparent;
+
+    color: #ffd700;
+
+    font-family: "Cinzel", serif;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+
+.followUpBtn:hover {
+
+    background: #ffd700;
+
+    color: #24102f;
+
+    box-shadow:
+        0 0 20px gold;
+}
+
+
+/* =========================
+   FOLLOW-UP ANSWER
+========================= */
+
+.followUpAnswer {
+
+    margin-top: 30px;
+
+    padding: 25px;
+
+    border-radius: 18px;
+
+    background:
+        rgba(10, 0, 25, 0.65);
+
+    border:
+        1px solid
+        rgba(255, 215, 0, 0.3);
+
+    text-align: left;
+}
+
+
+.followUpAnswer h3 {
+
+    color: #ffd700;
+
+    font-family: "Cinzel", serif;
+
+    text-align: center;
+
+    margin-bottom: 15px;
+}
+
+
+.followUpAnswer p {
+
+    color: #eee;
+
+    line-height: 1.8;
+
+    white-space: pre-wrap;
+
+    font-family: "Cinzel", serif;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .tarotTitle {
+        font-size: 52px;
+    }
+
+    .tarotForm {
+        padding: 25px;
+    }
+
+    .tarotCard {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .tarotInterpretation,
+    .followUpCard {
+        padding: 25px;
+    }
+
+}
+/* =========================================
+   TAROT CARD REVEAL
+========================================= */
+
+.cardsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 45px;
+    flex-wrap: wrap;
+    margin: 40px auto;
+    perspective: 1200px;
+  }
+  
+  
+  /* CARD SCENE */
+  
+  .tarotCardScene {
+    width: 230px;
+    height: 360px;
+    cursor: pointer;
+    perspective: 1200px;
+  }
+  
+  
+  /* FLIP CONTAINER */
+  
+  .tarotCardFlip {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  
+    transform-style: preserve-3d;
+  
+    transition:
+      transform 0.9s cubic-bezier(0.4, 0.2, 0.2, 1);
+  
+    transform: rotateY(0deg);
+  }
+  
+  
+  /* WHEN REVEALED */
+  
+  .tarotCardScene.revealed .tarotCardFlip {
+    transform: rotateY(180deg);
+  }
+  
+  
+  /* BOTH SIDES */
+  
+  .tarotCardFace {
+    position: absolute;
+  
+    width: 100%;
+    height: 100%;
+  
+    top: 0;
+    left: 0;
+  
+    border-radius: 18px;
+  
+    overflow: hidden;
+  
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  
+    box-sizing: border-box;
+  }
+  
+  
+  /* =========================================
+     CARD BACK
+  ========================================= */
+  
+  .tarotCardBack {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    background:
+      radial-gradient(
+        circle at center,
+        rgba(154, 102, 255, 0.25),
+        transparent 55%
+      ),
+      linear-gradient(
+        145deg,
+        #16082d,
+        #2b0d50,
+        #10051f
+      );
+  
+    border: 2px solid rgba(213, 168, 255, 0.5);
+  
+    box-shadow:
+      0 0 25px rgba(160, 90, 255, 0.3),
+      inset 0 0 30px rgba(255, 255, 255, 0.05);
+  }
+  
+  
+  /* INNER MYSTICAL PATTERN */
+  
+  .cardBackInner {
+    position: absolute;
+    inset: 14px;
+  
+    border: 1px solid rgba(220, 180, 255, 0.45);
+    border-radius: 12px;
+  
+    pointer-events: none;
+    overflow: hidden;
+  }
+  
+  /* Decorative stars */
+  
+  .cardBackInner span {
+    position: absolute;
+    color: rgba(230, 200, 255, 0.55);
+    text-shadow: 0 0 8px rgba(180, 100, 255, 0.7);
+  }
+  
+  /* Individual positions */
+  
+  .cardBackInner span:nth-child(1) {
+    top: 12%;
+    left: 18%;
+    font-size: 18px;
+  }
+  
+  .cardBackInner span:nth-child(2) {
+    top: 23%;
+    right: 15%;
+    font-size: 25px;
+  }
+  
+  .cardBackInner span:nth-child(3) {
+    bottom: 25%;
+    left: 13%;
+    font-size: 15px;
+  }
+  
+  .cardBackInner span:nth-child(4) {
+    bottom: 15%;
+    right: 18%;
+    font-size: 24px;
+  }
+  
+  .cardBackInner span:nth-child(5) {
+    top: 48%;
+    left: 10%;
+    font-size: 13px;
+  }
+  
+  
+  .cardBackGlow {
+    position: relative;
+  
+    z-index: 2;
+  
+    font-size: 55px;
+  
+    color: #ead6ff;
+  
+    text-shadow:
+      0 0 10px #b86cff,
+      0 0 25px #8d45ff,
+      0 0 45px #6b22cc;
+  
+    animation: oraclePulse 2s infinite ease-in-out;
+  }
+  
+  
+  .tarotCardBack p {
+    position: absolute;
+    z-index: 5;
+  
+    left: 30px;
+    right: 30px;
+    bottom: 65px;
+  
+    margin: 0;
+  
+    text-align: center;
+  
+    font-size: 13px;
+    font-weight: 500;
+  
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  
+    color: #f0ddff;
+  
+    text-shadow:
+      0 0 8px rgba(180, 100, 255, 0.8);
+  
+    background: rgba(15, 5, 30, 0.35);
+  
+    padding: 7px 8px;
+  
+    border-radius: 6px;
+  }
+  
+  
+  .tarotCardBack small {
+    position: absolute;
+    z-index: 5;
+  
+    left: 0;
+    right: 0;
+    bottom: 28px;
+  
+    text-align: center;
+  
+    color: rgba(255, 255, 255, 0.55);
+  
+    font-size: 10px;
+  
+    letter-spacing: 1px;
+  }
+  
+  
+  /* =========================================
+     CARD FRONT
+  ========================================= */
+  
+  .tarotCardFront {
+    transform: rotateY(180deg);
+  
+    background: #12071f;
+  
+    border: 2px solid rgba(224, 190, 255, 0.6);
+  
+    box-shadow:
+      0 0 30px rgba(160, 90, 255, 0.35);
+  }
+  
+  
+  /* IMAGE */
+  
+  .tarotCardImage {
+    width: 100%;
+    height: 100%;
+  
+    object-fit: cover;
+  
+    display: block;
+  }
+  
+  
+  /* INFORMATION OVER IMAGE */
+  
+  .tarotCardInfo {
+    position: absolute;
+  
+    left: 0;
+    right: 0;
+    bottom: 0;
+  
+    padding: 18px 15px 16px;
+  
+    background:
+      linear-gradient(
+        transparent,
+        rgba(8, 2, 18, 0.95)
+      );
+  
+    color: white;
+  
+    text-align: center;
+  }
+  
+  
+  .tarotCardInfo h3 {
+    margin: 5px 0;
+  
+    font-size: 20px;
+  
+    color: #fff;
+  }
+  
+  
+  .cardPosition {
+    display: block;
+  
+    font-size: 11px;
+  
+    letter-spacing: 2px;
+  
+    text-transform: uppercase;
+  
+    color: #d8b9ff;
+  }
+  
+  
+  .orientation {
+    margin: 4px 0;
+  
+    font-size: 12px;
+  
+    color: #e7d4ff;
+  
+    text-transform: uppercase;
+  
+    letter-spacing: 1px;
+  }
+  
+  
+  .keywords {
+    font-size: 11px;
+  
+    line-height: 1.4;
+  
+    color: rgba(255, 255, 255, 0.75);
+  
+    margin: 5px 0 0;
+  }
+  
+  
+  /* =========================================
+     HOVER
+  ========================================= */
+  
+  .tarotCardScene:not(.revealed):hover .tarotCardFlip {
+    transform: translateY(-10px) rotateY(0deg);
+  }
+  
+  
+  .tarotCardScene.revealed:hover .tarotCardFlip {
+    transform: translateY(-10px) rotateY(180deg);
+  }
+  
+  
+  /* =========================================
+     REVEAL HINT
+  ========================================= */
+  
+  .cardRevealHint {
+    text-align: center;
+  
+    color: rgba(255, 255, 255, 0.65);
+  
+    font-size: 14px;
+  
+    margin-top: -10px;
+  }
+  
+  
+  /* =========================================
+     ANIMATION
+  ========================================= */
+  
+  @keyframes oraclePulse {
+  
+    0%,
+    100% {
+      transform: scale(1);
+  
+      opacity: 0.8;
+    }
+  
+    50% {
+      transform: scale(1.12);
+  
+      opacity: 1;
+    }
+  }
+  
+  
+  /* =========================================
+     MOBILE
+  ========================================= */
+  
+  @media (max-width: 600px) {
+  
+    .cardsContainer {
+      gap: 25px;
+    }
+  
+    .tarotCardScene {
+      width: 190px;
+      height: 300px;
+    }
+  
+  }

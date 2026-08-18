@@ -1,0 +1,363 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&display=swap');
+
+/* ===========================
+   ORACLE PAGE
+=========================== */
+
+.oracle{
+    width:100%;
+    min-height:100vh;
+
+    background-image:url("../assets/images/oracle.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Dark mystical overlay */
+
+.oracleOverlay{
+
+    width:100%;
+    min-height:100vh;
+
+    background:rgba(8,3,25,.63);
+
+    display:flex;
+    flex-direction:column;
+
+    justify-content:center;
+    align-items:center;
+
+    padding:60px 20px;
+
+    backdrop-filter:blur(2px);
+}
+
+
+/* ===========================
+   TITLE
+=========================== */
+
+.oracleTitle{
+
+    font-family:"Great Vibes",cursive;
+
+    font-size:78px;
+
+    color:#FFD700;
+
+    margin-bottom:18px;
+
+    text-align:center;
+
+    text-shadow:
+        0 0 10px gold,
+        0 0 25px #ffcf33,
+        0 0 45px gold;
+}
+
+
+/* ===========================
+   SUBTITLE
+=========================== */
+
+.oracleSubtitle{
+
+    width:760px;
+
+    max-width:90%;
+
+    color:white;
+
+    text-align:center;
+
+    font-size:21px;
+
+    line-height:1.8;
+
+    margin-bottom:70px;
+
+    font-family:"Cinzel",serif;
+
+    text-shadow:0 0 10px rgba(255,255,255,.25);
+
+}
+
+
+/* ===========================
+   CARDS CONTAINER
+=========================== */
+
+.oracleCards{
+
+    display:flex;
+
+    gap:70px;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+
+/* ===========================
+   INDIVIDUAL CARD
+=========================== */
+
+.oracleCard{
+
+    width:340px;
+
+    min-height:430px;
+
+    padding:40px;
+
+    border-radius:28px;
+
+    background:rgba(28,12,60,.45);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,215,0,.35);
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    text-align:center;
+
+    transition:.45s;
+
+    box-shadow:
+        0 0 18px rgba(255,215,0,.12);
+
+}
+
+
+/* Hover Animation */
+
+.oracleCard:hover{
+
+    transform:
+        translateY(-12px)
+        scale(1.03);
+
+    border-color:#FFD700;
+
+    box-shadow:
+        0 0 20px gold,
+        0 0 45px rgba(255,215,0,.45),
+        0 0 70px rgba(255,215,0,.18);
+
+}
+
+
+/* ===========================
+   ICON
+=========================== */
+
+.icon{
+
+    font-size:72px;
+
+    margin-bottom:15px;
+
+    animation:float 3.5s ease-in-out infinite;
+
+    filter:drop-shadow(0 0 12px gold);
+
+}
+
+
+/* ===========================
+   CARD TITLE
+=========================== */
+
+.oracleCard h2{
+
+    color:#FFD700;
+
+    font-family:"Cinzel",serif;
+
+    margin-bottom:20px;
+
+    font-size:32px;
+
+}
+
+
+/* ===========================
+   CARD TEXT
+=========================== */
+
+.oracleCard p{
+
+    color:white;
+
+    line-height:1.8;
+
+    font-size:18px;
+
+    margin-bottom:35px;
+
+}
+
+
+/* ===========================
+   GOLD BUTTON
+=========================== */
+
+.oracleButton{
+
+    background:
+        linear-gradient(
+            135deg,
+            #8d5b00,
+            #FFD700,
+            #fff1aa
+        );
+
+    color:#1b0b33;
+
+    font-size:18px;
+
+    font-weight:bold;
+
+    border:none;
+
+    border-radius:40px;
+
+    padding:15px 34px;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+}
+
+
+.oracleButton:hover{
+
+    transform:scale(1.07);
+
+    box-shadow:
+        0 0 18px gold,
+        0 0 45px rgba(255,215,0,.65);
+
+}
+
+
+/* ===========================
+   BACK BUTTON
+=========================== */
+
+.backButton{
+
+    margin-top:70px;
+
+    background:transparent;
+
+    color:#FFD700;
+
+    border:2px solid #FFD700;
+
+    padding:14px 32px;
+
+    border-radius:40px;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    transition:.35s;
+
+}
+
+
+.backButton:hover{
+
+    background:#FFD700;
+
+    color:#1b0938;
+
+    box-shadow:
+        0 0 25px gold;
+
+}
+
+
+/* ===========================
+   FLOATING ICON
+=========================== */
+
+@keyframes float{
+
+    0%{
+
+        transform:translateY(0px);
+
+    }
+
+    50%{
+
+        transform:translateY(-12px);
+
+    }
+
+    100%{
+
+        transform:translateY(0px);
+
+    }
+
+}
+
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:900px){
+
+    .oracleTitle{
+
+        font-size:56px;
+
+    }
+
+    .oracleSubtitle{
+
+        width:90%;
+
+        font-size:18px;
+
+    }
+
+    .oracleCards{
+
+        flex-direction:column;
+
+        gap:40px;
+
+    }
+
+    .oracleCard{
+
+        width:90%;
+
+        max-width:360px;
+
+    }
+
+}

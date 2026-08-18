@@ -1,0 +1,462 @@
+/* ================================
+   AI INSIGHTS PAGE
+================================ */
+
+.aiInsightsPage {
+    min-height: 100vh;
+    padding: 110px 70px 70px;
+    background:
+      radial-gradient(circle at 50% 10%, rgba(132, 76, 190, 0.18), transparent 35%),
+      linear-gradient(135deg, #0d0b16 0%, #141020 50%, #0b0912 100%);
+    color: #f5efff;
+    box-sizing: border-box;
+  }
+  
+  
+  /* ================================
+     BACK BUTTON
+  ================================ */
+  
+  .aiBackBtn {
+    position: absolute;
+    top: 90px;
+    left: 55px;
+  
+    padding: 10px 18px;
+    border: 1px solid rgba(190, 145, 255, 0.3);
+    border-radius: 10px;
+  
+    background: rgba(255, 255, 255, 0.05);
+    color: #d9c9f5;
+  
+    font-size: 14px;
+    cursor: pointer;
+  
+    transition: all 0.25s ease;
+  }
+  
+  .aiBackBtn:hover {
+    background: rgba(174, 117, 255, 0.15);
+    border-color: rgba(200, 160, 255, 0.6);
+    transform: translateX(-3px);
+  }
+  
+  
+  /* ================================
+     MAIN CONTENT
+  ================================ */
+  
+  .aiInsightsContent {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+  }
+  
+  
+  /* ================================
+     HEADER
+  ================================ */
+  
+  .aiHeader {
+    text-align: center;
+    margin-bottom: 55px;
+  }
+  
+  .aiIcon {
+    width: 64px;
+    height: 64px;
+  
+    margin: 0 auto 18px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    border-radius: 50%;
+  
+    background: radial-gradient(
+      circle,
+      rgba(191, 133, 255, 0.25),
+      rgba(96, 50, 150, 0.08)
+    );
+  
+    border: 1px solid rgba(201, 158, 255, 0.35);
+  
+    color: #d7aaff;
+    font-size: 30px;
+  
+    box-shadow:
+      0 0 30px rgba(157, 92, 225, 0.2),
+      inset 0 0 20px rgba(255, 255, 255, 0.04);
+  }
+  
+  .aiHeader h1 {
+    margin: 0;
+  
+    font-size: 48px;
+    font-weight: 600;
+    letter-spacing: -1px;
+    padding: 6px 0 10px;
+    line-height: 2.1;
+  
+    background: linear-gradient(
+      90deg,
+      #f4eaff,
+      #cba5ff,
+      #f0ddff
+    );
+  
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .aiHeader p {
+    margin: 14px auto 0;
+  
+    max-width: 650px;
+  
+    color: #aaa0b9;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  
+  
+  /* ================================
+     GENERATE CARD
+  ================================ */
+  
+  .generateCard {
+    max-width: 650px;
+  
+    margin: 0 auto;
+  
+    padding: 55px 45px;
+  
+    text-align: center;
+  
+    border-radius: 24px;
+  
+    background:
+      linear-gradient(
+        145deg,
+        rgba(115, 69, 160, 0.18),
+        rgba(27, 20, 39, 0.75)
+      );
+  
+    border: 1px solid rgba(189, 143, 255, 0.22);
+  
+    box-shadow:
+      0 25px 70px rgba(0, 0, 0, 0.35),
+      inset 0 1px rgba(255, 255, 255, 0.05);
+  
+    backdrop-filter: blur(12px);
+  }
+  
+  .generateIcon {
+    font-size: 50px;
+    margin-bottom: 20px;
+  
+    filter: drop-shadow(
+      0 0 15px rgba(191, 126, 255, 0.45)
+    );
+  }
+  
+  .generateCard h2 {
+    margin-bottom: 14px;
+  
+    font-size: 26px;
+    font-weight: 500;
+  }
+  
+  .generateCard p {
+    max-width: 520px;
+  
+    margin: 0 auto 30px;
+  
+    color: #aaa1b7;
+  
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  
+  
+  /* ================================
+     GENERATE BUTTON
+  ================================ */
+  
+  .generateInsightsBtn,
+  .regenerateBtn {
+    border: none;
+    border-radius: 12px;
+  
+    padding: 13px 25px;
+  
+    background: linear-gradient(
+      135deg,
+      #9d5de8,
+      #6d3bb1
+    );
+  
+    color: white;
+  
+    font-size: 14px;
+    font-weight: 500;
+  
+    cursor: pointer;
+  
+    box-shadow:
+      0 8px 25px rgba(122, 65, 185, 0.25);
+  
+    transition: all 0.25s ease;
+  }
+  
+  .generateInsightsBtn:hover,
+  .regenerateBtn:hover {
+    transform: translateY(-2px);
+  
+    box-shadow:
+      0 12px 30px rgba(144, 83, 215, 0.4);
+  
+    background: linear-gradient(
+      135deg,
+      #aa6af0,
+      #7845bf
+    );
+  }
+  
+  .generateInsightsBtn:disabled,
+  .regenerateBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  
+  /* ================================
+     INSIGHTS GRID
+  ================================ */
+  
+  .insightsContainer {
+    display: grid;
+  
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  
+    gap: 22px;
+  
+    margin-top: 20px;
+  }
+  
+  
+  /* ================================
+     INSIGHT CARDS
+  ================================ */
+  
+  .insightCard {
+    position: relative;
+  
+    padding: 30px;
+  
+    min-height: 210px;
+  
+    border-radius: 20px;
+  
+    background:
+      linear-gradient(
+        145deg,
+        rgba(80, 51, 111, 0.22),
+        rgba(22, 17, 32, 0.82)
+      );
+  
+    border: 1px solid rgba(190, 145, 255, 0.18);
+  
+    box-shadow:
+      0 15px 40px rgba(0, 0, 0, 0.25),
+      inset 0 1px rgba(255, 255, 255, 0.04);
+  
+    transition:
+      transform 0.25s ease,
+      border-color 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  
+  .insightCard:hover {
+    transform: translateY(-5px);
+  
+    border-color: rgba(198, 153, 255, 0.4);
+  
+    box-shadow:
+      0 20px 45px rgba(0, 0, 0, 0.35),
+      0 0 25px rgba(134, 73, 194, 0.08);
+  }
+  
+  .insightIcon {
+    display: block;
+  
+    margin-bottom: 15px;
+  
+    font-size: 28px;
+  
+    filter: drop-shadow(
+      0 0 8px rgba(207, 160, 255, 0.25)
+    );
+  }
+  
+  .insightCard h2 {
+    margin: 0 0 12px;
+  
+    font-size: 21px;
+    font-weight: 500;
+  
+    color: #e9d8ff;
+  }
+  
+  .insightCard p {
+    margin: 0;
+  
+    color: #b8afc3;
+  
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  
+  
+  /* ================================
+     OVERALL INSIGHT
+  ================================ */
+  
+  .overallInsight {
+    grid-column: 1 / -1;
+  
+    padding: 35px 40px;
+  
+    border-radius: 22px;
+  
+    background:
+      radial-gradient(
+        circle at 50% 0%,
+        rgba(144, 79, 200, 0.2),
+        transparent 60%
+      ),
+      rgba(26, 18, 37, 0.9);
+  
+    border: 1px solid rgba(208, 164, 255, 0.3);
+  
+    box-shadow:
+      0 20px 55px rgba(0, 0, 0, 0.3),
+      inset 0 1px rgba(255, 255, 255, 0.05);
+  
+    text-align: center;
+  }
+  
+  .overallInsight h2 {
+    margin: 0 0 18px;
+  
+    font-size: 24px;
+    font-weight: 500;
+  
+    color: #e8d3ff;
+  }
+  
+  .overallInsight p {
+    max-width: 800px;
+  
+    margin: 0 auto;
+  
+    color: #c1b6cc;
+  
+    font-size: 15px;
+    line-height: 1.9;
+  }
+  
+  
+  /* ================================
+     REGENERATE
+  ================================ */
+  
+  .regenerateBtn {
+    grid-column: 1 / -1;
+  
+    justify-self: center;
+  
+    margin-top: 8px;
+  }
+  
+  
+  /* ================================
+     DISCLAIMER
+  ================================ */
+  
+  .aiDisclaimer {
+    margin: 45px auto 0;
+  
+    max-width: 700px;
+  
+    text-align: center;
+  
+    color: #777080;
+  
+    font-size: 12px;
+  
+    line-height: 1.7;
+  }
+  
+  
+  /* ================================
+     RESPONSIVE
+  ================================ */
+  
+  @media (max-width: 800px) {
+  
+    .aiInsightsPage {
+      padding: 100px 25px 50px;
+    }
+  
+    .aiBackBtn {
+      left: 25px;
+      top: 75px;
+    }
+  
+    .aiHeader h1 {
+      font-size: 38px;
+    }
+  
+    .insightsContainer {
+      grid-template-columns: 1fr;
+    }
+  
+    .overallInsight {
+      grid-column: auto;
+    }
+  
+    .regenerateBtn {
+      grid-column: auto;
+    }
+  
+    .generateCard {
+      padding: 40px 25px;
+    }
+  }
+  
+  
+  @media (max-width: 500px) {
+  
+    .aiHeader h1 {
+      font-size: 32px;
+    }
+  
+    .aiHeader p {
+      font-size: 14px;
+    }
+  
+    .insightCard {
+      padding: 25px;
+    }
+  
+    .overallInsight {
+      padding: 28px 22px;
+    }
+  
+    .aiBackBtn {
+      font-size: 13px;
+      padding: 8px 14px;
+    }
+  }

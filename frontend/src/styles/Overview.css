@@ -1,0 +1,566 @@
+/* =========================================
+   ORACLE OVERVIEW
+========================================= */
+
+.overviewPage {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  
+    color: #f5efff;
+  
+    background:
+      radial-gradient(
+        circle at 50% 25%,
+        rgba(105, 48, 160, 0.22),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at 10% 80%,
+        rgba(76, 35, 125, 0.18),
+        transparent 25%
+      ),
+      radial-gradient(
+        circle at 90% 15%,
+        rgba(137, 70, 185, 0.14),
+        transparent 25%
+      ),
+      #0b0813;
+  }
+  
+  
+  /* =========================================
+     COSMIC DECORATION
+  ========================================= */
+  
+  .overviewPage::before {
+    content: "";
+    position: absolute;
+  
+    width: 720px;
+    height: 720px;
+  
+    left: 50%;
+    top: 38%;
+  
+    transform: translate(-50%, -50%);
+  
+    border: 1px solid rgba(190, 135, 255, 0.12);
+    border-radius: 50%;
+  
+    box-shadow:
+      0 0 80px rgba(150, 80, 220, 0.08),
+      inset 0 0 80px rgba(150, 80, 220, 0.06);
+  
+    pointer-events: none;
+  }
+  
+  .overviewPage::after {
+    content: "✦   ·      ✧        ·   ✦        ·      ✧";
+  
+    position: absolute;
+  
+    width: 100%;
+    top: 120px;
+    left: 0;
+  
+    text-align: center;
+  
+    color: rgba(218, 183, 255, 0.35);
+  
+    font-size: 14px;
+    letter-spacing: 28px;
+  
+    pointer-events: none;
+  }
+  
+  
+  /* =========================================
+     BACK BUTTON
+  ========================================= */
+  
+  .overviewBackBtn {
+    position: relative;
+    z-index: 5;
+  
+    margin: 32px 0 0 48px;
+  
+    padding: 10px 18px;
+  
+    border: 1px solid rgba(196, 146, 255, 0.35);
+    border-radius: 10px;
+  
+    background: rgba(25, 16, 38, 0.65);
+  
+    color: #ddd0ec;
+  
+    font-size: 14px;
+  
+    cursor: pointer;
+  
+    transition:
+      transform 0.25s ease,
+      border-color 0.25s ease,
+      background 0.25s ease,
+      box-shadow 0.25s ease;
+  }
+  
+  .overviewBackBtn:hover {
+    transform: translateX(-3px);
+  
+    border-color: rgba(207, 158, 255, 0.8);
+  
+    background: rgba(55, 31, 79, 0.75);
+  
+    box-shadow: 0 0 20px rgba(170, 95, 240, 0.2);
+  }
+  
+  
+  /* =========================================
+     MAIN CONTENT
+  ========================================= */
+  
+  .overviewContent {
+    position: relative;
+    z-index: 2;
+  
+    width: min(1100px, 90%);
+  
+    margin: 30px auto 80px;
+  
+    text-align: center;
+  }
+  
+  
+  /* =========================================
+     HEADER
+  ========================================= */
+  
+  .overviewHeader {
+    position: relative;
+  
+    margin-bottom: 55px;
+  }
+  
+  .overviewIcon {
+    width: 62px;
+    height: 62px;
+  
+    margin: 0 auto 18px;
+  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    border: 1px solid rgba(207, 155, 255, 0.45);
+  
+    border-radius: 50%;
+  
+    background:
+      radial-gradient(
+        circle,
+        rgba(163, 86, 230, 0.35),
+        rgba(37, 18, 55, 0.5)
+      );
+  
+    color: #e2b8ff;
+  
+    font-size: 27px;
+  
+    box-shadow:
+      0 0 30px rgba(174, 88, 239, 0.2),
+      inset 0 0 20px rgba(205, 143, 255, 0.1);
+  
+    animation: oraclePulse 4s ease-in-out infinite;
+  }
+  
+  .overviewHeader h1 {
+    margin: 0;
+  
+    font-size: 46px;
+  
+    font-weight: 500;
+  
+    letter-spacing: -1px;
+    padding: 6px 0 10px;
+    line-height: 2.1;
+  
+    background: linear-gradient(
+      90deg,
+      #f4eaff,
+      #c99aff,
+      #f1dcff
+    );
+  
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .overviewHeader p {
+    width: min(650px, 90%);
+  
+    margin: 14px auto 0;
+  
+    color: #a99db6;
+  
+    font-size: 16px;
+  
+    line-height: 1.7;
+  }
+  
+  
+  /* =========================================
+     ORACLE STATS
+  ========================================= */
+  
+  .overviewStats {
+    display: flex;
+  
+    justify-content: center;
+    align-items: center;
+  
+    gap: 70px;
+  
+    margin-bottom: 65px;
+  }
+  
+  .overviewStatCard {
+    position: relative;
+  
+    width: 150px;
+    height: 150px;
+  
+    display: flex;
+    flex-direction: column;
+  
+    align-items: center;
+    justify-content: center;
+  
+    border-radius: 50%;
+  
+    background:
+      radial-gradient(
+        circle at 50% 45%,
+        rgba(98, 48, 135, 0.35),
+        rgba(20, 12, 29, 0.75) 65%
+      );
+  
+    border: 1px solid rgba(185, 127, 240, 0.25);
+  
+    box-shadow:
+      0 0 35px rgba(137, 65, 196, 0.08),
+      inset 0 0 30px rgba(170, 91, 229, 0.06);
+  
+    transition:
+      transform 0.35s ease,
+      border-color 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+  
+  .overviewStatCard::before {
+    content: "";
+  
+    position: absolute;
+  
+    inset: -8px;
+  
+    border-radius: 50%;
+  
+    border: 1px dashed rgba(193, 143, 245, 0.15);
+  
+    transition: transform 0.5s ease;
+  }
+  
+  .overviewStatCard:hover {
+    transform: translateY(-8px);
+  
+    border-color: rgba(207, 158, 255, 0.65);
+  
+    box-shadow:
+      0 0 45px rgba(154, 76, 218, 0.22),
+      inset 0 0 30px rgba(170, 91, 229, 0.1);
+  }
+  
+  .overviewStatCard:hover::before {
+    transform: rotate(25deg);
+  }
+  
+  .overviewStatCard span {
+    font-size: 22px;
+  
+    margin-bottom: 4px;
+  }
+  
+  .overviewStatCard h2 {
+    margin: 0;
+  
+    font-size: 34px;
+  
+    font-weight: 500;
+  
+    color: #ead5ff;
+  }
+  
+  .overviewStatCard p {
+    margin: 3px 0 0;
+  
+    color: #968a9f;
+  
+    font-size: 12px;
+  
+    letter-spacing: 0.5px;
+  }
+  
+  
+  /* =========================================
+     ACTION AREA
+  ========================================= */
+  
+  .overviewActions {
+    position: relative;
+  
+    display: grid;
+  
+    grid-template-columns: repeat(2, 1fr);
+  
+    gap: 22px;
+  
+    max-width: 850px;
+  
+    margin: 0 auto;
+  }
+  
+  
+  /* =========================================
+     ACTION "PORTALS"
+  ========================================= */
+  
+  .overviewActionCard {
+    position: relative;
+  
+    min-height: 185px;
+  
+    padding: 30px 32px;
+  
+    text-align: left;
+  
+    cursor: pointer;
+  
+    overflow: hidden;
+  
+    border: 1px solid rgba(188, 132, 240, 0.18);
+  
+    border-radius: 22px;
+  
+    background:
+      linear-gradient(
+        135deg,
+        rgba(43, 25, 58, 0.8),
+        rgba(17, 11, 24, 0.9)
+      );
+  
+    box-shadow:
+      0 15px 45px rgba(0, 0, 0, 0.22);
+  
+    transition:
+      transform 0.35s ease,
+      border-color 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+  
+  
+  /* diagonal glow */
+  
+  .overviewActionCard::before {
+    content: "";
+  
+    position: absolute;
+  
+    width: 180px;
+    height: 180px;
+  
+    right: -70px;
+    bottom: -80px;
+  
+    border-radius: 50%;
+  
+    background: rgba(161, 83, 225, 0.16);
+  
+    filter: blur(15px);
+  
+    transition: transform 0.5s ease;
+  }
+  
+  
+  /* decorative orbit */
+  
+  .overviewActionCard::after {
+    content: "✧";
+  
+    position: absolute;
+  
+    right: 24px;
+    top: 20px;
+  
+    color: rgba(210, 163, 255, 0.3);
+  
+    font-size: 22px;
+  
+    transition:
+      transform 0.5s ease,
+      color 0.3s ease;
+  }
+  
+  .overviewActionCard:hover {
+    transform: translateY(-7px) scale(1.01);
+  
+    border-color: rgba(205, 155, 255, 0.5);
+  
+    box-shadow:
+      0 18px 50px rgba(93, 39, 130, 0.2),
+      0 0 25px rgba(155, 78, 218, 0.08);
+  }
+  
+  .overviewActionCard:hover::before {
+    transform: scale(1.5);
+  }
+  
+  .overviewActionCard:hover::after {
+    transform: rotate(90deg) scale(1.25);
+  
+    color: #d7aaff;
+  }
+  
+  
+  /* =========================================
+     ACTION CONTENT
+  ========================================= */
+  
+  .actionIcon {
+    display: inline-flex;
+  
+    width: 45px;
+    height: 45px;
+  
+    align-items: center;
+    justify-content: center;
+  
+    margin-bottom: 15px;
+  
+    border-radius: 14px;
+  
+    background: rgba(155, 82, 211, 0.13);
+  
+    border: 1px solid rgba(192, 135, 242, 0.18);
+  
+    font-size: 21px;
+  }
+  
+  .overviewActionCard h2 {
+    margin: 0 0 8px;
+  
+    font-size: 20px;
+  
+    font-weight: 500;
+  
+    color: #eee3f7;
+  }
+  
+  .overviewActionCard p {
+    max-width: 330px;
+  
+    margin: 0 0 18px;
+  
+    color: #9e93a8;
+  
+    font-size: 13px;
+  
+    line-height: 1.6;
+  }
+  
+  .actionLink {
+    color: #c999ef;
+  
+    font-size: 13px;
+  
+    transition: color 0.25s ease;
+  }
+  
+  .overviewActionCard:hover .actionLink {
+    color: #e1c0ff;
+  }
+  
+  
+  /* =========================================
+     ANIMATION
+  ========================================= */
+  
+  @keyframes oraclePulse {
+    0%,
+    100% {
+      transform: scale(1);
+  
+      box-shadow:
+        0 0 30px rgba(174, 88, 239, 0.18),
+        inset 0 0 20px rgba(205, 143, 255, 0.08);
+    }
+  
+    50% {
+      transform: scale(1.04);
+  
+      box-shadow:
+        0 0 45px rgba(174, 88, 239, 0.3),
+        inset 0 0 25px rgba(205, 143, 255, 0.13);
+    }
+  }
+  
+  
+  /* =========================================
+     RESPONSIVE
+  ========================================= */
+  
+  @media (max-width: 800px) {
+  
+    .overviewStats {
+      gap: 25px;
+    }
+  
+    .overviewStatCard {
+      width: 125px;
+      height: 125px;
+    }
+  
+    .overviewActions {
+      grid-template-columns: 1fr;
+    }
+  
+  }
+  
+  @media (max-width: 600px) {
+  
+    .overviewBackBtn {
+      margin-left: 20px;
+    }
+  
+    .overviewHeader h1 {
+      font-size: 34px;
+    }
+  
+    .overviewStats {
+      gap: 15px;
+    }
+  
+    .overviewStatCard {
+      width: 100px;
+      height: 100px;
+    }
+  
+    .overviewStatCard h2 {
+      font-size: 26px;
+    }
+  
+    .overviewStatCard p {
+      font-size: 10px;
+    }
+  
+  }

@@ -1,0 +1,96 @@
+.tarotInfoPage {
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+  
+    background:
+      radial-gradient(circle at 80% 20%, rgba(95, 70, 150, 0.18), transparent 40%),
+      #08070d;
+  
+    color: #eee;
+  
+    padding: 100px 10% 60px;
+  
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  .tarotBackBtn {
+    position: absolute;
+    top: 30px;
+    left: 35px;
+  
+    background: transparent;
+    border: 1px solid rgba(214, 184, 102, 0.5);
+    color: #d6b866;
+  
+    padding: 10px 20px;
+    border-radius: 25px;
+  
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .tarotBackBtn:hover {
+    background: rgba(214, 184, 102, 0.1);
+    box-shadow: 0 0 15px rgba(214, 184, 102, 0.25);
+  }
+  
+  .tarotInfoContent {
+    max-width: 950px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .tarotInfoTitle {
+    font-family: "Cinzel", serif;
+    font-size: 48px;
+    color: #d6b866;
+    margin-bottom: 20px;
+  }
+  
+  .tarotInfoIntro {
+    color: #c9c6cf;
+    font-size: 18px;
+    line-height: 1.8;
+    margin-bottom: 45px;
+  }
+  
+  .tarotSteps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+  
+  .tarotStep {
+    padding: 28px 22px;
+  
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(214, 184, 102, 0.2);
+  
+    border-radius: 18px;
+  
+    transition: 0.3s;
+  }
+  
+  .tarotStep:hover {
+    transform: translateY(-6px);
+    border-color: rgba(214, 184, 102, 0.5);
+    box-shadow: 0 10px 30px rgba(100, 70, 170, 0.08);
+  }
+  
+  .tarotStep span {
+    font-size: 32px;
+  }
+  
+  .tarotStep h2 {
+    color: #d6b866;
+    font-family: "Cinzel", serif;
+    font-size: 20px;
+    margin: 15px 0;
+  }
+  
+  .tarotStep p {
+    color: #c5c2ca;
+    line-height: 1.7;
+  }

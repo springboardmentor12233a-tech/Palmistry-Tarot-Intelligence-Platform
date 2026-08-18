@@ -1,0 +1,478 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&display=swap');
+
+/*
+   PAGE
+*/
+
+.palmPage{
+
+    width:100%;
+    min-height:100vh;
+
+    background-image:url("../assets/images/oracle.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+}
+
+/*
+   OVERLAY
+*/
+
+.palmOverlay{
+
+    width:100%;
+    min-height:100vh;
+
+    background:rgba(8,3,25,.68);
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+
+    padding:50px 20px 80px;
+
+}
+
+/* ===========================
+   BACK BUTTON
+=========================== */
+
+.backBtn{
+
+    align-self:flex-start;
+
+    margin-left:40px;
+
+    background:transparent;
+
+    color:#FFD700;
+
+    border:2px solid #FFD700;
+
+    padding:12px 28px;
+
+    border-radius:30px;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+    font-size:17px;
+
+}
+
+.backBtn:hover{
+
+    background:#FFD700;
+
+    color:#23083d;
+
+    box-shadow:0 0 20px gold;
+
+}
+
+/* ===========================
+   TITLE
+=========================== */
+
+.palmTitle{
+
+    font-family:"Great Vibes",cursive;
+
+    font-size:70px;
+
+    color:#FFD700;
+
+    margin-top:20px;
+
+    text-shadow:
+        0 0 10px gold,
+        0 0 25px orange,
+        0 0 50px gold;
+
+}
+
+/* ===========================
+   SUBTITLE
+=========================== */
+
+.palmSubtitle{
+
+    width:720px;
+
+    max-width:90%;
+
+    text-align:center;
+
+    color:white;
+
+    font-size:20px;
+
+    line-height:1.8;
+
+    margin:20px 0 45px;
+
+}
+
+/* ===========================
+   UPLOAD BOX
+=========================== */
+
+.uploadBox{
+
+    width:550px;
+
+    max-width:95%;
+
+    padding:50px;
+
+    border-radius:25px;
+
+    border:2px dashed rgba(255,215,0,.6);
+
+    background:rgba(25,12,55,.55);
+
+    backdrop-filter:blur(15px);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    transition:.4s;
+
+}
+
+.uploadBox:hover{
+
+    border-color:#FFD700;
+
+    box-shadow:
+        0 0 25px rgba(255,215,0,.45);
+
+}
+
+.uploadIcon{
+
+    font-size:80px;
+
+    margin-bottom:20px;
+
+    filter:drop-shadow(0 0 15px gold);
+
+    animation:floatPalm 3s ease-in-out infinite;
+
+}
+
+.uploadBox input{
+
+    color:white;
+
+    font-size:16px;
+
+}
+.analyzeBtn{
+
+    margin-top:35px;
+
+    background:linear-gradient(135deg,#996300,#FFD700,#fff2a8);
+
+    border:none;
+
+    color:#2c103d;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    padding:16px 45px;
+
+    border-radius:40px;
+
+    cursor:pointer;
+
+    transition:.35s;
+
+}
+
+.analyzeBtn:hover{
+
+    transform:translateY(-5px);
+
+    box-shadow:
+        0 0 20px gold,
+        0 0 40px rgba(255,215,0,.5);
+
+}
+/* ===========================
+   PDF DOWNLOAD BUTTON
+=========================== */
+
+.downloadBtn {
+    margin-top: 35px;
+
+    background: linear-gradient(
+        135deg,
+        #8b5a00,
+        #ffd700,
+        #fff0a3
+    );
+
+    color: #24102f;
+
+    border: none;
+
+    padding: 15px 35px;
+
+    border-radius: 35px;
+
+    font-family: "Cinzel", serif;
+
+    font-size: 17px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: 0.35s;
+
+    box-shadow:
+        0 0 10px rgba(255, 215, 0, 0.35);
+}
+
+.downloadBtn:hover {
+
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 0 15px gold,
+        0 0 35px rgba(255, 215, 0, 0.55);
+
+}
+
+/* ===========================
+   IMAGE CARD
+=========================== */
+
+.previewCard{
+
+    margin-top:55px;
+
+    background:rgba(30,15,65,.55);
+
+    backdrop-filter:blur(18px);
+
+    border:1px solid rgba(255,215,0,.35);
+
+    border-radius:25px;
+
+    padding:30px;
+
+    text-align:center;
+
+    width:420px;
+
+    max-width:95%;
+
+}
+
+.previewCard h2{
+
+    color:#FFD700;
+
+    margin-bottom:20px;
+
+}
+
+.previewImage{
+
+    width:100%;
+
+    border-radius:18px;
+
+}
+
+/* ===========================
+   RESULT CARDS
+=========================== */
+
+.lineCards{
+
+    margin-top:50px;
+
+    display:flex;
+
+    gap:25px;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+}
+
+.lineCard{
+
+    width:240px;
+
+    padding:25px;
+
+    text-align:center;
+
+    background:rgba(28,14,60,.55);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:22px;
+
+    border:1px solid rgba(255,215,0,.35);
+
+    transition:.35s;
+
+}
+
+.lineCard:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:
+        0 0 20px rgba(255,215,0,.4);
+
+}
+
+.lineCard h3{
+
+    color:#FFD700;
+
+    margin-bottom:18px;
+
+}
+
+.lineCard p{
+
+    color:white;
+
+    font-size:22px;
+
+    font-weight:bold;
+
+}
+
+/* ===========================
+   INTERPRETATION
+=========================== */
+
+.interpretationCard{
+
+    width:900px;
+
+    max-width:92%;
+
+    margin-top:50px;
+
+    padding:35px;
+
+    background:rgba(28,14,60,.58);
+
+    backdrop-filter:blur(18px);
+
+    border-radius:28px;
+
+    border:1px solid rgba(255,215,0,.35);
+
+}
+
+.interpretationCard h2{
+
+    color:#FFD700;
+
+    margin-bottom:25px;
+
+    text-align:center;
+
+}
+
+.interpretationCard p{
+
+    color:white;
+
+    line-height:2;
+
+    white-space:pre-wrap;
+
+    font-size:18px;
+
+}
+
+/* ===========================
+   FLOATING HAND
+=========================== */
+
+@keyframes floatPalm{
+
+    0%{
+
+        transform:translateY(0px);
+
+    }
+
+    50%{
+
+        transform:translateY(-10px);
+
+    }
+
+    100%{
+
+        transform:translateY(0px);
+
+    }
+
+}
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media(max-width:900px){
+
+    .palmTitle{
+
+        font-size:50px;
+
+    }
+
+    .palmSubtitle{
+
+        width:95%;
+
+        font-size:18px;
+
+    }
+
+    .uploadBox{
+
+        width:95%;
+
+    }
+
+    .lineCards{
+
+        flex-direction:column;
+
+        align-items:center;
+
+    }
+
+    .lineCard{
+
+        width:90%;
+
+        max-width:320px;
+
+    }
+}

@@ -1,0 +1,37 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f5f5;
+}
+h1{
+  color:black;
+}
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  text-align: center;
+}
+
+input {
+  margin-top: 20px;
+}
+
+button {
+  padding: 12px 24px;
+  border: none;
+  background: #4caf50;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #388e3c;
+}
+
+.preview img {
+  margin-top: 20px;
+  border-radius: 10px;
+  max-width: 100%;
+}

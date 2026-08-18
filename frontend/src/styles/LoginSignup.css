@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Inter:wght@400;500;600&display=swap');
+
+.authPage {
+  min-height: 100vh;
+  width: 100%;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(173, 133, 52, 0.08), transparent 35%),
+    #09090d;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  font-family: "Inter", sans-serif;
+}
+
+/* Subtle mystical glow */
+.authPage::before {
+  content: "";
+  position: absolute;
+  width: 650px;
+  height: 650px;
+  border: 1px solid rgba(212, 175, 85, 0.12);
+  border-radius: 50%;
+  box-shadow:
+    0 0 80px rgba(212, 175, 85, 0.05),
+    inset 0 0 80px rgba(212, 175, 85, 0.03);
+}
+
+/* Login card */
+
+.authCard {
+  position: relative;
+  width: 400px;
+  padding: 48px 45px;
+  background: rgba(20, 20, 25, 0.94);
+  border: 1px solid rgba(212, 175, 85, 0.28);
+  border-radius: 18px;
+  box-shadow:
+    0 20px 70px rgba(0, 0, 0, 0.6),
+    0 0 35px rgba(212, 175, 85, 0.06);
+  text-align: center;
+  z-index: 2;
+}
+
+.authCard h1 {
+  font-family: "Cinzel", serif;
+  font-size: 30px;
+  font-weight: 500;
+  color: #d6b866;
+  margin-bottom: 12px;
+  letter-spacing: 1px;
+}
+
+.authCard > p {
+  color: #aaa7a0;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+/* Inputs */
+
+.authCard form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.authCard input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 16px;
+  background: #111116;
+  border: 1px solid #35353c;
+  border-radius: 8px;
+  color: #f4f1e8;
+  font-size: 14px;
+  outline: none;
+  transition: 0.25s ease;
+}
+
+.authCard input::placeholder {
+  color: #77757a;
+}
+
+.authCard input:focus {
+  border-color: #c9a957;
+  box-shadow: 0 0 12px rgba(201, 169, 87, 0.12);
+}
+
+/* Main button */
+
+.authButton {
+  margin-top: 8px;
+  padding: 15px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    #b08b3c,
+    #d6b866
+  );
+  color: #111;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.authButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(214, 184, 102, 0.2);
+}
+
+/* Login / Signup switch */
+
+.switchAuth {
+  margin-top: 24px;
+  background: none;
+  border: none;
+  color: #bfa663;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.switchAuth:hover {
+  color: #e0c77d;
+  text-decoration: underline;
+}
+
+/* Back button */
+
+.authBack {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  color: #85838a;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.authBack:hover {
+  color: #d6b866;
+}
+
+/* Messages */
+
+.authMessage {
+  margin-top: 18px !important;
+  margin-bottom: 0 !important;
+  color: #d6b866 !important;
+  font-size: 13px !important;
+}
+.adminAccessButton{
+    margin-top: 8px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(
+    135deg,
+    #665329,
+    #d6b866
+  );
+  color: #111;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
