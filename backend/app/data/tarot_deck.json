@@ -1,0 +1,996 @@
+{
+  "cards": [
+    {
+      "id": 0,
+      "name": "The Fool",
+      "arcana": "Major",
+      "suit": null,
+      "number": 0,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Beginnings, faith, a leap into the unknown",
+        "reversed": "Recklessness, hesitation, a missed chance"
+      }
+    },
+    {
+      "id": 1,
+      "name": "The Magician",
+      "arcana": "Major",
+      "suit": null,
+      "number": 1,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Willpower, resourcefulness, turning ideas into action",
+        "reversed": "Manipulation, untapped potential, scattered focus"
+      }
+    },
+    {
+      "id": 2,
+      "name": "The High Priestess",
+      "arcana": "Major",
+      "suit": null,
+      "number": 2,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Intuition, hidden knowledge, quiet patience",
+        "reversed": "Ignored instincts, secrets surfacing, disconnection"
+      }
+    },
+    {
+      "id": 3,
+      "name": "The Empress",
+      "arcana": "Major",
+      "suit": null,
+      "number": 3,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Abundance, nurturing, creative growth",
+        "reversed": "Stagnation, overgiving, blocked creativity"
+      }
+    },
+    {
+      "id": 4,
+      "name": "The Emperor",
+      "arcana": "Major",
+      "suit": null,
+      "number": 4,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Structure, authority, steady leadership",
+        "reversed": "Rigidity, control issues, loss of direction"
+      }
+    },
+    {
+      "id": 5,
+      "name": "The Hierophant",
+      "arcana": "Major",
+      "suit": null,
+      "number": 5,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Tradition, guidance, shared values",
+        "reversed": "Breaking convention, questioning belief, restriction"
+      }
+    },
+    {
+      "id": 6,
+      "name": "The Lovers",
+      "arcana": "Major",
+      "suit": null,
+      "number": 6,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Connection, choice, alignment of values",
+        "reversed": "Imbalance, indecision, misaligned partnership"
+      }
+    },
+    {
+      "id": 7,
+      "name": "The Chariot",
+      "arcana": "Major",
+      "suit": null,
+      "number": 7,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Drive, willpower, victory through focus",
+        "reversed": "Loss of direction, aggression, stalled momentum"
+      }
+    },
+    {
+      "id": 8,
+      "name": "Strength",
+      "arcana": "Major",
+      "suit": null,
+      "number": 8,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Courage, patience, quiet inner power",
+        "reversed": "Self-doubt, force over finesse, burnout"
+      }
+    },
+    {
+      "id": 9,
+      "name": "The Hermit",
+      "arcana": "Major",
+      "suit": null,
+      "number": 9,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Reflection, solitude, inner guidance",
+        "reversed": "Isolation, avoidance, refusing help"
+      }
+    },
+    {
+      "id": 10,
+      "name": "Wheel of Fortune",
+      "arcana": "Major",
+      "suit": null,
+      "number": 10,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Cycles, turning points, destiny in motion",
+        "reversed": "Resistance to change, bad timing, feeling stuck"
+      }
+    },
+    {
+      "id": 11,
+      "name": "Justice",
+      "arcana": "Major",
+      "suit": null,
+      "number": 11,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Fairness, truth, cause and effect",
+        "reversed": "Bias, avoidance of accountability, unresolved conflict"
+      }
+    },
+    {
+      "id": 12,
+      "name": "The Hanged Man",
+      "arcana": "Major",
+      "suit": null,
+      "number": 12,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Surrender, new perspective, productive pause",
+        "reversed": "Stalling, martyrdom, resisting the needed pause"
+      }
+    },
+    {
+      "id": 13,
+      "name": "Death",
+      "arcana": "Major",
+      "suit": null,
+      "number": 13,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Transformation, closure, necessary endings",
+        "reversed": "Resistance to change, decay, fear of letting go"
+      }
+    },
+    {
+      "id": 14,
+      "name": "Temperance",
+      "arcana": "Major",
+      "suit": null,
+      "number": 14,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Balance, patience, blending opposites",
+        "reversed": "Excess, imbalance, impatience"
+      }
+    },
+    {
+      "id": 15,
+      "name": "The Devil",
+      "arcana": "Major",
+      "suit": null,
+      "number": 15,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Attachment, temptation, facing shadow patterns",
+        "reversed": "Breaking free, reclaiming power, releasing a habit"
+      }
+    },
+    {
+      "id": 16,
+      "name": "The Tower",
+      "arcana": "Major",
+      "suit": null,
+      "number": 16,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Sudden change, revelation, breaking what no longer holds",
+        "reversed": "Avoided collapse, fear of change, delayed upheaval"
+      }
+    },
+    {
+      "id": 17,
+      "name": "The Star",
+      "arcana": "Major",
+      "suit": null,
+      "number": 17,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Hope, healing, quiet renewal",
+        "reversed": "Self-doubt, disconnection, waning faith"
+      }
+    },
+    {
+      "id": 18,
+      "name": "The Moon",
+      "arcana": "Major",
+      "suit": null,
+      "number": 18,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Uncertainty, intuition, the unconscious",
+        "reversed": "Confusion clearing, hidden truth surfacing, released fear"
+      }
+    },
+    {
+      "id": 19,
+      "name": "The Sun",
+      "arcana": "Major",
+      "suit": null,
+      "number": 19,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Joy, vitality, clear success",
+        "reversed": "Temporary setback, delayed joy, muted optimism"
+      }
+    },
+    {
+      "id": 20,
+      "name": "Judgement",
+      "arcana": "Major",
+      "suit": null,
+      "number": 20,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Awakening, reckoning, a turning point of self-evaluation",
+        "reversed": "Self-doubt, avoiding a reckoning, delayed renewal"
+      }
+    },
+    {
+      "id": 21,
+      "name": "The World",
+      "arcana": "Major",
+      "suit": null,
+      "number": 21,
+      "symbol": "star",
+      "meanings": {
+        "upright": "Completion, wholeness, achievement",
+        "reversed": "Unfinished business, delay, seeking closure"
+      }
+    },
+    {
+      "id": 22,
+      "name": "Ace of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 1,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "A fresh spark of ambition, creativity, and action",
+        "reversed": "A false start or blocked opening in ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 23,
+      "name": "Two of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 2,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "Balance and choice within ambition, creativity, and action",
+        "reversed": "Imbalance or a stalled decision in ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 24,
+      "name": "Three of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 3,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "Early growth and collaboration in ambition, creativity, and action",
+        "reversed": "Delay or misaligned effort in ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 25,
+      "name": "Four of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 4,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "Stability and consolidation in ambition, creativity, and action",
+        "reversed": "Stagnation or complacency in ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 26,
+      "name": "Five of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 5,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "Friction and challenge around ambition, creativity, and action",
+        "reversed": "Resolving conflict tied to ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 27,
+      "name": "Six of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 6,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "Cooperation and fair progress in ambition, creativity, and action",
+        "reversed": "An imbalance of give and take in ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 28,
+      "name": "Seven of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 7,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "A test of commitment in ambition, creativity, and action",
+        "reversed": "Overextension or avoidance in ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 29,
+      "name": "Eight of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 8,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "Swift movement in ambition, creativity, and action",
+        "reversed": "Restriction or a bottleneck in ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 30,
+      "name": "Nine of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 9,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "Resilience near the edge of ambition, creativity, and action",
+        "reversed": "Exhaustion or anxiety about ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 31,
+      "name": "Ten of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 10,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "Culmination, for better or worse, of ambition, creativity, and action",
+        "reversed": "Release from a burden tied to ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 32,
+      "name": "Page of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 11,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "A curious, early-stage message about ambition, creativity, and action",
+        "reversed": "Immaturity or a false start in ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 33,
+      "name": "Knight of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 12,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "Bold pursuit of ambition, creativity, and action",
+        "reversed": "Recklessness or stalled pursuit of ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 34,
+      "name": "Queen of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 13,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "Mature, nurturing command of ambition, creativity, and action",
+        "reversed": "Smothering or withdrawn energy around ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 35,
+      "name": "King of Wands",
+      "arcana": "Minor",
+      "suit": "Wands",
+      "number": 14,
+      "element": "Fire",
+      "symbol": "flame",
+      "meanings": {
+        "upright": "Confident mastery of ambition, creativity, and action",
+        "reversed": "Overcontrol or misuse of authority in ambition, creativity, and action"
+      }
+    },
+    {
+      "id": 36,
+      "name": "Ace of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 1,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "A fresh spark of emotion, relationships, and intuition",
+        "reversed": "A false start or blocked opening in emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 37,
+      "name": "Two of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 2,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "Balance and choice within emotion, relationships, and intuition",
+        "reversed": "Imbalance or a stalled decision in emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 38,
+      "name": "Three of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 3,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "Early growth and collaboration in emotion, relationships, and intuition",
+        "reversed": "Delay or misaligned effort in emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 39,
+      "name": "Four of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 4,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "Stability and consolidation in emotion, relationships, and intuition",
+        "reversed": "Stagnation or complacency in emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 40,
+      "name": "Five of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 5,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "Friction and challenge around emotion, relationships, and intuition",
+        "reversed": "Resolving conflict tied to emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 41,
+      "name": "Six of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 6,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "Cooperation and fair progress in emotion, relationships, and intuition",
+        "reversed": "An imbalance of give and take in emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 42,
+      "name": "Seven of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 7,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "A test of commitment in emotion, relationships, and intuition",
+        "reversed": "Overextension or avoidance in emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 43,
+      "name": "Eight of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 8,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "Swift movement in emotion, relationships, and intuition",
+        "reversed": "Restriction or a bottleneck in emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 44,
+      "name": "Nine of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 9,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "Resilience near the edge of emotion, relationships, and intuition",
+        "reversed": "Exhaustion or anxiety about emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 45,
+      "name": "Ten of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 10,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "Culmination, for better or worse, of emotion, relationships, and intuition",
+        "reversed": "Release from a burden tied to emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 46,
+      "name": "Page of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 11,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "A curious, early-stage message about emotion, relationships, and intuition",
+        "reversed": "Immaturity or a false start in emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 47,
+      "name": "Knight of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 12,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "Bold pursuit of emotion, relationships, and intuition",
+        "reversed": "Recklessness or stalled pursuit of emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 48,
+      "name": "Queen of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 13,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "Mature, nurturing command of emotion, relationships, and intuition",
+        "reversed": "Smothering or withdrawn energy around emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 49,
+      "name": "King of Cups",
+      "arcana": "Minor",
+      "suit": "Cups",
+      "number": 14,
+      "element": "Water",
+      "symbol": "chalice",
+      "meanings": {
+        "upright": "Confident mastery of emotion, relationships, and intuition",
+        "reversed": "Overcontrol or misuse of authority in emotion, relationships, and intuition"
+      }
+    },
+    {
+      "id": 50,
+      "name": "Ace of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 1,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "A fresh spark of thought, conflict, and truth",
+        "reversed": "A false start or blocked opening in thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 51,
+      "name": "Two of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 2,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "Balance and choice within thought, conflict, and truth",
+        "reversed": "Imbalance or a stalled decision in thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 52,
+      "name": "Three of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 3,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "Early growth and collaboration in thought, conflict, and truth",
+        "reversed": "Delay or misaligned effort in thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 53,
+      "name": "Four of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 4,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "Stability and consolidation in thought, conflict, and truth",
+        "reversed": "Stagnation or complacency in thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 54,
+      "name": "Five of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 5,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "Friction and challenge around thought, conflict, and truth",
+        "reversed": "Resolving conflict tied to thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 55,
+      "name": "Six of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 6,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "Cooperation and fair progress in thought, conflict, and truth",
+        "reversed": "An imbalance of give and take in thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 56,
+      "name": "Seven of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 7,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "A test of commitment in thought, conflict, and truth",
+        "reversed": "Overextension or avoidance in thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 57,
+      "name": "Eight of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 8,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "Swift movement in thought, conflict, and truth",
+        "reversed": "Restriction or a bottleneck in thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 58,
+      "name": "Nine of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 9,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "Resilience near the edge of thought, conflict, and truth",
+        "reversed": "Exhaustion or anxiety about thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 59,
+      "name": "Ten of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 10,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "Culmination, for better or worse, of thought, conflict, and truth",
+        "reversed": "Release from a burden tied to thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 60,
+      "name": "Page of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 11,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "A curious, early-stage message about thought, conflict, and truth",
+        "reversed": "Immaturity or a false start in thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 61,
+      "name": "Knight of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 12,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "Bold pursuit of thought, conflict, and truth",
+        "reversed": "Recklessness or stalled pursuit of thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 62,
+      "name": "Queen of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 13,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "Mature, nurturing command of thought, conflict, and truth",
+        "reversed": "Smothering or withdrawn energy around thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 63,
+      "name": "King of Swords",
+      "arcana": "Minor",
+      "suit": "Swords",
+      "number": 14,
+      "element": "Air",
+      "symbol": "blade",
+      "meanings": {
+        "upright": "Confident mastery of thought, conflict, and truth",
+        "reversed": "Overcontrol or misuse of authority in thought, conflict, and truth"
+      }
+    },
+    {
+      "id": 64,
+      "name": "Ace of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 1,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "A fresh spark of resources, work, and the material world",
+        "reversed": "A false start or blocked opening in resources, work, and the material world"
+      }
+    },
+    {
+      "id": 65,
+      "name": "Two of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 2,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "Balance and choice within resources, work, and the material world",
+        "reversed": "Imbalance or a stalled decision in resources, work, and the material world"
+      }
+    },
+    {
+      "id": 66,
+      "name": "Three of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 3,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "Early growth and collaboration in resources, work, and the material world",
+        "reversed": "Delay or misaligned effort in resources, work, and the material world"
+      }
+    },
+    {
+      "id": 67,
+      "name": "Four of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 4,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "Stability and consolidation in resources, work, and the material world",
+        "reversed": "Stagnation or complacency in resources, work, and the material world"
+      }
+    },
+    {
+      "id": 68,
+      "name": "Five of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 5,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "Friction and challenge around resources, work, and the material world",
+        "reversed": "Resolving conflict tied to resources, work, and the material world"
+      }
+    },
+    {
+      "id": 69,
+      "name": "Six of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 6,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "Cooperation and fair progress in resources, work, and the material world",
+        "reversed": "An imbalance of give and take in resources, work, and the material world"
+      }
+    },
+    {
+      "id": 70,
+      "name": "Seven of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 7,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "A test of commitment in resources, work, and the material world",
+        "reversed": "Overextension or avoidance in resources, work, and the material world"
+      }
+    },
+    {
+      "id": 71,
+      "name": "Eight of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 8,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "Swift movement in resources, work, and the material world",
+        "reversed": "Restriction or a bottleneck in resources, work, and the material world"
+      }
+    },
+    {
+      "id": 72,
+      "name": "Nine of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 9,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "Resilience near the edge of resources, work, and the material world",
+        "reversed": "Exhaustion or anxiety about resources, work, and the material world"
+      }
+    },
+    {
+      "id": 73,
+      "name": "Ten of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 10,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "Culmination, for better or worse, of resources, work, and the material world",
+        "reversed": "Release from a burden tied to resources, work, and the material world"
+      }
+    },
+    {
+      "id": 74,
+      "name": "Page of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 11,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "A curious, early-stage message about resources, work, and the material world",
+        "reversed": "Immaturity or a false start in resources, work, and the material world"
+      }
+    },
+    {
+      "id": 75,
+      "name": "Knight of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 12,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "Bold pursuit of resources, work, and the material world",
+        "reversed": "Recklessness or stalled pursuit of resources, work, and the material world"
+      }
+    },
+    {
+      "id": 76,
+      "name": "Queen of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 13,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "Mature, nurturing command of resources, work, and the material world",
+        "reversed": "Smothering or withdrawn energy around resources, work, and the material world"
+      }
+    },
+    {
+      "id": 77,
+      "name": "King of Pentacles",
+      "arcana": "Minor",
+      "suit": "Pentacles",
+      "number": 14,
+      "element": "Earth",
+      "symbol": "coin",
+      "meanings": {
+        "upright": "Confident mastery of resources, work, and the material world",
+        "reversed": "Overcontrol or misuse of authority in resources, work, and the material world"
+      }
+    }
+  ]
+}

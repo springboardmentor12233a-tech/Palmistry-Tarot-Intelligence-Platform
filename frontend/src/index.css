@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: #fbf6ec;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(184, 134, 62, 0.28);
+  color: #33101e;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #e3d3ae;
+  border-radius: 8px;
+}
+
+:focus-visible {
+  outline: 2px solid #b8863e;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Hairline card border used throughout the app */
+.hairline {
+  border: 1px solid rgba(184, 134, 62, 0.28);
+}
+
+/* Signature "constellation" thread: dashed line that draws itself in,
+   representing the skeleton-graph edges the backend actually traces
+   across a palm image. Used as connective tissue + loading motif. */
+.thread-line {
+  stroke: url(#threadGradient);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-dasharray: 6 6;
+  stroke-dashoffset: 400;
+  animation: drawIn 1.8s ease-out forwards;
+}
+
+.thread-node {
+  fill: #b8863e;
+  filter: drop-shadow(0 0 3px rgba(184, 134, 62, 0.6));
+}
+
+.markdown-body h1,
+.markdown-body h2 {
+  font-family: "Fraunces", serif;
+  color: #6b1f3a;
+  margin-top: 1.75rem;
+  margin-bottom: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+.markdown-body h1 {
+  font-size: 1.5rem;
+}
+.markdown-body h2 {
+  font-size: 1.15rem;
+  border-bottom: 1px solid rgba(184, 134, 62, 0.3);
+  padding-bottom: 0.35rem;
+}
+.markdown-body h3 {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  color: #8a6a34;
+  margin-top: 1.1rem;
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+}
+.markdown-body p {
+  color: #4a352b;
+  line-height: 1.75;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+.markdown-body ul {
+  margin: 0.4rem 0 0.9rem 1.1rem;
+  list-style: disc;
+  color: #4a352b;
+}
+.markdown-body li {
+  margin-bottom: 0.35rem;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+.markdown-body strong {
+  color: #33101e;
+  font-weight: 600;
+}
