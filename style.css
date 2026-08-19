@@ -1,0 +1,116 @@
+/* =========================================
+   PALMISTRY & TAROT - GLOBAL UI
+   ========================================= */
+
+.stApp {
+    background: #0b0910 !important;
+}
+
+/* Main content */
+
+.main .block-container {
+    max-width: 1200px;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+}
+
+/* Headings */
+
+h1 {
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+}
+
+h2 {
+    font-size: 2rem !important;
+    font-weight: 650 !important;
+}
+
+h3 {
+    font-weight: 600 !important;
+}
+
+/* Sidebar */
+
+section[data-testid="stSidebar"] {
+    background: #12101a !important;
+    border-right: 1px solid #2b2735;
+}
+
+/* Buttons */
+
+.stButton > button {
+    border-radius: 10px !important;
+    min-height: 42px !important;
+    font-weight: 600 !important;
+    border: 1px solid #383343 !important;
+    transition: 0.2s ease !important;
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px) !important;
+    border-color: #8b6fc4 !important;
+}
+
+/* Primary buttons */
+
+.stButton > button[kind="primary"] {
+    border: none !important;
+}
+
+/* Text inputs */
+
+.stTextInput input,
+.stTextArea textarea {
+    border-radius: 10px !important;
+}
+
+/* File uploader */
+
+section[data-testid="stFileUploaderDropzone"] {
+    border-radius: 14px !important;
+    border: 1px dashed #4b4358 !important;
+}
+
+/* Cards / bordered containers */
+
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    border-radius: 16px !important;
+}
+
+/* Alerts */
+
+div[data-testid="stAlert"] {
+    border-radius: 12px !important;
+}
+
+/* Images */
+
+img {
+    border-radius: 12px;
+}
+
+/* Metrics */
+
+div[data-testid="stMetric"] {
+    border-radius: 14px !important;
+    padding: 18px !important;
+}
+
+/* Expanders */
+
+details {
+    border-radius: 12px !important;
+}
+
+/* Divider */
+
+hr {
+    border-color: #292531 !important;
+}
+
+/* Hide Streamlit footer */
+
+footer {
+    visibility: hidden;
+}
