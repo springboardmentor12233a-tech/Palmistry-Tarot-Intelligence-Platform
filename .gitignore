@@ -1,0 +1,30 @@
+# Virtual Environment
+venv/
+.venv/
+env/
+
+# Environment Secrets & Local DBs
+.env
+.env.local
+.env.*.local
+*.db
+*.sqlite
+*.sqlite3
+palmistry.db
+
+# Python Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Results / Runtime outputs (optional)
+results/annotated/
+results/palm_scan_*/
