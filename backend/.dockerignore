@@ -1,0 +1,39 @@
+# Environments & Secrets
+venv/
+.venv/
+env/
+.env
+.env.local
+.env.development
+.env.production
+*.db
+*.sqlite
+*.sqlite3
+
+# Python Bytecode & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Node / Frontend Artifacts
+node_modules/
+.next/
+dist/
+build/
+
+# Git & IDEs
+.git/
+.gitignore
+.gitattributes
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Notebooks & Raw Scratch files
+*.ipynb
+scratch/
+.system_generated/

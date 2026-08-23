@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --midnight: #0a0a18;
+    --midnight-elevated: #0d0b1f;
+    --indigo-panel: #161232;
+    --violet-accent: #7c3aed;
+    --gold-accent: #d4af37;
+    --gold-light: #e8c468;
+    --lavender-text: #c9b8f0;
+    --text-soft: #f5f3fa;
+  }
+
+  body {
+    @apply bg-midnight text-cosmic-text font-sans antialiased selection:bg-violet-600 selection:text-white min-h-screen overflow-x-hidden;
+    background-color: #0a0a18;
+    background-image: 
+      radial-gradient(at 15% 15%, rgba(124, 58, 237, 0.12) 0px, transparent 50%),
+      radial-gradient(at 85% 85%, rgba(212, 175, 55, 0.08) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, rgba(22, 18, 50, 0.5) 0px, transparent 80%);
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-cinzel), 'Cinzel', 'Playfair Display', Georgia, serif;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a18;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1c173e;
+  border-radius: 9999px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7c3aed;
+}
+
+/* Glassmorphism & Cosmic Cards */
+.glass-panel {
+  background: rgba(22, 18, 50, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  box-shadow: 0 8px 32px 0 rgba(6, 6, 16, 0.55);
+}
+
+.glass-panel-violet {
+  background: rgba(22, 18, 50, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(124, 58, 237, 0.15);
+}
+
+.glass-panel-hover {
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(212, 175, 55, 0.45);
+  box-shadow: 0 12px 40px -10px rgba(124, 58, 237, 0.35), 0 0 15px 0 rgba(212, 175, 55, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Tarot 3D Flip Styles */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.rotate-y-180 {
+  transform: rotateY(180deg);
+}
+
+/* Shimmer & Glow Utilities */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #fde047 0%, #e8c468 40%, #d4af37 70%, #b8860b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-violet-gradient {
+  background: linear-gradient(135deg, #ddd2f7 0%, #a78bfa 40%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.border-gold-gradient {
+  border-image: linear-gradient(135deg, #fde047, #d4af37, #7c3aed) 1;
+}
+
+.gold-glow-hover:hover {
+  box-shadow: 0 0 30px -5px rgba(212, 175, 55, 0.4);
+}
+
+/* Scanning Animation for Palm Scanning */
+@keyframes laserSweep {
+  0% {
+    top: 0%;
+    opacity: 0.8;
+  }
+  50% {
+    top: 92%;
+    opacity: 1;
+  }
+  100% {
+    top: 0%;
+    opacity: 0.8;
+  }
+}
+
+.animate-laser-sweep {
+  animation: laserSweep 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Constellation Line pulse */
+@keyframes pulseConstellation {
+  0%, 100% {
+    opacity: 0.3;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    opacity: 0.8;
+    stroke-dashoffset: 10;
+  }
+}
+
+.animate-constellation-pulse {
+  animation: pulseConstellation 4s ease-in-out infinite;
+}
