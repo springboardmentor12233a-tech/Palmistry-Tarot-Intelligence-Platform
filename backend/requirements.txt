@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+python-multipart
+opencv-python-headless
+ultralytics
+groq
+pydantic
+kagglehub
+pillow
+python-dotenv
