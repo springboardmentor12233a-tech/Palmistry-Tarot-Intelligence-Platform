@@ -61,37 +61,72 @@ GROQ_API_KEYS = [key for key in GROQ_API_KEYS if key]
 if not GROQ_API_KEYS:
     print("Warning: No Groq API keys found in .env file!")
 
-# --- HELPER: ROTATING GROQ CALL ---
-def get_groq_response(messages, model="openai/gpt-oss-20b", temperature=0.7, max_tokens=800):
+# --- HELPER: ROTATING GROQ CALL WITH FALLBACK & TOKEN PROTECTION ---
+def prepare_messages_for_llm(messages, max_history=8):
     """
-    Tries each API key in the list. If one fails (rate limit/quota),
-    it automatically falls back to the next key.
+    Trims and deduplicates messages so prompts remain lightweight.
+    This prevents rate-limit (TPM/RPM) exhaustion on Groq.
     """
-    for index, api_key in enumerate(GROQ_API_KEYS):
-        try:
-            client = Groq(api_key=api_key)
-            completion = client.chat.completions.create(
-                messages=messages,
-                model=model,
-                temperature=temperature,
-                max_tokens=max_tokens
-            )
+    if not messages:
+        return []
+    system_msgs = [m for m in messages if m.get("role") == "system"]
+    non_system = [m for m in messages if m.get("role") != "system"]
+    
+    # Deduplicate consecutive identical messages
+    deduped = []
+    for m in non_system:
+        if not deduped or deduped[-1].get("content") != m.get("content"):
+            deduped.append(m)
             
-            # 1. Get the raw string from the AI
-            raw_text = completion.choices[0].message.content
-            
-            # 2. Remove asterisks and hashtags, then strip extra whitespace
-            clean_text = raw_text.replace('*', '').replace('#', '').strip()
-            
-            # 3. Return the cleaned, monologue-free string
-            return clean_text
-            
-        except Exception as e:
-            print(f"Warning: Key #{index + 1} failed. Moving to next key... Error: {e}")
-            continue
-            
-    # If every key in the list fails, raise an exception
-    raise Exception("All available Groq API keys have been exhausted or failed.")
+    trimmed = deduped[-max_history:]
+    return (system_msgs[:1] + trimmed) if system_msgs else trimmed
+
+def get_groq_response(messages, model="groq/compound-mini", temperature=0.7, max_tokens=500):
+    """
+    Tries each API key and model fallback to avoid exhausting rate limits.
+    If content is empty (e.g. reasoning models), uses reasoning field or fallback model.
+    """
+    if not GROQ_API_KEYS:
+        return "The spirits are listening in silence (No Groq API keys configured)."
+
+    trimmed_messages = prepare_messages_for_llm(messages, max_history=8)
+    
+    # Candidate models in order of priority: fast & token-efficient first
+    models_to_try = [model]
+    for m in ["groq/compound-mini", "openai/gpt-oss-20b"]:
+        if m not in models_to_try:
+            models_to_try.append(m)
+
+    for m_name in models_to_try:
+        for index, api_key in enumerate(GROQ_API_KEYS):
+            try:
+                client = Groq(api_key=api_key)
+                completion = client.chat.completions.create(
+                    messages=trimmed_messages,
+                    model=m_name,
+                    temperature=temperature,
+                    max_tokens=max_tokens
+                )
+                
+                raw_text = completion.choices[0].message.content or ""
+                if not raw_text.strip():
+                    raw_text = getattr(completion.choices[0].message, "reasoning", "") or ""
+
+                # Strip internal reasoning think tags if present
+                raw_text = re.sub(r'<think>.*?</think>', '', raw_text, flags=re.DOTALL)
+                clean_text = raw_text.replace('*', '').replace('#', '').strip()
+                
+                if clean_text:
+                    return clean_text
+            except Exception as e:
+                print(f"Notice: Model {m_name} on Key #{index + 1} issue: {e}. Trying next available fallback...")
+                continue
+                
+    # Graceful in-character fallback response so endpoints never crash with 500
+    return (
+        "The celestial veil is thick at this moment and the spirits whisper patience. "
+        "Reflect upon your question and consult the oracle once more in a brief moment."
+    )
 
 # Initialize YOLO Palm Model
 try:
@@ -110,20 +145,15 @@ print("Tarot Dataset Loaded successfully!")
 # ==========================================
 # 2. DATA MODELS
 # ==========================================
-import random
-
-# ==========================================
-# 2. DATA MODELS
-# ==========================================
 class ChatRequest(BaseModel):
     message: str
-    history: list
-    session_id: str = None  
+    history: list = []
+    session_id: str | None = None  
 
 class TarotRequest(BaseModel):
-    user_name: str
+    user_name: str = "Seeker"
     user_question: str
-    session_id: str = None  
+    session_id: str | None = None  
 
 # --- NEW OTP DATA MODELS ---
 class OTPRequest(BaseModel):
@@ -328,8 +358,11 @@ async def chat(req: ChatRequest):
         if req.session_id:
             db.save_message(req.session_id, "user", req.message)
 
-        req.history.append({"role": "user", "content": req.message})
-        answer = get_groq_response(req.history, max_tokens=600)
+        # Avoid duplicating the user message if already present at the end of history
+        if not req.history or req.history[-1].get("content") != req.message:
+            req.history.append({"role": "user", "content": req.message})
+
+        answer = get_groq_response(req.history, max_tokens=400)
         req.history.append({"role": "assistant", "content": answer})
         
         if req.session_id:
@@ -337,45 +370,9 @@ async def chat(req: ChatRequest):
             
         return {"reply": answer, "history": req.history}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-# ==========================================
-# OTP AUTHENTICATION ENDPOINTS
-# ==========================================
-otp_storage = {}
-
-@app.post("/api/request-otp")
-async def request_otp(req: OTPRequest):
-    otp = str(random.randint(100000, 999999))
-    otp_storage[req.contact] = otp
-    
-    print("\n" + "="*30)
-    print(f"🔔 MOCK OTP ALERT")
-    print(f"Sending to: {req.contact}")
-    print(f"Your Code is: {otp}")
-    print("="*30 + "\n")
-    
-    return {"message": "OTP sent successfully."}
-
-@app.post("/api/verify-otp")
-async def verify_otp(req: VerifyRequest):
-    stored_otp = otp_storage.get(req.contact)
-    
-    if not stored_otp or stored_otp != req.otp:
-        raise HTTPException(status_code=401, detail="Invalid or expired OTP.")
-        
-    del otp_storage[req.contact]
-    
-    user = db.get_user_by_username(req.contact)
-    if not user:
-        db.create_user(req.contact, "OTP_AUTH", "seeker")
-        user = db.get_user_by_username(req.contact)
-
-    token_data = {
-        "sub": user[1],
-        "role": user[3],
-        "exp": datetime.utcnow() + timedelta(days=7) 
-    }
-    token = jwt.encode(token_data, SECRET_KEY, algorithm=ALGORITHM)
-    
-    return {"access_token": token, "role": user[3], "username": user[1]}
+        print(f"Chat error: {e}")
+        fallback_msg = "The spirits whisper that patience is needed as the energies shift. Please ask again in a moment."
+        if not req.history or req.history[-1].get("content") != req.message:
+            req.history.append({"role": "user", "content": req.message})
+        req.history.append({"role": "assistant", "content": fallback_msg})
+        return {"reply": fallback_msg, "history": req.history}
