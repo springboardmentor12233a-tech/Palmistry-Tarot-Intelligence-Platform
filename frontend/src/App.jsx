@@ -141,11 +141,60 @@ const AuthScreen = ({ onLogin }) => {
   // Modes: 'login', 'signup', 'forgot_request', 'forgot_verify'
   const [authMode, setAuthMode] = useState('login');
 
-  // Form Fields
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  // ── Credential Persistence Helpers ──────────────────────────────────────────
+  // Uses THREE storage layers: localStorage (primary), sessionStorage (session),
+  // and a special vault key — so credentials survive refresh no matter what.
+  const CREDS_KEY = 'oracle_saved_credentials';
+  const CREDS_SESSION_KEY = 'oracle_session_creds';
+
+  const getSavedCreds = () => {
+    try {
+      // Try localStorage first
+      const ls = localStorage.getItem(CREDS_KEY);
+      if (ls) {
+        const parsed = JSON.parse(ls);
+        if (parsed && parsed.username) return parsed;
+      }
+      // Fallback: sessionStorage (survives tab refresh)
+      const ss = sessionStorage.getItem(CREDS_SESSION_KEY);
+      if (ss) {
+        const parsed = JSON.parse(ss);
+        if (parsed && parsed.username) {
+          // Restore to localStorage so it persists longer
+          localStorage.setItem(CREDS_KEY, ss);
+          return parsed;
+        }
+      }
+    } catch {}
+    return {};
+  };
+
+  const saveCreds = (username, password, rememberFlag) => {
+    const data = JSON.stringify({ username, password, rememberMe: rememberFlag });
+    try {
+      localStorage.setItem(CREDS_KEY, data);
+      sessionStorage.setItem(CREDS_SESSION_KEY, data);
+    } catch (e) {
+      console.warn('Credential save warning:', e);
+    }
+  };
+
+  const clearCreds = () => {
+    try {
+      localStorage.removeItem(CREDS_KEY);
+      sessionStorage.removeItem(CREDS_SESSION_KEY);
+    } catch {}
+  };
+
+  // Form Fields — lazy-initialized from saved credentials
+  const [username, setUsername] = useState(() => getSavedCreds().username || '');
+  const [password, setPassword] = useState(() => getSavedCreds().password || '');
+  const [rememberMe, setRememberMe] = useState(() => {
+    const saved = getSavedCreds();
+    return saved.rememberMe !== false; // default true unless explicitly false
+  });
   const [confirmPassword, setConfirmPassword] = useState('');
-  
+
   // Contact details
   const [contactType, setContactType] = useState('email'); // 'email' or 'phone'
   const [email, setEmail] = useState('');
@@ -162,9 +211,57 @@ const AuthScreen = ({ onLogin }) => {
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
-  // Helper: Get users database from localStorage
-  const getUsersDB = () => JSON.parse(localStorage.getItem('oracle_registered_users')) || [];
-  const saveUsersDB = (users) => localStorage.setItem('oracle_registered_users', JSON.stringify(users));
+  // Re-sync credentials on mount (safety net for React StrictMode double-invoke)
+  useEffect(() => {
+    const saved = getSavedCreds();
+    if (saved.username) {
+      setUsername(saved.username);
+      setPassword(saved.password || '');
+      setRememberMe(saved.rememberMe !== false);
+    }
+  }, []);
+
+  // ── User Database (triple-store for max durability) ──────────────────────────
+  const DB_KEY = 'oracle_registered_users';
+  const DB_VAULT_KEY = 'oracle_user_vault';
+  const DB_SESSION_KEY = 'oracle_users_session';
+
+  const getUsersDB = () => {
+    try {
+      const primary = JSON.parse(localStorage.getItem(DB_KEY));
+      if (Array.isArray(primary) && primary.length > 0) {
+        // Mirror to session storage every time we read so it stays fresh
+        sessionStorage.setItem(DB_SESSION_KEY, JSON.stringify(primary));
+        return primary;
+      }
+      const vault = JSON.parse(localStorage.getItem(DB_VAULT_KEY));
+      if (Array.isArray(vault) && vault.length > 0) {
+        localStorage.setItem(DB_KEY, JSON.stringify(vault));
+        return vault;
+      }
+      // Last resort: session storage
+      const session = JSON.parse(sessionStorage.getItem(DB_SESSION_KEY));
+      if (Array.isArray(session) && session.length > 0) {
+        localStorage.setItem(DB_KEY, JSON.stringify(session));
+        localStorage.setItem(DB_VAULT_KEY, JSON.stringify(session));
+        return session;
+      }
+      return [];
+    } catch {
+      return [];
+    }
+  };
+
+  const saveUsersDB = (users) => {
+    try {
+      const data = JSON.stringify(users);
+      localStorage.setItem(DB_KEY, data);
+      localStorage.setItem(DB_VAULT_KEY, data);
+      sessionStorage.setItem(DB_SESSION_KEY, data);
+    } catch (e) {
+      console.warn('DB save warning:', e);
+    }
+  };
 
   // --- VALIDATION HELPERS ---
   const isValidEmail = (val) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim());
@@ -223,9 +320,15 @@ const AuthScreen = ({ onLogin }) => {
     users.push(newUser);
     saveUsersDB(users);
 
-    setSuccessMsg('Account created successfully! Please sign in.');
+    // Save credentials across all three storage layers immediately after signup
+    saveCreds(newUser.username, newUser.password, true);
+
+    setSuccessMsg('Account created successfully! Cipher remembered for your next journey.');
     setAuthMode('login');
-    setPassword('');
+    // Pre-populate username and password for immediate, effortless sign in
+    setUsername(newUser.username);
+    setPassword(newUser.password);
+    setRememberMe(true);
     setConfirmPassword('');
   };
 
@@ -235,24 +338,35 @@ const AuthScreen = ({ onLogin }) => {
     setError('');
     setSuccessMsg('');
 
-    if (!username.trim() || !password.trim()) {
+    const inputUser = username.trim();
+    const inputPass = password;
+
+    if (!inputUser || !inputPass) {
       return setError('Please enter both username and password.');
     }
 
     const users = getUsersDB();
     const found = users.find(
-      u => u.username.toLowerCase() === username.trim().toLowerCase() && u.password === password
+      u => u.username.trim().toLowerCase() === inputUser.toLowerCase() && u.password === inputPass
     );
 
     if (!found) {
       return setError('Invalid username or secret cipher.');
     }
 
+    // Save or clear remembered credentials according to the Remember Me checkbox
+    if (rememberMe) {
+      saveCreds(found.username, found.password, true);
+    } else {
+      clearCreds();
+    }
+
     // Success! Log the user in
     localStorage.setItem('token', 'simulated_token_' + Date.now());
     localStorage.setItem('username', found.username);
-    localStorage.setItem('role', found.role || 'Seeker');
-    onLogin(found);
+    const userRole = found.role || 'Seeker';
+    localStorage.setItem('role', userRole);
+    onLogin({ username: found.username, role: userRole });
   };
 
   // --- HANDLE FORGOT PASSWORD: STEP 1 (TRIGGER OTP ALERT) ---
@@ -386,7 +500,17 @@ const AuthScreen = ({ onLogin }) => {
               />
             </div>
 
-            <div style={{ textAlign: 'right' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '-5px' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#d8b4fe', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={e => setRememberMe(e.target.checked)}
+                  style={{ accentColor: '#a855f7', width: '16px', height: '16px', cursor: 'pointer' }}
+                />
+                Remember Secret Cipher
+              </label>
+
               <span
                 onClick={() => { setAuthMode('forgot_request'); setError(''); setSuccessMsg(''); }}
                 style={{ fontSize: '12px', color: '#d8b4fe', cursor: 'pointer', textDecoration: 'underline' }}
@@ -565,29 +689,39 @@ const AuthScreen = ({ onLogin }) => {
 };
 
 // --- SHARED CHAT COMPONENT ---
-const ChatBox = ({ history, setHistory, isLoading }) => {
+const ChatBox = ({ history = [], setHistory, isLoading }) => {
   const [input, setInput] = useState('');
+
+  const safeHistory = Array.isArray(history) ? history : [];
 
   const sendMessage = async () => {
     if (!input.trim()) return;
-    const currentHistory = [...history, { role: 'user', content: input }];
+    const msg = input.trim();
+    const currentHistory = [...safeHistory, { role: 'user', content: msg }];
     setHistory(currentHistory);
     setInput('');
     try {
       const res = await fetch("http://localhost:8001/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input, history: currentHistory })
+        body: JSON.stringify({ message: msg, history: currentHistory })
       });
+      if (!res.ok) {
+        throw new Error("Chat request was not successful.");
+      }
       const data = await res.json();
-      setHistory(data.history);
-    } catch (e) { console.error("Chat error:", e); }
+      if (data && Array.isArray(data.history)) {
+        setHistory(data.history);
+      }
+    } catch (e) { 
+      console.error("Chat error:", e); 
+    }
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100%', width: '100%' }}>
       <div style={{ flexGrow: 1, overflowY: 'auto', padding: '15px', border: '1px solid #444', borderRadius: '8px', background: '#1e1e2f', color: '#fff' }}>
-        {history.filter(h => h.role !== 'system').map((msg, i) => (
+        {safeHistory.filter(h => h && h.role !== 'system').map((msg, i) => (
           <div key={i} style={{ textAlign: msg.role === 'user' ? 'right' : 'left', margin: '10px 0' }}>
             <span style={{ padding: '10px 15px', borderRadius: '15px', display: 'inline-block', maxWidth: '80%', background: msg.role === 'user' ? '#6b4c9a' : '#2d2d44', whiteSpace: 'pre-wrap' }}>
               {msg.content}
@@ -609,11 +743,14 @@ const Palmistry = ({ goBack, user }) => {
   const [imgData, setImgData] = useState(null);
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [sessionId] = useState(Date.now()); 
+  const [sessionId] = useState(() => Date.now()); 
+  const username = user?.username || 'Seeker';
 
   useEffect(() => {
-    saveToArchive(user.username, 'Palmistry', sessionId, history);
-  }, [history, user.username, sessionId]);
+    if (Array.isArray(history) && history.length > 0) {
+      saveToArchive(username, 'Palmistry', sessionId, history);
+    }
+  }, [history, username, sessionId]);
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
@@ -621,14 +758,25 @@ const Palmistry = ({ goBack, user }) => {
     setLoading(true);
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("user_name", user.username);
+    formData.append("user_name", username);
     try {
       const res = await fetch("http://localhost:8001/api/palm/analyze", { method: "POST", body: formData });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.detail || "Error analyzing palm.");
+      }
       const data = await res.json();
-      setImgData(`data:image/jpeg;base64,${data.image_base64}`);
-      setHistory(data.history);
-    } catch (err) { alert("Error analyzing palm."); }
-    setLoading(false);
+      if (data && data.image_base64) {
+        setImgData(`data:image/jpeg;base64,${data.image_base64}`);
+      }
+      if (data && Array.isArray(data.history)) {
+        setHistory(data.history);
+      }
+    } catch (err) { 
+      alert(err.message || "Error analyzing palm."); 
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -659,28 +807,41 @@ const Tarot = ({ goBack, user }) => {
   const [loading, setLoading] = useState(false);
   const [sessionId, setSessionId] = useState(null);
   const [chatActive, setChatActive] = useState(false);
+  const username = user?.username || 'Seeker';
 
   useEffect(() => {
-    if (sessionId && history.length > 0) {
-      saveToArchive(user.username, 'Tarot', sessionId, history);
+    if (sessionId && Array.isArray(history) && history.length > 0) {
+      saveToArchive(username, 'Tarot', sessionId, history);
     }
-  }, [history, user.username, sessionId]);
+  }, [history, username, sessionId]);
 
   const drawCard = async () => {
-    if (!question) return alert("Please enter your question.");
+    if (!question.trim()) return alert("Please enter your question.");
     setLoading(true);
     try {
       const res = await fetch("http://localhost:8001/api/tarot/draw", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_name: user.username, user_question: question, session_id: sessionId })
+        body: JSON.stringify({ user_name: username, user_question: question.trim(), session_id: sessionId })
       });
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.detail || "Error drawing tarot card.");
+      }
       const data = await res.json();
+      if (!data || !data.card_name) {
+        throw new Error("The oracle returned an incomplete omen. Please try again.");
+      }
       setCards(prev => [...prev, data]);
-      setHistory(data.history);
-      if (!sessionId) setSessionId(data.session_id);
-    } catch (err) { alert("Error drawing card."); }
-    setLoading(false);
+      if (Array.isArray(data.history)) {
+        setHistory(data.history);
+      }
+      if (!sessionId && data.session_id) setSessionId(data.session_id);
+    } catch (err) { 
+      alert(err.message || "Error drawing card."); 
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -722,20 +883,25 @@ export default function App() {
   const [mode, setMode] = useState('home');
   const [user, setUser] = useState(() => {
     const token = localStorage.getItem("token");
-    return token ? { username: localStorage.getItem("username"), role: localStorage.getItem("role") } : null;
+    const username = localStorage.getItem("username") || "Seeker";
+    const role = localStorage.getItem("role") || "Seeker";
+    return token ? { username, role } : null;
   });
 
   const [archiveData, setArchiveData] = useState([]);
   const [viewingSession, setViewingSession] = useState(null); 
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("role");
     setUser(null);
     setMode('home');
   };
 
   const handleOpenArchive = () => {
-    const data = JSON.parse(localStorage.getItem(`oracle_archive_${user.username}`)) || [];
+    const username = user?.username || 'Seeker';
+    const data = JSON.parse(localStorage.getItem(`oracle_archive_${username}`)) || [];
     setArchiveData(data);
     setMode('archive');
   };
@@ -746,9 +912,10 @@ export default function App() {
     const confirmDelete = window.confirm("Are you sure you want to permanently delete this mystical record?");
     if (!confirmDelete) return;
 
+    const username = user?.username || 'Seeker';
     const updatedArchive = archiveData.filter(s => s.sessionId !== sessionId);
     setArchiveData(updatedArchive);
-    localStorage.setItem(`oracle_archive_${user.username}`, JSON.stringify(updatedArchive));
+    localStorage.setItem(`oracle_archive_${username}`, JSON.stringify(updatedArchive));
     
     if (viewingSession && viewingSession.sessionId === sessionId) {
       setViewingSession(null);
@@ -759,18 +926,19 @@ export default function App() {
     const updatedSession = { ...viewingSession, history: newHistory };
     setViewingSession(updatedSession);
     
+    const username = user?.username || 'Seeker';
     const updatedArchive = archiveData.map(s => 
       s.sessionId === viewingSession.sessionId ? updatedSession : s
     );
     setArchiveData(updatedArchive);
-    localStorage.setItem(`oracle_archive_${user.username}`, JSON.stringify(updatedArchive));
+    localStorage.setItem(`oracle_archive_${username}`, JSON.stringify(updatedArchive));
   };
 
   if (!user) {
     return (
       <div style={{ padding: '30px', fontFamily: 'sans-serif', maxWidth: '1000px', margin: '0 auto', color: 'white' }}>
         <h1 style={{ textAlign: 'center', marginBottom: '40px' }}>✨ The Mystical Oracle ✨</h1>
-        <AuthScreen onLogin={(data) => setUser({ username: data.username, role: data.role })} />
+        <AuthScreen onLogin={(data) => setUser({ username: data.username || 'Seeker', role: data.role || 'Seeker' })} />
       </div>
     );
   }
@@ -780,8 +948,8 @@ export default function App() {
       
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid #444', paddingBottom: '10px' }}>
         <div>
-          <span style={{ color: '#d8b4fe', fontWeight: 'bold' }}>Logged in as: {user.username} </span>
-          <span style={{ fontSize: '12px', background: '#333', padding: '3px 8px', borderRadius: '12px', marginLeft: '10px' }}>{user.role.toUpperCase()}</span>
+          <span style={{ color: '#d8b4fe', fontWeight: 'bold' }}>Logged in as: {user?.username || 'Seeker'} </span>
+          <span style={{ fontSize: '12px', background: '#333', padding: '3px 8px', borderRadius: '12px', marginLeft: '10px' }}>{(user?.role || 'Seeker').toUpperCase()}</span>
         </div>
         <button onClick={handleLogout} style={{ ...btnStyle, margin: 0, padding: '5px 15px', background: 'transparent', border: '1px solid #d8b4fe', color: '#d8b4fe' }}>Disconnect</button>
       </div>
