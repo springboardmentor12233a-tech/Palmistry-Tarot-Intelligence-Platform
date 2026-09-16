@@ -1,16 +1,19 @@
 import os
+
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+import ast
 import cv2
 import json
-import random
 import base64
 import numpy as np
-import kagglehub
 from io import BytesIO
 from PIL import Image
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from ultralytics import YOLO
+import gc
+import onnxruntime as ort
 from groq import Groq
 from dotenv import load_dotenv
 from passlib.context import CryptContext
@@ -20,8 +23,6 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import random
-from fastapi import HTTPException
-from pydantic import BaseModel
 import re
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -128,11 +129,55 @@ def get_groq_response(messages, model="groq/compound-mini", temperature=0.7, max
         "Reflect upon your question and consult the oracle once more in a brief moment."
     )
 
-# Initialize YOLO Palm Model
+# ==========================================
+# ONNX PALM MODEL
+# ==========================================
 try:
-    yolo_model = YOLO("best.pt")
+    onnx_model_path = os.path.join(
+        os.path.dirname(__file__),
+        "best.onnx"
+    )
+
+    onnx_session = ort.InferenceSession(
+        onnx_model_path,
+        providers=["CPUExecutionProvider"]
+    )
+
+    onnx_input_name = onnx_session.get_inputs()[0].name
+
+    # Read class names exported by Ultralytics
+    metadata = onnx_session.get_modelmeta().custom_metadata_map
+    if "names" in metadata:
+        try:
+            try:
+                class_names = json.loads(metadata["names"])
+            except Exception:
+                class_names = ast.literal_eval(metadata["names"])
+
+            if isinstance(class_names, dict):
+                class_names = {
+                    int(k): str(v)
+                    for k, v in class_names.items()
+                }
+            else:
+                class_names = {
+                    i: str(name)
+                    for i, name in enumerate(class_names)
+                }
+
+        except Exception:
+            class_names = {}
+    else:
+        class_names = {}
+
+    print("ONNX Palm Model loaded successfully!")
+    print(f"Palm classes: {class_names}")
+
 except Exception as e:
-    print(f"Warning: YOLO model 'best.pt' not found. Palmistry won't work. {e}")
+    onnx_session = None
+    onnx_input_name = None
+    class_names = {}
+    print(f"Warning: ONNX palm model could not be loaded: {e}")
 
 # Initialize Tarot Dataset
 print("Loading Tarot Dataset...")
@@ -220,6 +265,164 @@ async def verify_otp(req: VerifyRequest):
     token = jwt.encode(token_data, SECRET_KEY, algorithm=ALGORITHM)
     
     return {"access_token": token, "role": user[3], "username": user[1]}
+
+def run_palm_onnx(img):
+    if onnx_session is None:
+        raise RuntimeError("Palm ONNX model is not loaded.")
+
+    original_h, original_w = img.shape[:2]
+
+    # Prevent extremely large uploads from consuming excessive RAM
+    max_dimension = 1600
+
+    if max(original_h, original_w) > max_dimension:
+        scale = max_dimension / max(original_h, original_w)
+        new_w = int(original_w * scale)
+        new_h = int(original_h * scale)
+
+        img = cv2.resize(
+            img,
+            (new_w, new_h),
+            interpolation=cv2.INTER_AREA
+        )
+
+    # Ultralytics-style letterbox to 640x640
+    h, w = img.shape[:2]
+    scale = min(640 / w, 640 / h)
+
+    new_w = int(round(w * scale))
+    new_h = int(round(h * scale))
+
+    resized = cv2.resize(
+        img,
+        (new_w, new_h),
+        interpolation=cv2.INTER_LINEAR
+    )
+
+    canvas = np.full((640, 640, 3), 114, dtype=np.uint8)
+
+    pad_x = (640 - new_w) // 2
+    pad_y = (640 - new_h) // 2
+
+    canvas[
+        pad_y:pad_y + new_h,
+        pad_x:pad_x + new_w
+    ] = resized
+
+    # BGR -> RGB
+    input_image = cv2.cvtColor(canvas, cv2.COLOR_BGR2RGB)
+
+    # Normalize
+    input_image = input_image.astype(np.float32) / 255.0
+
+    # HWC -> CHW
+    input_tensor = np.transpose(input_image, (2, 0, 1))[None]
+
+    outputs = onnx_session.run(
+        None,
+        {onnx_input_name: input_tensor}
+    )
+
+    predictions = outputs[0][0].T
+
+    # YOLO11-seg:
+    # 4 box values + 4 classes + 32 mask coefficients
+    num_classes = 4
+    num_mask_coeffs = 32
+
+    boxes = predictions[:, :4]
+    class_scores = predictions[:, 4:4 + num_classes]
+
+    # Convert class logits to probabilities
+    class_scores = 1 / (1 + np.exp(-np.clip(class_scores, -50, 50)))
+
+    class_ids = np.argmax(class_scores, axis=1)
+    confidences = class_scores[
+        np.arange(len(class_scores)),
+        class_ids
+    ]
+
+    # Confidence filtering
+    keep = confidences >= 0.25
+
+    boxes = boxes[keep]
+    confidences = confidences[keep]
+    class_ids = class_ids[keep]
+
+    if len(boxes) == 0:
+        return [], img
+
+    # xywh -> xyxy
+    xyxy = np.zeros_like(boxes)
+
+    xyxy[:, 0] = boxes[:, 0] - boxes[:, 2] / 2
+    xyxy[:, 1] = boxes[:, 1] - boxes[:, 3] / 2
+    xyxy[:, 2] = boxes[:, 0] + boxes[:, 2] / 2
+    xyxy[:, 3] = boxes[:, 1] + boxes[:, 3] / 2
+
+    # Remove letterbox padding
+    xyxy[:, [0, 2]] -= pad_x
+    xyxy[:, [1, 3]] -= pad_y
+
+    # Convert back to image coordinates
+    xyxy /= scale
+
+    current_h, current_w = img.shape[:2]
+
+    xyxy[:, [0, 2]] = np.clip(
+        xyxy[:, [0, 2]],
+        0,
+        current_w - 1
+    )
+
+    xyxy[:, [1, 3]] = np.clip(
+        xyxy[:, [1, 3]],
+        0,
+        current_h - 1
+    )
+
+    # NMS
+    nms_boxes = []
+
+    for box in xyxy:
+        x1, y1, x2, y2 = box
+        nms_boxes.append([
+            float(x1),
+            float(y1),
+            float(x2 - x1),
+            float(y2 - y1)
+        ])
+
+    indices = cv2.dnn.NMSBoxes(
+        nms_boxes,
+        confidences.tolist(),
+        0.25,
+        0.45
+    )
+
+    if len(indices) == 0:
+        return [], img
+
+    indices = np.array(indices).flatten()
+
+    detections = []
+
+    for i in indices:
+        cls_id = int(class_ids[i])
+        confidence = float(confidences[i])
+
+        class_name = class_names.get(
+            cls_id,
+            str(cls_id)
+        )
+
+        detections.append({
+            "name": class_name,
+            "confidence": confidence,
+            "box": xyxy[i].astype(int).tolist()
+        })
+    return detections, img
+
 # ==========================================
 # 3. PALMISTRY ENDPOINTS
 # ==========================================
@@ -227,55 +430,165 @@ async def verify_otp(req: VerifyRequest):
 async def analyze_palm(file: UploadFile = File(...)):
     try:
         contents = await file.read()
+
+        # Protect Render from extremely large uploads
+        if len(contents) > 10 * 1024 * 1024:
+            raise HTTPException(
+                status_code=413,
+                detail="Image is too large. Please upload an image below 10 MB."
+            )
+
         nparr = np.frombuffer(contents, np.uint8)
         img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        
-        results = yolo_model.predict(source=img, conf=0.25, save=False)
-        result = results[0]
-        
-        detected_items = []
-        if result.boxes is not None and len(result.boxes) > 0:
-            for box in result.boxes:
-                cls_id = int(box.cls[0])
-                confidence = float(box.conf[0])
-                detected_items.append(f"{yolo_model.names[cls_id]} (Confidence: {confidence:.2%})")
-                
-        findings_summary = "\n".join([f"- {item}" for item in set(detected_items)]) if detected_items else "No lines distinctly identified."
-        
-        res_plotted = result.plot()
-        _, buffer = cv2.imencode('.jpg', res_plotted)
-        img_base64 = base64.b64encode(buffer).decode('utf-8')
-        
+
+        if img is None:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid image file."
+            )
+
+        detected_items, processed_img = run_palm_onnx(img)
+
+        detected_text = []
+
+        for item in detected_items:
+            detected_text.append(
+                f"{item['name']} "
+                f"(Confidence: {item['confidence']:.2%})"
+            )
+
+        findings_summary = (
+            "\n".join(
+                f"- {item}"
+                for item in set(detected_text)
+            )
+            if detected_text
+            else "No lines distinctly identified."
+        )
+
+        # Draw detections
+        for item in detected_items:
+            x1, y1, x2, y2 = item["box"]
+
+            label = (
+                f"{item['name']} "
+                f"{item['confidence']:.2%}"
+            )
+
+            cv2.rectangle(
+                processed_img,
+                (x1, y1),
+                (x2, y2),
+                (0, 255, 0),
+                2
+            )
+
+            cv2.putText(
+                processed_img,
+                label,
+                (x1, max(20, y1 - 8)),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.5,
+                (0, 255, 0),
+                1,
+                cv2.LINE_AA
+            )
+
+        _, buffer = cv2.imencode(
+            ".jpg",
+            processed_img,
+            [cv2.IMWRITE_JPEG_QUALITY, 85]
+        )
+
+        img_base64 = base64.b64encode(
+            buffer
+        ).decode("utf-8")
+
         initial_prompt = f"""
         A computer vision system analyzed a photograph of a person's palm and identified these features:
         {findings_summary}
-        
+
         Provide an insightful, engaging basic palm reading structured into:
         1. 💖 Heart & Emotional Life
         2. 🧠 Mind & Career Potential
         3. ✨ Energy & Life Journey
         End by inviting follow-up questions.
         """
-        
+
         history = [
-            {"role": "system", "content": "You are a wise, mystical Master Palm Reader."},
-            {"role": "user", "content": initial_prompt}
+            {
+                "role": "system",
+                "content": "You are a wise, mystical Master Palm Reader."
+            },
+            {
+                "role": "user",
+                "content": initial_prompt
+            }
         ]
-        
-        # Use our rotating helper function instead of direct client calls
-        reading = get_groq_response(history, max_tokens=1000)
-        history.append({"role": "assistant", "content": reading})
-        
-        # --- DB INTEGRATION: Save silently in background ---
+
+        reading = get_groq_response(
+            history,
+            max_tokens=1000
+        )
+
+        history.append({
+            "role": "assistant",
+            "content": reading
+        })
+
         user_id = db.get_or_create_user("Guest")
-        session_id = db.start_session(user_id, "Palmistry", {"detected_lines": detected_items})
-        db.save_message(session_id, "system", "You are a wise, mystical Master Palm Reader.")
-        db.save_message(session_id, "user", initial_prompt)
-        db.save_message(session_id, "assistant", reading)
-        
-        return {"image_base64": img_base64, "reading": reading, "history": history, "session_id": session_id}
+
+        session_id = db.start_session(
+            user_id,
+            "Palmistry",
+            {
+                "detected_lines": detected_text
+            }
+        )
+
+        db.save_message(
+            session_id,
+            "system",
+            "You are a wise, mystical Master Palm Reader."
+        )
+
+        db.save_message(
+            session_id,
+            "user",
+            initial_prompt
+        )
+
+        db.save_message(
+            session_id,
+            "assistant",
+            reading
+        )
+
+        # Release large arrays before returning
+        del contents
+        del nparr
+        del img
+        del processed_img
+        del buffer
+
+        gc.collect()
+
+        return {
+            "image_base64": img_base64,
+            "reading": reading,
+            "history": history,
+            "session_id": session_id
+        }
+
+    except HTTPException:
+        raise
+
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        gc.collect()
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
 
 # ==========================================
 # 4. TAROT ENDPOINTS
