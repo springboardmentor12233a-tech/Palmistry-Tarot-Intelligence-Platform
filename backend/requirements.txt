@@ -5,7 +5,6 @@ opencv-python-headless
 onnxruntime
 groq
 pydantic
-kagglehub
 pillow
 python-dotenv
 PyJWT
