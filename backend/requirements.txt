@@ -8,3 +8,6 @@ pydantic
 kagglehub
 pillow
 python-dotenv
+PyJWT
+passlib
+bcrypt
