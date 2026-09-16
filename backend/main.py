@@ -25,7 +25,7 @@ from pydantic import BaseModel
 import re
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-SECRET_KEY = "mystical-oracle-super-secret-key" 
+SECRET_KEY = os.environ.get("SECRET_KEY")
 ALGORITHM = "HS256"
 
 # --- 1. IMPORT DATABASE ---
