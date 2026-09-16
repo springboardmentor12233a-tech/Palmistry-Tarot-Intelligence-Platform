@@ -136,10 +136,17 @@ except Exception as e:
 
 # Initialize Tarot Dataset
 print("Loading Tarot Dataset...")
-tarot_dataset_path = kagglehub.dataset_download("lsind18/tarot-json")
-with open(os.path.join(tarot_dataset_path, "tarot-images.json"), "r", encoding="utf-8") as f:
+tarot_dataset_path = os.path.join(os.path.dirname(__file__), "tarot_data")
+
+with open(
+    os.path.join(tarot_dataset_path, "tarot-images.json"),
+    "r",
+    encoding="utf-8"
+) as f:
     tarot_cards = json.load(f)["cards"]
+
 tarot_image_folder = os.path.join(tarot_dataset_path, "cards")
+
 print("Tarot Dataset Loaded successfully!")
 
 # ==========================================
