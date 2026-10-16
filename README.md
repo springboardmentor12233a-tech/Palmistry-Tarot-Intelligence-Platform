@@ -290,10 +290,7 @@ The project was developed and verified across four milestone reports:
 
 ---
 
-⭐ If you find the project interesting, feel free to explore the code and provide constructive feedback. Please preserve dataset licenses and user privacy when reproducing the workflow.
-"""
+---
 
-out = "/mnt/data/README.md"
-pypandoc.convert_text(readme, "md", format="md", outputfile=out, extra_args=["--standalone"])
-print({"readme": out, "bytes": os.path.getsize(out)})
+⭐ If you find the project interesting, feel free to explore the code and provide constructive feedback. Please preserve dataset licenses and user privacy when reproducing the workflow.
 
