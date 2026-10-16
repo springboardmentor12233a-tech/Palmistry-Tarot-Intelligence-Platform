@@ -1,12 +1,8 @@
-import pypandoc, os, textwrap
-
-readme = r"""# 🔮 AI Palmistry & Tarot Intelligence Platform
+# 🔮 AI Palmistry & Tarot Intelligence Platform
 
 An end-to-end student project that combines **palm-line analysis, Tarot card interpretation, and AI-generated natural-language insights** in a personalized reading experience. The platform brings together computer-vision output, structured Tarot knowledge, an LLM interpretation layer, downloadable PDF reports, user reading history, and an administrator analytics dashboard.
 
-> **Purpose & disclaimer:** This project is for learning, reflection, and entertainment. Palmistry and Tarot interpretations are symbolic, not scientifically validated predictions. The output must not be treated as medical, legal, financial, or other professional advice.
-
----
+> **Purpose & Disclaimer:** This project is designed for learning, reflection, and entertainment. Palmistry and Tarot interpretations are symbolic and are not scientifically validated predictions. The output should not be treated as medical, legal, financial, or other professional advice.
 
 ## ✨ Project Highlights
 
