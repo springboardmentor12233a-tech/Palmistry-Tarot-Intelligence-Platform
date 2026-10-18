@@ -220,25 +220,7 @@ Explanation of how the palm and tarot readings connect.
         max_tokens=700,
     )
 def generate_daily_question() -> str:
-    prompt = """
-Generate one thoughtful daily reflection question for a person.
-
-The question should:
-- Be meaningful and introspective
-- Be easy to understand
-- Encourage self-reflection
-- Not be about predicting the future
-- Not be too negative or depressing
-- Feel slightly mystical and suitable for an Oracle experience
-
-Return ONLY the question.
-"""
-
-    return ask_groq(
-        prompt=prompt,
-        system_prompt="You create thoughtful daily reflection questions.",
-        max_tokens=150,
-    )
+    return "What is one thing you would like to understand better about yourself today?"
 
 
 def generate_daily_reflection(question: str, answer: str) -> str:
